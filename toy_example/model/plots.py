@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def learning_curves(log):
+def learning_curves(log, path=None):
     
     fig, ax = plt.subplots(figsize=(4, 2.5))
 
@@ -17,10 +17,13 @@ def learning_curves(log):
     ax.set_xlabel('Epoch')
 
     plt.tight_layout()
-    plt.show()
+    if path is not None:
+        plt.savefig(path)
+    else:
+        plt.show()
     
     
-def toy_example_dynamics(PINN):
+def toy_example_dynamics(PINN, path=None):
     
     # get (equally-spaced) data points
     t_line = PINN.data.t_line()
@@ -46,4 +49,7 @@ def toy_example_dynamics(PINN):
     ax.set_xlabel(r'$t$')
 
     plt.tight_layout()
-    plt.show()
+    if path is not None:
+        plt.savefig(path)
+    else:
+        plt.show()

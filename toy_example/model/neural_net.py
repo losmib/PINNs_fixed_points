@@ -20,7 +20,7 @@ class PhysicsInformedNN(Model):
     # settings read from config (set as class attributes)
     args = ['version', 'seed', 'y0',
             'N_hidden', 'N_neurons', 'activation',
-            'N_epochs', 'learning_rate', 'decay_rate']
+            'N_epochs', 'learning_rate', 'decay_rate', 'reg_epochs']
     # default log Path
     log_path = Path('logs')
     
@@ -98,7 +98,8 @@ class PhysicsInformedNN(Model):
             # sample collocation points
             t_col = self.data.collocation()                      
             # perform one train step
-            train_logs = self.train_step(t_col)
+            reg = epoch < self.reg_epochs
+            train_logs = self.train_step(t_col, reg)
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
         
@@ -109,14 +110,14 @@ class PhysicsInformedNN(Model):
     
     
     @tf.function
-    def train_step(self, t_col):
+    def train_step(self, t_col, reg):
         '''
         Performs a single gradient-descent optimization step
         '''    
         # open a GradientTape to record forward/loss pass                   
         with tf.GradientTape() as tape:     
             # get physcics loss of toy example equation
-            loss = self.loss.toy_example(t_col)
+            loss = self.loss.toy_example(t_col, reg)
             
         # retrieve gradients
         grads = tape.gradient(loss, self.weights)        
