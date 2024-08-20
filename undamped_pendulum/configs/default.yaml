@@ -36,7 +36,7 @@ N_hidden: 4
 N_neurons: 50
 activation: 'tanh'
 
-N_epochs: 10000
+N_epochs: 15000
 learning_rate: 0.001
 decay_rate: 1.0
 
@@ -47,3 +47,9 @@ decay_rate: 1.0
 freq_log: 10
 freq_print: 100
 keys_print: ['loss_P', 'loss_IC']
+
+#################################
+# Regularization settings
+#################################
+
+reg_epochs: 10000
