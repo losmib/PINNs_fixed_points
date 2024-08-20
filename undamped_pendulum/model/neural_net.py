@@ -76,7 +76,7 @@ class PhysicsInformedNN(Sequential):
             decay_rate=self.decay_rate)          
         # Adam optimizer with default settings for momentum
         self.optimizer = Adam(learning_rate=lr_schedule)    
-
+        
         print("Training started...")
         for epoch in range(self.N_epochs):
 
@@ -84,7 +84,9 @@ class PhysicsInformedNN(Sequential):
             
             if epoch == self.reg_epochs:
                 tf.print(f"Restarting optimizer")
-                self.optimizer = Adam(learning_rate=lr_schedule)
+                for var in self.optimizer.variables():
+                    tf.print(var)
+                    var.assign(tf.zeros_like(var))
                 
             # perform one train step
             reg = epoch < self.reg_epochs
