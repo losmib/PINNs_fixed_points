@@ -64,9 +64,9 @@ class Loss():
 
 
     def regularizer_fp(self, omega_t, theta, t_col):
-        eps = 10**-6
-        tf.print(tf.reduce_mean(1 / (tf.math.sin(theta)**2 + omega_t**2)))
-        loss = tf.reduce_mean(eps * t_col / (tf.exp(tf.math.sin(theta)**2) + tf.exp(omega_t**2)))
+        eps = 10**0
+        # tf.print(tf.reduce_mean(1 / (tf.math.sin(theta)**2 + omega_t**2)))
+        loss = tf.reduce_mean(eps / ((tf.math.sin(theta)**2) + (omega_t**2)))
         # loss = -tf.sqrt(tf.reduce_sum(tf.math.sin(theta)**2) + tf.reduce_sum(omega_t**2))
         return loss
     

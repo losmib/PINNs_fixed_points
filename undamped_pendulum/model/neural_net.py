@@ -81,6 +81,11 @@ class PhysicsInformedNN(Sequential):
         for epoch in range(self.N_epochs):
 
             t_col = self.data.collocation() 
+            
+            if epoch == self.reg_epochs:
+                tf.print(f"Restarting optimizer")
+                self.optimizer = Adam(learning_rate=lr_schedule)
+                
             # perform one train step
             reg = epoch < self.reg_epochs
             train_logs = self.train_step(t_col, reg)
