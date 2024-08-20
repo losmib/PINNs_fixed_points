@@ -20,7 +20,7 @@ class PhysicsInformedNN(Model):
     # settings read from config (set as class attributes)
     args = ['version', 'seed', 'y0',
             'N_hidden', 'N_neurons', 'activation',
-            'N_epochs', 'learning_rate', 'decay_rate', 'reg_epochs']
+            'N_epochs', 'learning_rate', 'decay_rate', 'reg_coeff', 'reg_decay']
     # default log Path
     log_path = Path('logs')
     
@@ -92,14 +92,17 @@ class PhysicsInformedNN(Model):
         # Adam optimizer with default settings for momentum
         self.optimizer = Adam(learning_rate=lr_schedule)   
                       
+        reg_coeff = tf.constant(self.reg_coeff)
+        reg_decay = tf.constant(self.reg_decay)
+                      
         print("Training started...")
         for epoch in range(self.N_epochs):
             
             # sample collocation points
             t_col = self.data.collocation()                      
             # perform one train step
-            reg = epoch < self.reg_epochs
-            train_logs = self.train_step(t_col, reg)
+            reg_coeff = reg_coeff * reg_decay
+            train_logs = self.train_step(t_col, reg_coeff)
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
         
@@ -110,14 +113,14 @@ class PhysicsInformedNN(Model):
     
     
     @tf.function
-    def train_step(self, t_col, reg):
+    def train_step(self, t_col, reg_coeff):
         '''
         Performs a single gradient-descent optimization step
         '''    
         # open a GradientTape to record forward/loss pass                   
         with tf.GradientTape() as tape:     
             # get physcics loss of toy example equation
-            loss = self.loss.toy_example(t_col, reg)
+            loss = self.loss.toy_example(t_col, reg_coeff)
             
         # retrieve gradients
         grads = tape.gradient(loss, self.weights)        

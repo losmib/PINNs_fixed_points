@@ -26,9 +26,7 @@ param_grid = {
         (8, 100)
     ],
     "activations": [
-        "swish",
         "tanh",
-        "sin"
     ],
     "learning_rates": [
         0.001,
@@ -39,12 +37,14 @@ param_grid = {
         1024, 
     ],
     "epochs": [
-        30000,
+        15000,
     ],
-    "reg_percentages": [
-        0,
-        0.5,
-        0.95,
+    "reg_coeff": [
+        0.0,
+        1.0
+    ],
+    "reg_decay": [
+        0.999,
     ]
 }
 
@@ -58,7 +58,8 @@ for params in grid_parameters(param_grid):
     config["N_hidden"] = params["network_architectures"][0]
     config["N_neurons"] = params["network_architectures"][1]
     config["N_epochs"] = params["epochs"]
-    config["reg_epochs"] = int(params["epochs"] * params["reg_percentages"])
+    config["reg_coeff"] = float(params["reg_coeff"]) 
+    config["reg_decay"] = float(params["reg_decay"])
     config["learning_rate"] = params["learning_rates"]
     config["N_col"] = params["collocations"]
     config["T"] = params["T"]

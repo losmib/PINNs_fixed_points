@@ -11,7 +11,7 @@ class Loss():
         self.model = model
 
         
-    def toy_example(self, t_col, reg):
+    def toy_example(self, t_col, reg_coeff):
         '''
         Determines physics loss residuals of the differential equation
         '''
@@ -23,8 +23,8 @@ class Loss():
         
         res = y_t - (y - y**3)
         loss = tf.reduce_mean(tf.square(res))
-        if reg:
-            loss += self.regularizer_unstable_fp(t_col)
+        
+        loss += reg_coeff * self.regularizer_unstable_fp(t_col)
         return loss 
         
         
@@ -39,4 +39,4 @@ class Loss():
         fp1_dist = tf.sqrt(tf.reduce_sum((y - 1)**2))
         fp2_dist = tf.sqrt(tf.reduce_sum(y**2))
         fp3_dist = tf.sqrt(tf.reduce_sum((y + 1)**2))
-        return -0.05 * tf.reduce_min([fp1_dist, fp2_dist, fp3_dist])
+        return tf.reduce_min([fp1_dist, fp2_dist, fp3_dist])
