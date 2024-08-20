@@ -94,7 +94,11 @@ class PhysicsInformedNN(Model):
                       
         print("Training started...")
         for epoch in range(self.N_epochs):
-            
+            if epoch == self.reg_epochs:
+                tf.print(f"Restarting optimizer")
+                for var in self.optimizer.variables():
+                    tf.print(var)
+                    var.assign(tf.zeros_like(var))
             # sample collocation points
             t_col = self.data.collocation()                      
             # perform one train step

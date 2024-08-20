@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from model.loss_functions import Loss
 
 
 def learning_curves(log, path=None):
@@ -53,3 +54,25 @@ def toy_example_dynamics(PINN, path=None):
         plt.savefig(path)
     else:
         plt.show()
+        
+        
+def loss_collocation(PINN, t_coll, path=None):
+    """
+    Plots loss over the collocation points
+
+    :param PINN: 
+    :param t_coll: 
+    :param path:
+    """
+    t_coll_sorted = np.sort(t_coll)
+    loss = Loss(PINN).toy_example(t_coll_sorted)
+    
+    plt.plot(t_coll_sorted, loss, label="physics loss")
+    plt.legend()
+    plt.show()
+    if path is not None:
+        plt.savefig(path)
+    else:
+        plt.show()
+    
+    
