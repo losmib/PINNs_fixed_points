@@ -85,7 +85,6 @@ class PhysicsInformedNN(Sequential):
             if epoch == self.reg_epochs:
                 tf.print(f"Restarting optimizer")
                 for var in self.optimizer.variables():
-                    tf.print(var)
                     var.assign(tf.zeros_like(var))
                 
             # perform one train step

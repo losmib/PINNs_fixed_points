@@ -99,10 +99,12 @@ def loss_collocation(PINN, t_coll, path=None):
     """
     loss = np.zeros(t_coll.shape)
     for i in range(t_coll.shape[0]):
-        loss[i] = PINN.loss.pendulum(t_coll[0].reshape(-1, 1), False).numpy()[0]
+        loss[i] = PINN.loss.pendulum(t_coll[i], False).numpy()
 
-    plt.plot(t_coll, loss.numpy(), label="physics loss")
+    plt.plot(t_coll, loss, label="physics loss")
     plt.legend()
+    plt.xlabel("Time")
+    plt.ylabel("Loss")
     plt.show()
     if path is not None:
         plt.savefig(path)
