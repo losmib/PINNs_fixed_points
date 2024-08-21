@@ -26,9 +26,7 @@ param_grid = {
         (8, 100)
     ],
     "activations": [
-        "swish",
         "tanh",
-        "sin"
     ],
     "learning_rates": [
         0.001,
@@ -39,7 +37,7 @@ param_grid = {
         1024, 
     ],
     "epochs": [
-        20000,
+        10000,
     ],
     "reg_percentages": [
         0,
