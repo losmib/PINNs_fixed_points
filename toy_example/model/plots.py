@@ -64,11 +64,14 @@ def loss_collocation(PINN, t_coll, path=None):
     :param t_coll: 
     :param path:
     """
-    t_coll_sorted = np.sort(t_coll)
-    loss = Loss(PINN).toy_example(t_coll_sorted)
-    
-    plt.plot(t_coll_sorted, loss, label="physics loss")
+    loss = np.zeros(t_coll.shape)
+    for i in range(t_coll.shape[0]):
+        loss[i] = PINN.loss.toy_example(t_coll[i], False).numpy()
+
+    plt.plot(t_coll, loss, label="physics loss")
     plt.legend()
+    plt.xlabel("Time")
+    plt.ylabel("Loss")
     plt.show()
     if path is not None:
         plt.savefig(path)
