@@ -24,7 +24,7 @@ class Loss():
         res = y_t - (y - y**3)
         loss = tf.reduce_mean(tf.square(res))
         if reg:
-            loss += self.regularizer_unstable_fp(t_col)
+            loss += self.regularizer_unstable_fp(y_t)
         return loss 
         
         
@@ -40,3 +40,7 @@ class Loss():
         fp2_dist = tf.sqrt(tf.reduce_sum(y**2))
         fp3_dist = tf.sqrt(tf.reduce_sum((y + 1)**2))
         return -0.05 * tf.reduce_min([fp1_dist, fp2_dist, fp3_dist])
+    
+    def regularizer_derivative(self, y_t):
+        eps = 10**-2
+        return tf.reduce_mean(eps / (y_t**2))

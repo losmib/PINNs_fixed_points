@@ -43,9 +43,12 @@ decay_rate: 1.0
 freq_log: 100
 freq_print: 1000
 keys_print: ['loss']
+freq_save: 100
 
 #################################
 # Regularization settings
 #################################
+
+reg_type: 'decay'
 
 reg_epochs: 10000

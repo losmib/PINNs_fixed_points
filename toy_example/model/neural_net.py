@@ -1,6 +1,7 @@
 import tensorflow as tf
 
 from pathlib import Path
+import pickle
 
 from tensorflow.keras import Model, Sequential
 from tensorflow.keras.layers import InputLayer, Dense
@@ -20,7 +21,7 @@ class PhysicsInformedNN(Model):
     # settings read from config (set as class attributes)
     args = ['version', 'seed', 'y0',
             'N_hidden', 'N_neurons', 'activation',
-            'N_epochs', 'learning_rate', 'decay_rate', 'reg_epochs']
+            'N_epochs', 'learning_rate', 'decay_rate', 'reg_epochs', 'freq_save']
     # default log Path
     log_path = Path('logs')
     
@@ -102,6 +103,10 @@ class PhysicsInformedNN(Model):
             train_logs = self.train_step(t_col, reg)
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
+            
+            if self.freq_save != 0:
+                if (epoch % self.freq_save) == 0:
+                    self.save_weights(flag=epoch)
         
         # save log
         self.callback.save_logs(self.path)
@@ -127,3 +132,13 @@ class PhysicsInformedNN(Model):
         # save logs for recording
         train_logs = {'loss': loss}       
         return train_logs
+    
+    def save_weights(self, flag=''):        
+        weights_file = self.log_path.joinpath(f'model_weights/weights_{flag}.pkl')
+        with open(weights_file, 'wb') as pickle_file:
+            pickle.dump(self.neural_net.get_weights(), pickle_file)                    
+
+    def load_weights(self, weights_file):
+        with open(weights_file, 'rb') as pickle_file:
+            weights = pickle.load(pickle_file)
+        self.neural_net.set_weights(weights)

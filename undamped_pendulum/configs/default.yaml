@@ -47,6 +47,7 @@ decay_rate: 1.0
 freq_log: 10
 freq_print: 100
 keys_print: ['loss_P', 'loss_IC']
+freq_save: 100
 
 #################################
 # Regularization settings

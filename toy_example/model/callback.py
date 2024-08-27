@@ -63,3 +63,4 @@ class CustomCallback():
         with open(log_file, "w") as f:
             json.dump(self.log, f, indent=2)
         print("*** logs saved ***")
+        
