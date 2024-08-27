@@ -48,4 +48,4 @@ keys_print: ['loss']
 # Regularization settings
 #################################
 
-reg_epochs: 10000
+reg_epochs: 0
