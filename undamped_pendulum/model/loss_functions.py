@@ -57,7 +57,6 @@ class Loss():
         res = omega_t + self.g/self.l * tf.math.sin(theta)
        
         loss = tf.reduce_mean(tf.square(res))
-   
         loss += reg_coeff * self.regularizer_derivative(omega_t, omega, t_col)
         return loss
 
@@ -70,6 +69,6 @@ class Loss():
     
     def regularizer_derivative(self, omega_t, omega, t_col):
         eps = 10**-2
-        loss = tf.reduce_mean(eps / (omega_t**2 + omega**2))
+        loss = tf.reduce_mean(tf.exp(-(omega_t**2 + omega**2) / eps))
         # loss = -tf.sqrt(tf.reduce_sum(tf.math.sin(theta)**2) + tf.reduce_sum(omega_t**2))
         return loss

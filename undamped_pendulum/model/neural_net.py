@@ -79,7 +79,6 @@ class PhysicsInformedNN(Sequential):
             decay_rate=self.decay_rate)          
         # Adam optimizer with default settings for momentum
         self.optimizer = Adam(learning_rate=lr_schedule)    
-
         print("Training started...")
         for epoch in range(self.N_epochs):
 

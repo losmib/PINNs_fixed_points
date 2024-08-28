@@ -20,7 +20,7 @@ theta0: 100
 omega0: 0
 
 # Simulation Length
-T: 10
+T: 15
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -53,6 +53,6 @@ freq_save: 100
 # Regularization settings
 #################################
 
-reg_coeff: 1
-reg_decay: 1
-reg_epochs: 0
+reg_coeff: 10
+reg_decay: 0.9999
+reg_epochs: 0.9
