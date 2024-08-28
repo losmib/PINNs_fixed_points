@@ -36,7 +36,7 @@ N_hidden: 4
 N_neurons: 50
 activation: 'tanh'
 
-N_epochs: 15000
+N_epochs: 30000
 learning_rate: 0.001
 decay_rate: 1.0
 
@@ -53,4 +53,6 @@ freq_save: 100
 # Regularization settings
 #################################
 
-reg_epochs: 10000
+reg_coeff: 1
+reg_decay: 1
+reg_epochs: 0

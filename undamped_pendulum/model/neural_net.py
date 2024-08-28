@@ -20,8 +20,8 @@ class PhysicsInformedNN(Sequential):
     # settings read from config (set as class attributes)
     args = ['version', 'seed',
             'N_hidden', 'N_neurons', 'activation',
-            'N_epochs', 'learning_rate', 'decay_rate',
-            'reg_epochs', 'freq_save']
+            'N_epochs', 'learning_rate', 'decay_rate', 'reg_coeff',
+            'reg_decay', 'reg_epochs', 'freq_save']
     # default log Path
     log_path = Path('logs')
     
@@ -33,6 +33,8 @@ class PhysicsInformedNN(Sequential):
         for arg in self.args:
             setattr(self, arg, config[arg])
         
+        self.reg_epochs = int(self.reg_epochs * self.N_epochs)
+        
         self.build_layers(verbose) 
         # data loader for sampling data at each training epoch
         self.data = DataLoader(config) 
@@ -41,8 +43,8 @@ class PhysicsInformedNN(Sequential):
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs
-        self.path = self.log_path.joinpath(self.version)
-        self.path.mkdir(parents=True, exist_ok=True)
+        self._path = self.log_path.joinpath(self.version)
+        self._path.mkdir(parents=True, exist_ok=True)
         print('*** PINN build & initialized ***')  
         
  
@@ -83,23 +85,26 @@ class PhysicsInformedNN(Sequential):
 
             t_col = self.data.collocation() 
             # perform one train step
-            reg = epoch < self.reg_epochs
-            train_logs = self.train_step(t_col, reg)
+            if epoch > self.reg_epochs:
+                self.reg_coeff = 0
+            train_logs = self.train_step(t_col, self.reg_coeff)
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
+            
+            self.reg_coeff *= self.reg_decay
             
             if self.freq_save != 0:
                 if (epoch % self.freq_save) == 0:
                     self.save_weights(flag=epoch)
 
         # save log
-        self.callback.save_logs(self.path)
+        self.callback.save_logs(self._path)
         print("Training finished!")
         return self.callback.log
 
     
     @tf.function
-    def train_step(self, t_col, reg):
+    def train_step(self, t_col, reg_coeff):
         '''
         Performs a single SGD training step by minimizing the 
         IC and physics loss residuals using MSE
@@ -109,7 +114,7 @@ class PhysicsInformedNN(Sequential):
             # inital condition loss
             loss_IC = self.loss.initial_condition()
             # physics loss
-            loss_P = self.loss.pendulum(t_col, reg)
+            loss_P = self.loss.pendulum(t_col, reg_coeff)
             # final training loss
             loss_train = loss_IC + loss_P
             

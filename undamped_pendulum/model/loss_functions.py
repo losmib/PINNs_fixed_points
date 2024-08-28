@@ -41,7 +41,7 @@ class Loss():
         return loss_IC1 + loss_IC2
                
         
-    def pendulum(self, t_col, reg):
+    def pendulum(self, t_col, reg_coeff):
         '''
         Determines physics loss of the pendulum's differential equation
         '''
@@ -58,15 +58,18 @@ class Loss():
        
         loss = tf.reduce_mean(tf.square(res))
    
-        if reg:
-            loss += self.regularizer_fp(omega_t, theta, t_col)
+        loss += reg_coeff * self.regularizer_derivative(omega_t, omega, t_col)
         return loss
 
 
-    def regularizer_fp(self, omega_t, theta, t_col):
-        eps = 10**-6
-        loss = tf.reduce_mean(eps / (tf.math.sin(theta)**2 + omega_t**2))
+    def regularizer_fp(self, omega, theta, t_col):
+        eps = 10**-2
+        loss = tf.reduce_mean(eps / (tf.math.sin(theta)**2 + omega**2))
         # loss = -tf.sqrt(tf.reduce_sum(tf.math.sin(theta)**2) + tf.reduce_sum(omega_t**2))
         return loss
     
-    
+    def regularizer_derivative(self, omega_t, omega, t_col):
+        eps = 10**-2
+        loss = tf.reduce_mean(eps / (omega_t**2 + omega**2))
+        # loss = -tf.sqrt(tf.reduce_sum(tf.math.sin(theta)**2) + tf.reduce_sum(omega_t**2))
+        return loss

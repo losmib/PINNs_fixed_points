@@ -49,6 +49,6 @@ freq_save: 100
 # Regularization settings
 #################################
 
-reg_type: 'decay'
-
-reg_epochs: 10000
+reg_coeff: 1
+reg_decay: 1
+reg_epochs: 0.5

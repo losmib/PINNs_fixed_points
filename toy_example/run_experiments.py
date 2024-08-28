@@ -26,9 +26,7 @@ param_grid = {
         (8, 100)
     ],
     "activations": [
-        "swish",
         "tanh",
-        "sin"
     ],
     "learning_rates": [
         0.001,
@@ -39,12 +37,18 @@ param_grid = {
         1024, 
     ],
     "epochs": [
-        30000,
+        10000,
     ],
-    "reg_percentages": [
+    "reg_epochs": [
         0,
         0.5,
         0.95,
+    ],
+    "reg_coeff": [
+      1  
+    ],
+    "reg_decay": [
+        1
     ]
 }
 
@@ -58,16 +62,20 @@ for params in grid_parameters(param_grid):
     config["N_hidden"] = params["network_architectures"][0]
     config["N_neurons"] = params["network_architectures"][1]
     config["N_epochs"] = params["epochs"]
-    config["reg_epochs"] = int(params["epochs"] * params["reg_percentages"])
+    config["reg_epochs"] = params["reg_epochs"]
+    config["reg_coeff"] = params["reg_coeff"]
+    config["reg_decay"] = params["reg_decay"]
     config["learning_rate"] = params["learning_rates"]
     config["N_col"] = params["collocations"]
     config["T"] = params["T"]
+    config["freq_save"] = 0
     
     losses = []
     loss_successes = []
+    y0s = np.linspace(-0.999999, 0.999999, NUM_TRAINING_RUNS)
     for i in range(NUM_TRAINING_RUNS):
     
-        config["y0"] = np.random.uniform(low=-0.99, high=0.99)
+        config["y0"] = y0s[i]
         PINN = PhysicsInformedNN(config, verbose=True)
         try:
             training_log = PINN.train()
