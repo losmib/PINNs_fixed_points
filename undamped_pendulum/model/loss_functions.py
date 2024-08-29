@@ -63,12 +63,13 @@ class Loss():
 
     def regularizer_fp(self, omega, theta, t_col):
         eps = 10**-2
-        loss = tf.reduce_mean(eps / (tf.math.sin(theta)**2 + omega**2))
+        loss = tf.reduce_mean(tf.exp(-(tf.math.sin(theta)**2 + omega**2) / eps))
+
         # loss = -tf.sqrt(tf.reduce_sum(tf.math.sin(theta)**2) + tf.reduce_sum(omega_t**2))
         return loss
     
     def regularizer_derivative(self, omega_t, omega, t_col):
-        eps = 10**-2
+        eps = 10**0
         loss = tf.reduce_mean(tf.exp(-(omega_t**2 + omega**2) / eps))
-        # loss = -tf.sqrt(tf.reduce_sum(tf.math.sin(theta)**2) + tf.reduce_sum(omega_t**2))
+        
         return loss

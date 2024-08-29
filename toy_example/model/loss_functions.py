@@ -24,7 +24,7 @@ class Loss():
         res = y_t - (y - y**3)
         loss = tf.reduce_mean(tf.square(res))
         
-        loss += reg_coeff * self.regularizer_derivative(y_t)
+        loss += reg_coeff * self.regularizer_derivative(y - y**3)
         return loss 
         
         
@@ -42,5 +42,5 @@ class Loss():
         return -0.05 * tf.reduce_min([fp1_dist, fp2_dist, fp3_dist])
     
     def regularizer_derivative(self, y_t):
-        eps = 10**-2
-        return tf.reduce_mean(eps / (y_t**2))
+        eps = 10**0
+        return tf.reduce_mean(tf.exp(-(y_t**2) / eps))

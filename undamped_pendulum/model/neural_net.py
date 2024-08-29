@@ -80,17 +80,21 @@ class PhysicsInformedNN(Sequential):
         # Adam optimizer with default settings for momentum
         self.optimizer = Adam(learning_rate=lr_schedule)    
         print("Training started...")
+
+        reg_coeff = tf.constant(self.reg_coeff, dtype=tf.float32)
+        reg_decay = tf.constant(self.reg_decay, dtype=tf.float32)
+        
         for epoch in range(self.N_epochs):
 
             t_col = self.data.collocation() 
             # perform one train step
             if epoch > self.reg_epochs:
-                self.reg_coeff = 0
-            train_logs = self.train_step(t_col, self.reg_coeff)
+                reg_coeff = 0
+            train_logs = self.train_step(t_col, reg_coeff)
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
             
-            self.reg_coeff *= self.reg_decay
+            reg_coeff *= reg_decay
             
             if self.freq_save != 0:
                 if (epoch % self.freq_save) == 0:
