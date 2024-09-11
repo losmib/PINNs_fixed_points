@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def learning_curves(log):
+def learning_curves(log, path=None):
     
     fig, ax = plt.subplots(figsize=(4, 2.5))
 
@@ -19,10 +19,13 @@ def learning_curves(log):
     ax.set_xlabel('Epoch')
 
     plt.tight_layout()
-    plt.show()
+    if path == None:
+        plt.show()
+    else:
+        plt.savefig(path)
     
     
-def allen_cahn_mesh(PINN):    
+def allen_cahn_mesh(PINN, path=None):    
     
     # get reference data and make prediction
     X_ref, u_ref = PINN.data.reference_mesh()
@@ -50,10 +53,14 @@ def allen_cahn_mesh(PINN):
         ax.set_xlabel(r't')
 
     plt.tight_layout()
-    plt.show()
     
+    if path == None:
+        plt.show()
+    else:
+        plt.savefig(path)
+        
     
-def allen_cahn_xcut(PINN, time_steps=[0, 0.5, 1.0]):
+def allen_cahn_xcut(PINN, time_steps=[0, 0.5, 1.0], path=None):
 
     fig, axes = plt.subplots(1, len(time_steps), 
                              sharey=True,
@@ -75,4 +82,7 @@ def allen_cahn_xcut(PINN, time_steps=[0, 0.5, 1.0]):
     axes[0].legend(loc=2, fontsize=8)
 
     plt.tight_layout()
-    plt.show()
+    if path == None:
+        plt.show()
+    else:
+        plt.savefig(path)

@@ -1,6 +1,7 @@
 import tensorflow as tf
 
 from pathlib import Path
+import pickle
 
 from tensorflow.keras import Sequential
 from tensorflow.keras.layers import InputLayer, Dense
@@ -18,8 +19,8 @@ class PhysicsInformedNN(Sequential):
     '''       
     # settings read from config (set as class attributes)
     args = ['version', 'seed',
-            'N_hidden', 'N_neurons', 'activation',
-            'N_epochs', 'learning_rate', 'decay_rate']
+            'N_hidden', 'N_neurons', 'activation', 'N_epochs', 
+            'learning_rate', 'decay_rate', 'reg_coeff', 'reg_decay', 'reg_epochs', 'freq_save']
     # default log Path
     log_path = Path('logs')
     
@@ -30,6 +31,8 @@ class PhysicsInformedNN(Sequential):
         # load and set class attributes from config
         for arg in self.args:
             setattr(self, arg, config[arg])
+            
+        self.reg_epochs = int(self.reg_epochs * self.N_epochs)
         
         self.build_layers(verbose) 
         # data loader for sampling data at each training epoch
@@ -75,9 +78,14 @@ class PhysicsInformedNN(Sequential):
             decay_rate=self.decay_rate)          
         # Adam optimizer with default settings for momentum
         self.optimizer = Adam(learning_rate=lr_schedule)    
+        
+        reg_coeff = tf.constant(self.reg_coeff, dtype=tf.float32)
+        reg_decay = tf.constant(self.reg_decay, dtype=tf.float32)
             
         print("Training started...")
         for epoch in range(self.N_epochs):
+            if epoch > self.reg_epochs:
+                reg_coeff = 0
                                 
             X_col = self.data.collocation() 
             X_IC, u_IC = self.data.initial_condition()
@@ -86,9 +94,16 @@ class PhysicsInformedNN(Sequential):
             # perform one train step
             train_logs = self.train_step(X_IC, u_IC, 
                                          X_BC_top, X_BC_bottom, 
-                                         X_col)
+                                         X_col, reg_coeff)
+            
+            reg_coeff *= reg_decay
+            
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
+            
+            if self.freq_save != 0:
+                if (epoch % self.freq_save) == 0:
+                    self.save_weights(flag=epoch)
            
         # save log
         self.callback.save_logs(self.path)
@@ -97,7 +112,7 @@ class PhysicsInformedNN(Sequential):
     
     
     @tf.function
-    def train_step(self, X_IC, u_IC, X_BC_top, X_BC_bottom, X_col):
+    def train_step(self, X_IC, u_IC, X_BC_top, X_BC_bottom, X_col, reg_coeff):
         '''
         Performs a single SGD training step by minimizing the 
         IC, BC and physics loss residuals using MSE
@@ -110,7 +125,7 @@ class PhysicsInformedNN(Sequential):
             # boundary condition loss
             loss_BC = self.loss.boundary_condition(X_BC_top, X_BC_bottom)
             # physics loss
-            loss_AC = self.loss.allen_cahn(X_col)
+            loss_AC = self.loss.allen_cahn(X_col, reg_coeff)
             # final training loss (with greater weight for IC loss)
             loss_train = 100 * loss_IC + loss_BC + loss_AC
                        
@@ -123,6 +138,16 @@ class PhysicsInformedNN(Sequential):
         train_logs = {'loss_train': loss_train, 'loss_IC': loss_IC, 
                       'loss_BC': loss_BC, 'loss_AC': loss_AC}       
         return train_logs
+    
+    def save_weights(self, flag=''):        
+        weights_file = self.log_path.joinpath(f'model_weights/weights_{flag}.pkl')
+        with open(weights_file, 'wb') as pickle_file:
+            pickle.dump(self.get_weights(), pickle_file)                    
+
+    def load_weights(self, weights_file):
+        with open(weights_file, 'rb') as pickle_file:
+            weights = pickle.load(pickle_file)
+        self.set_weights(weights)
     
     
     

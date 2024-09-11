@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
-def learning_curves(log):
+def learning_curves(log, path=None):
     
     fig, ax = plt.subplots(figsize=(4, 2.5))
 
@@ -19,10 +19,13 @@ def learning_curves(log):
     ax.set_xlabel('Epoch')
 
     plt.tight_layout()
-    plt.show()
     
+    if path is None:
+        plt.show()
+    else:
+        plt.savefig(path)
 
-def pendulum_dynamics(PINN):
+def pendulum_dynamics(PINN, path=None):
     
     fig, axes = plt.subplots(1, 2, figsize=(6, 2))
 
@@ -84,4 +87,8 @@ def pendulum_dynamics(PINN):
     axes[1].set_xticklabels([r'$\pi$', 0, r'$\pi$'])                
 
     plt.tight_layout()
-    plt.show()
+    
+    if path is None:
+        plt.show()
+    else:
+        plt.savefig(path)

@@ -4,8 +4,12 @@ from typing import Any, Dict, Iterable
 from sklearn.metrics import mean_squared_error
 from configs.config_loader import load_config
 from model.neural_net import PhysicsInformedNN
+from model.plots import learning_curves, pendulum_dynamics
 import pandas as pd
 import numpy as np
+
+import re
+import os
 
 
 NUM_TRAINING_RUNS = 20
@@ -19,7 +23,7 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [15, 20],
+    "T": [10, 15, 20],
     "y0": [25, 100, 175],
     "network_architectures": [
         (4, 50),
@@ -29,8 +33,6 @@ param_grid = {
     ],
     "learning_rates": [
         0.001,
-        # 0.01,
-        # 0.1
     ],
     "collocations": [
         1024, 
@@ -40,8 +42,10 @@ param_grid = {
     ],
     "reg_epochs": [
         0,
+        0.25,
         0.5,
-        0.95,
+        0.75,
+        1.0
     ],
     "reg_coeff": [
       1  
@@ -55,7 +59,8 @@ results_list = []
 
 for params in grid_parameters(param_grid):
     print(params)
-    
+    dirname = "model_weights/" + re.sub('\W+', '_', str(params))
+
     config = config_base
     config["activation"] = params["activations"]
     config["N_hidden"] = params["network_architectures"][0]
@@ -71,7 +76,12 @@ for params in grid_parameters(param_grid):
     config["y0"] = params["y0"]    
     losses = []
     loss_successes = []
+    
     for i in range(NUM_TRAINING_RUNS):
+        if not os.path.exists(f"logs/{dirname}/run_{i}"):
+            os.makedirs(f"logs/{dirname}/run_{i}")
+        config["version"] = f"{dirname}/run_{i}"
+        
         PINN = PhysicsInformedNN(config, verbose=True)
         try:
             training_log = PINN.train()
@@ -88,6 +98,9 @@ for params in grid_parameters(param_grid):
         loss_success = (np.linalg.norm(theta_true - theta_pred) / np.linalg.norm(theta_true)) < 0.15
         losses.append(loss)
         loss_successes.append(loss_success)
+        
+        pendulum_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
+        learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
     
     table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
     

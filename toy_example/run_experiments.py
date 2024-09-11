@@ -7,7 +7,8 @@ from model.neural_net import PhysicsInformedNN
 from model.plots import learning_curves, toy_example_dynamics
 import pandas as pd
 import numpy as np
-
+import os
+import re
 
 NUM_TRAINING_RUNS = 20
 
@@ -21,28 +22,28 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 config_base = load_config('configs/default.yaml')
 param_grid = {
     "T": [7.5, 10],
+    "y0": [0.001, 0.01, 0.1],
     "network_architectures": [
         (4, 50),
-        (8, 100)
     ],
     "activations": [
         "tanh",
     ],
     "learning_rates": [
         0.001,
-        # 0.01,
-        # 0.1
     ],
     "collocations": [
         1024, 
     ],
     "epochs": [
-        10000,
+        50000,
     ],
     "reg_epochs": [
         0,
+        0.25,
         0.5,
-        0.95,
+        0.75,
+        1.0
     ],
     "reg_coeff": [
       1  
@@ -56,6 +57,7 @@ results_list = []
 
 for params in grid_parameters(param_grid):
     print(params)
+    dirname = "model_weights/" + re.sub('\W+', '_', str(params))
     
     config = config_base
     config["activation"] = params["activations"]
@@ -69,13 +71,15 @@ for params in grid_parameters(param_grid):
     config["N_col"] = params["collocations"]
     config["T"] = params["T"]
     config["freq_save"] = 0
-    
+    config["y0"] =params["y0"]
     losses = []
     loss_successes = []
-    y0s = np.linspace(-0.999999, 0.999999, NUM_TRAINING_RUNS)
-    for i in range(NUM_TRAINING_RUNS):
     
-        config["y0"] = y0s[i]
+    for i in range(NUM_TRAINING_RUNS):
+        if not os.path.exists(f"logs/{dirname}/run_{i}"):
+            os.makedirs(f"logs/{dirname}/run_{i}")
+        config["version"] = f"{dirname}/run_{i}"
+        
         PINN = PhysicsInformedNN(config, verbose=True)
         try:
             training_log = PINN.train()
@@ -92,17 +96,11 @@ for params in grid_parameters(param_grid):
         loss_success = np.linalg.norm(y_true - y_pred) / np.linalg.norm(y_true) < 0.15
         losses.append(loss)
         loss_successes.append(loss_success)
-    # path_suffix = str(params).replace(".", "").replace(",", "").replace(":", "")
-    # learning_curves(training_log, f"figures/learning_curve{path_suffix}")
-    # toy_example_dynamics(PINN, f"figures/dynamics_{path_suffix}")
-    
+        
+        toy_example_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
+        learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
+               
     table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
-    
-    t_line = PINN.data.t_line()
-    # get reference solution (analytical)
-    y_true = PINN.data.reference(t_line)
-    # get PINN prediction
-    y_pred = PINN(t_line)
     
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)

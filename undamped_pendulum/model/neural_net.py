@@ -137,8 +137,11 @@ class PhysicsInformedNN(Sequential):
         omega = tape.gradient(theta, t)
         return omega
 
-    def save_weights(self, flag=''):        
-        weights_file = self.log_path.joinpath(f'model_weights/weights_{flag}.pkl')
+    def save_weights(self, path=""):        
+        if path == "":
+            weights_file = self.log_path.joinpath(f'model_weights/weights.pkl')
+        else:
+            weights_file = path
         with open(weights_file, 'wb') as pickle_file:
             pickle.dump(self.get_weights(), pickle_file)                    
 

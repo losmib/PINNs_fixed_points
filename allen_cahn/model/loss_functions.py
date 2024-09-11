@@ -50,7 +50,7 @@ class Loss():
     
     
     @tf.function
-    def allen_cahn(self, X_col):
+    def allen_cahn(self, X_col, reg_coeff):
         '''
         Physics loss function for the Allen-Cahn Equation
         '''    
@@ -60,9 +60,9 @@ class Loss():
             with tf.GradientTape() as tt:
                 tt.watch(X_col)
                 U = self.model(X_col)
-            U_d = tt.batch_jacobian(U, X_col) 
-        U_dd = t.batch_jacobian(U_d, X_col)
-        
+                U_d = tt.batch_jacobian(U, X_col) 
+            U_dd = t.batch_jacobian(U_d, X_col)
+            
         # get prediction and derivatives
         u = U[:, 0]   
         u_t = U_d[:, 0, 1]
@@ -71,4 +71,10 @@ class Loss():
         # Allen-Cahn equation
         res = u_t - 0.0001*u_xx + 5*u**3 - 5*u 
         loss = tf.reduce_mean(tf.square(res))
+        loss += reg_coeff * self.regularizer_derivative(u_t)
         return loss
+    
+    
+    def regularizer_derivative(self, u_t):
+        eps = 10**0
+        return tf.reduce_mean(tf.exp(-(u_t**2) / eps))
