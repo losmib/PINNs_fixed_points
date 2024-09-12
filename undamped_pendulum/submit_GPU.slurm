@@ -9,4 +9,4 @@
 
 echo "The reserved GPUs are: $CUDA_VISIBLE_DEVICES"
 
-python3 main.py
+python3 run_experiments.py
