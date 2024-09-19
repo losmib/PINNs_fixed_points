@@ -15,7 +15,7 @@ g: 9.81
 l: 1
 
 # Initial Angle (in degrees)
-theta0: 100
+theta0: 179
 # Initial Velocity
 omega0: 0
 
@@ -44,10 +44,10 @@ decay_rate: 1.0
 # Callback and Log settings
 #################################
 
-freq_log: 10
-freq_print: 100
+freq_log: 100
+freq_print: 1000
 keys_print: ['loss_P', 'loss_IC']
-freq_save: 100
+freq_save: 1000
 
 #################################
 # Regularization settings

@@ -21,7 +21,9 @@ class PhysicsInformedNN(Model):
     # settings read from config (set as class attributes)
     args = ['version', 'seed', 'y0',
             'N_hidden', 'N_neurons', 'activation',
-            'N_epochs', 'learning_rate', 'decay_rate', 'reg_epochs', 'reg_coeff', 'reg_decay', 'freq_save']
+            'N_epochs', 'learning_rate', 'decay_rate', 
+            'reg_epochs', 'regularization', 'reg_coeff', 'reg_decay', 
+            'freq_save']
     # default log Path
     log_path = Path('logs')
     
@@ -40,7 +42,7 @@ class PhysicsInformedNN(Model):
         # data loader for sampling data at each training epoch
         self.data = DataLoader(config) 
         # loss functions for IC and physics
-        self.loss = Loss(self)
+        self.loss = Loss(self, self.regularization)
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs

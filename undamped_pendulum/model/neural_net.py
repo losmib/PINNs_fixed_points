@@ -98,7 +98,7 @@ class PhysicsInformedNN(Sequential):
             
             if self.freq_save != 0:
                 if (epoch % self.freq_save) == 0:
-                    self.save_weights(flag=epoch)
+                    self.save_weights(path=f"{self.log_path}/model_weights/{epoch}")
 
         # save log
         self.callback.save_logs(self._path)

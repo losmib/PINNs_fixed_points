@@ -38,11 +38,13 @@ param_grid = {
     "epochs": [
         50000,
     ],
+    "regularization": [
+        "no_reg",
+        "unstable_fp",
+        "reg_derivative",
+        "reg_derivative_unstable_fp"
+    ],
     "reg_epochs": [
-        0,
-        0.25,
-        0.5,
-        0.75,
         1.0
     ],
     "reg_coeff": [
@@ -64,6 +66,7 @@ for params in grid_parameters(param_grid):
     config["N_hidden"] = params["network_architectures"][0]
     config["N_neurons"] = params["network_architectures"][1]
     config["N_epochs"] = params["epochs"]
+    config["regularization"] = params["regularization"]
     config["reg_epochs"] = params["reg_epochs"]
     config["reg_coeff"] = params["reg_coeff"]
     config["reg_decay"] = params["reg_decay"]
