@@ -4,13 +4,13 @@ from typing import Any, Dict, Iterable
 from sklearn.metrics import mean_squared_error
 from configs.config_loader import load_config
 from model.neural_net import PhysicsInformedNN
-from model.plots import learning_curves, toy_example_dynamics
+from model.plots import learning_curves, toy_example_dynamics, loss_over_tcoll
 import pandas as pd
 import numpy as np
 import os
 import re
 
-NUM_TRAINING_RUNS = 20
+NUM_TRAINING_RUNS = 10
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
@@ -21,7 +21,7 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [7.5, 10],
+    "T": [5, 7.5],
     "y0": [0.001, 0.01, 0.1],
     "network_architectures": [
         (4, 50),
@@ -36,7 +36,7 @@ param_grid = {
         1024, 
     ],
     "epochs": [
-        50000,
+        500,
     ],
     "regularization": [
         "no_reg",
@@ -45,7 +45,7 @@ param_grid = {
         "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
-        1.0
+        0.5
     ],
     "reg_coeff": [
       1  
@@ -59,7 +59,7 @@ results_list = []
 
 for params in grid_parameters(param_grid):
     print(params)
-    dirname = "model_weights/" + re.sub('\W+', '_', str(params))
+    dirname = "plots/" + re.sub('\W+', '_', str(params))
     
     config = config_base
     config["activation"] = params["activations"]
@@ -102,6 +102,7 @@ for params in grid_parameters(param_grid):
         
         toy_example_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
         learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
+        loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol")
                
     table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
     

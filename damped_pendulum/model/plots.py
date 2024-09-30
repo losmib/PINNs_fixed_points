@@ -92,3 +92,38 @@ def pendulum_dynamics(PINN, path=None):
         plt.show()
     else:
         plt.savefig(path)
+        
+
+def loss_over_tcoll(PINN, path=None):
+    """
+    Plots physics loss and its gradient over collocation points
+
+    :param PINN: 
+    :param path: , defaults to None
+    """
+    t_line, theta_true, omega_true = PINN.data.reference()
+    theta_pred = PINN(t_line)
+    omega_pred = PINN.omega(t_line)
+    
+    plt.subplot(3, 1, 1)
+    plt.plot(t_line, theta_pred, label="predictions")
+    plt.legend()
+    
+    with tf.GradientTape() as tape:
+        tape.watch(t_line)
+        loss, _, _ = PINN.loss.physics_loss(t_line)
+        loss_grad = tape.gradient(loss, t_line)
+        
+    plt.subplot(3, 1, 2)
+    plt.plot(t_line, loss, label="physics loss")
+    plt.legend()
+    
+    plt.subplot(3, 1, 3)
+    plt.plot(t_line, loss_grad, label="physics loss gradient")
+    
+    plt.legend()
+    plt.tight_layout()
+    if path is not None:
+        plt.savefig(path)
+    else:
+        plt.show()

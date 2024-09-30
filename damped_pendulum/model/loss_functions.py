@@ -45,7 +45,19 @@ class Loss():
         '''
         Determines physics loss of the pendulum's differential equation
         '''
-        # the tf-GradientTape function is used to retreive network derivatives
+        res_squared, omega, omega_t = self.physics_loss(t_col)
+       
+        loss = tf.reduce_mean(tf.square(res_squared))
+        loss += reg_coeff * self.regularizer_derivative(omega_t, omega, t_col)
+        return loss
+
+    def physics_loss(self, t_col):
+        """
+        Physics loss
+
+        :param t_col: colocation points
+        :return: loss, angular speed, angular acceleration
+        """
         with tf.GradientTape() as t:
             t.watch(t_col)
             with tf.GradientTape() as tt:
@@ -55,11 +67,8 @@ class Loss():
         omega_t = t.gradient(omega, t_col)
         
         res = omega_t + self.g/self.l * tf.math.sin(theta) + self.b * omega
-       
-        loss = tf.reduce_mean(tf.square(res))
-        loss += reg_coeff * self.regularizer_derivative(omega_t, omega, t_col)
-        return loss
-
+        return tf.square(res), omega, omega_t
+        
 
     def regularizer_fp(self, omega, theta, t_col):
         eps = 10**-2

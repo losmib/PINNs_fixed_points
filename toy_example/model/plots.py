@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import tensorflow as tf
 
 
 def learning_curves(log, path=None):
@@ -48,6 +49,39 @@ def toy_example_dynamics(PINN, path=None):
     ax.set_ylabel(r'$y$')
     ax.set_xlabel(r'$t$')
 
+    plt.tight_layout()
+    if path is not None:
+        plt.savefig(path)
+    else:
+        plt.show()
+        
+    
+def loss_over_tcoll(PINN, path=None):
+    """
+    Plots physics loss and its gradient over collocation points
+
+    :param PINN: 
+    :param path: , defaults to None
+    """
+    t_col = PINN.data.t_line()
+    
+    plt.subplot(3, 1, 1)
+    plt.plot(t_col, PINN(t_col), label="predictions")
+    plt.legend()
+    
+    with tf.GradientTape() as tape:
+        tape.watch(t_col)
+        loss, _, _ = PINN.loss.physics_loss(t_col)
+        loss_grad = tape.gradient(loss, t_col)
+        
+    plt.subplot(3, 1, 2)
+    plt.plot(t_col, loss, label="physics loss")
+    plt.legend()
+    
+    plt.subplot(3, 1, 3)
+    plt.plot(t_col, loss_grad, label="physics loss gradient")
+    
+    plt.legend()
     plt.tight_layout()
     if path is not None:
         plt.savefig(path)

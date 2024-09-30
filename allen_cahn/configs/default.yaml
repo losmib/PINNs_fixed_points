@@ -32,7 +32,7 @@ activation: 'tanh'
 # Optimizer Settings
 ######################
 
-N_epochs: 50000
+N_epochs: 300000
 learning_rate: 0.001
 decay_rate: 1.0
 
@@ -51,5 +51,5 @@ freq_save: 1000
 
 regularization: "no_reg"
 reg_coeff: 10000
-reg_decay: 0.9995
-reg_epochs: 0.85
+reg_decay: 0.9999
+reg_epochs: 0.5

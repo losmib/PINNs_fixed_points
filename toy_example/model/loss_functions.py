@@ -22,24 +22,27 @@ class Loss():
         '''
         Determines physics loss residuals of the differential equation
         '''
-        # the tf-GradientTape function is used to retreive network derivatives
+        res, y, y_t = self.physics_loss(t_col)
+        loss = tf.reduce_mean(res)
+                        
+        if self.regularizer is not None:
+            loss += reg_coeff * tf.reduce_max(res) * self.regularizer(t_col, y, y_t)
+            
+        return loss 
+        
+    def physics_loss(self, t_col):
         with tf.GradientTape(persistent=True) as tape:
             tape.watch(t_col)
             y = self.model(t_col)
         y_t = tape.gradient(y, t_col) 
             
         res = y_t - (y - y**3)
-        loss = tf.reduce_mean(tf.square(res))
-                        
-        if self.regularizer is not None:
-            loss += reg_coeff * self.regularizer(t_col=t_col, y=y, y_t=y_t)
-            
-        return loss 
-        
+        return tf.square(res), y, y_t
         
     def regularizer_unstable_fp(self, t_col, y, y_t):
         y = self.model(t_col)
-        reg_loss = tf.reduce_mean(tf.nn.relu(1 - 3 * y**2))
+        # reg_loss = tf.reduce_mean(tf.nn.relu(1 - 3 * y**2))
+        reg_loss = tf.reduce_mean(tf.exp(-y**2))
         return reg_loss
     
     
