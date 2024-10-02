@@ -20,6 +20,7 @@ def learning_curves(log, path=None):
     plt.tight_layout()
     if path is not None:
         plt.savefig(path)
+        plt.close()
     else:
         plt.show()
     
@@ -52,6 +53,7 @@ def toy_example_dynamics(PINN, path=None):
     plt.tight_layout()
     if path is not None:
         plt.savefig(path)
+        plt.close()
     else:
         plt.show()
         
@@ -65,6 +67,7 @@ def loss_over_tcoll(PINN, path=None):
     """
     t_col = PINN.data.t_line()
     
+    plt.figure()
     plt.subplot(3, 1, 1)
     plt.plot(t_col, PINN(t_col), label="predictions")
     plt.legend()
@@ -85,6 +88,7 @@ def loss_over_tcoll(PINN, path=None):
     plt.tight_layout()
     if path is not None:
         plt.savefig(path)
+        plt.close()
     else:
         plt.show()
         
@@ -92,6 +96,7 @@ def loss_over_tcoll(PINN, path=None):
 def plot_regularization(PINN, path=None):
     t_col = PINN.data.t_line()
     
+    plt.figure()
     plt.subplot(3, 1, 1)
     plt.plot(t_col, PINN(t_col), label="predictions")
     plt.legend()
@@ -113,5 +118,6 @@ def plot_regularization(PINN, path=None):
     plt.tight_layout()
     if path is not None:
         plt.savefig(path)
+        plt.close()
     else:
         plt.show()
