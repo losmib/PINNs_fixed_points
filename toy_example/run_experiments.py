@@ -4,7 +4,7 @@ from typing import Any, Dict, Iterable
 from sklearn.metrics import mean_squared_error
 from configs.config_loader import load_config
 from model.neural_net import PhysicsInformedNN
-from model.plots import learning_curves, toy_example_dynamics, loss_over_tcoll
+from model.plots import learning_curves, toy_example_dynamics, loss_over_tcoll, plot_regularization
 import pandas as pd
 import numpy as np
 import os
@@ -103,6 +103,7 @@ for params in grid_parameters(param_grid):
         toy_example_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
         learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
         loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol")
+        plot_regularization(PINN, path=f"logs/{dirname}/run_{i}/regularization_plot")
                
     table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
     
