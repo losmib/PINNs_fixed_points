@@ -87,3 +87,28 @@ def loss_over_tcoll(PINN, path=None):
         plt.savefig(path)
     else:
         plt.show()
+        
+
+def plot_regularization(PINN, path=None):
+    t_col = PINN.data.t_line()
+    
+    plt.subplot(3, 1, 1)
+    plt.plot(t_col, PINN(t_col), label="predictions")
+    plt.legend()
+    
+    physics_loss, y, y_t = PINN.loss.physics_loss(t_col)
+    reg_loss = PINN.loss.regularizer(t_col, y, y_t)
+        
+    plt.subplot(3, 1, 2)
+    plt.plot(t_col, reg_loss, label="regularization loss")
+    plt.legend()
+    
+    plt.subplot(3, 1, 3)
+    plt.plot(t_col, tf.exp(-y_t**2), label="rbf distance to fixed point")
+    
+    plt.legend()
+    plt.tight_layout()
+    if path is not None:
+        plt.savefig(path)
+    else:
+        plt.show()
