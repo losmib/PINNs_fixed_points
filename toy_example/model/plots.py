@@ -97,7 +97,10 @@ def plot_regularization(PINN, path=None):
     plt.legend()
     
     physics_loss, y, y_t = PINN.loss.physics_loss(t_col)
-    reg_loss = PINN.loss.regularizer(t_col, y, y_t)
+    
+    reg_loss = tf.zeros_like(t_col)
+    if PINN.loss.regularizer is not None:
+        reg_loss = PINN.loss.regularizer(t_col, y, y_t)
         
     plt.subplot(3, 1, 2)
     plt.plot(t_col, reg_loss, label="regularization loss")
