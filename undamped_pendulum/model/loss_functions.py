@@ -47,7 +47,7 @@ class Loss():
         '''
         res_squared, omega, omega_t = self.physics_loss(t_col)
        
-        loss = tf.reduce_mean(tf.square(res_squared))
+        loss = tf.reduce_mean(res_squared)
         loss += reg_coeff * self.regularizer_derivative(omega_t, omega, t_col)
         return loss
 

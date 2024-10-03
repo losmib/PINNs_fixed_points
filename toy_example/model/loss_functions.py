@@ -40,18 +40,19 @@ class Loss():
         return tf.square(res), y, y_t
         
     def regularizer_unstable_fp(self, t_col, y, y_t):
+        a = 1 - 3 * self.model.y0**2 
         y = self.model(t_col)
-        # reg_loss = tf.reduce_mean(tf.nn.relu(1 - 3 * y**2))
-        reg_loss = tf.exp(-y**2)
+        reg_loss = tf.reduce_mean(tf.nn.relu(1 - 3 * y**2 - a))
+        # reg_loss = tf.exp(-y**2)
         return reg_loss
     
     def regularizer_fp(self, t_col, y, y_t):
         return tf.exp(-((y - 1)**2 + y**2 + (y + 1)**2))
     
     def regularizer_derivative(self, t_col, y, y_t):
-        eps = 1
+        eps = 0.01
         return tf.exp(-(y_t**2) / eps)
     
     def regularizer_derivative_unstable_fp(self, t_col, y, y_t):
-        eps = 1
-        return tf.exp(-(y_t**2) / eps) * tf.nn.relu(1 - 3 * y**2)
+        eps = 0.01
+        return tf.exp(-(y_t**2) / eps) * self.regularizer_unstable_fp(t_col, y, y_t)

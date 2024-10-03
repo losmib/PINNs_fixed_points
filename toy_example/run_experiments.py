@@ -48,7 +48,7 @@ param_grid = {
         1
     ],
     "reg_coeff": [
-      0.01
+      1, 10
     ],
     "reg_decay": [
         1
