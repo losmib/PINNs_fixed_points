@@ -1,0 +1,123 @@
+The reserved GPUs are: 2
+/var/spool/slurmd/job04190/slurm_script: line 11: /home/mbabic/home/mbabic/PINNs_fixed_points/env/bin/activate: No such file or directory
+2024-10-02 14:51:09.595524: I tensorflow/core/util/port.cc:110] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2024-10-02 14:51:09.598071: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+2024-10-02 14:51:09.655117: I tensorflow/tsl/cuda/cudart_stub.cc:28] Could not find cuda drivers on your machine, GPU will not be used.
+2024-10-02 14:51:09.655678: I tensorflow/core/platform/cpu_feature_guard.cc:182] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: AVX2 AVX512F AVX512_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+2024-10-02 14:51:11.524084: W tensorflow/compiler/tf2tensorrt/utils/py_utils.cc:38] TF-TRT Warning: Could not find TensorRT
+2024-10-02 14:51:15.383072: W tensorflow/core/common_runtime/gpu/gpu_device.cc:1960] Cannot dlopen some GPU libraries. Please make sure the missing libraries mentioned above are installed properly if you would like to use GPU. Follow the guide at https://www.tensorflow.org/install/gpu for how to download and setup the required libraries for your platform.
+Skipping registering GPU devices...
+version : default
+seed : 1
+y0 : 0.1
+T : 5
+N_col : 1024
+N_hidden : 4
+N_neurons : 50
+activation : swish
+N_epochs : 20000
+learning_rate : 0.001
+decay_rate : 1.0
+freq_log : 100
+freq_print : 1000
+keys_print : ['loss']
+freq_save : 100
+regularization : reg_derivative_unstable_fp
+reg_coeff : 0
+reg_decay : 1
+reg_epochs : 1
+{'T': 7.5, 'y0': 0.001, 'network_architectures': (4, 50), 'activations': 'tanh', 'learning_rates': 0.001, 'collocations': 1024, 'epochs': 50000, 'regularization': 'no_reg', 'reg_epochs': 1, 'reg_coeff': 0.01, 'reg_decay': 1}
+Model: "nested_PINN"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense (Dense)               (None, 50)                100       
+                                                                 
+ dense_1 (Dense)             (None, 50)                2550      
+                                                                 
+ dense_2 (Dense)             (None, 50)                2550      
+                                                                 
+ dense_3 (Dense)             (None, 50)                2550      
+                                                                 
+ dense_4 (Dense)             (None, 1)                 51        
+                                                                 
+=================================================================
+Total params: 7801 (30.47 KB)
+Trainable params: 7801 (30.47 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+*** PINN build & initialized ***
+Training started...
+    0/50000 | loss: 4.55e-03
+ 1000/50000 | loss: 2.73e-07
+ 2000/50000 | loss: 6.93e-07
+ 3000/50000 | loss: 1.22e-04
+ 4000/50000 | loss: 2.26e-06
+ 5000/50000 | loss: 1.03e-06
+ 6000/50000 | loss: 1.22e-06
+ 7000/50000 | loss: 3.04e-07
+ 8000/50000 | loss: 3.31e-06
+ 9000/50000 | loss: 1.20e-04
+10000/50000 | loss: 2.30e-07
+11000/50000 | loss: 2.73e-07
+12000/50000 | loss: 2.98e-07
+13000/50000 | loss: 2.60e-07
+14000/50000 | loss: 3.62e-06
+15000/50000 | loss: 4.44e-07
+16000/50000 | loss: 3.80e-07
+17000/50000 | loss: 3.02e-07
+18000/50000 | loss: 3.13e-07
+19000/50000 | loss: 3.52e-07
+20000/50000 | loss: 3.91e-07
+21000/50000 | loss: 3.48e-07
+22000/50000 | loss: 3.18e-07
+23000/50000 | loss: 4.89e-07
+24000/50000 | loss: 3.61e-07
+25000/50000 | loss: 3.01e-07
+26000/50000 | loss: 3.24e-07
+27000/50000 | loss: 4.00e-07
+28000/50000 | loss: 2.73e-07
+29000/50000 | loss: 3.02e-07
+30000/50000 | loss: 2.72e-07
+31000/50000 | loss: 3.19e-07
+32000/50000 | loss: 2.97e-07
+33000/50000 | loss: 6.66e-05
+34000/50000 | loss: 3.30e-07
+35000/50000 | loss: 2.65e-07
+36000/50000 | loss: 3.00e-07
+37000/50000 | loss: 2.73e-07
+38000/50000 | loss: 2.47e-07
+39000/50000 | loss: 2.93e-07
+40000/50000 | loss: 2.69e-07
+41000/50000 | loss: 3.03e-07
+42000/50000 | loss: 2.75e-07
+43000/50000 | loss: 2.84e-07
+44000/50000 | loss: 3.23e-07
+45000/50000 | loss: 4.07e-07
+46000/50000 | loss: 4.11e-07
+47000/50000 | loss: 2.63e-07
+48000/50000 | loss: 2.67e-07
+49000/50000 | loss: 2.37e-07
+*** logs saved ***
+### Training finished ###
+Model: "nested_PINN"
+_________________________________________________________________
+ Layer (type)                Output Shape              Param #   
+=================================================================
+ dense_5 (Dense)             (None, 50)                100       
+                                                                 
+ dense_6 (Dense)             (None, 50)                2550      
+                                                                 
+ dense_7 (Dense)             (None, 50)                2550      
+                                                                 
+ dense_8 (Dense)             (None, 50)                2550      
+                                                                 
+ dense_9 (Dense)             (None, 1)                 51        
+                                                                 
+=================================================================
+Total params: 7801 (30.47 KB)
+Trainable params: 7801 (30.47 KB)
+Non-trainable params: 0 (0.00 Byte)
+_________________________________________________________________
+slurmstepd-kcs-cc-202: error: *** JOB 4190 ON kcs-cc-202 CANCELLED AT 2024-10-02T14:55:15 ***
