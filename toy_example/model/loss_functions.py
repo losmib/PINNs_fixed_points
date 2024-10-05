@@ -23,8 +23,8 @@ class Loss():
         Determines physics loss residuals of the differential equation
         '''
         res, y, y_t = self.physics_loss(t_col)
-        loss = tf.reduce_mean(res)
-                        
+        loss = tf.reduce_mean(res) 
+        # reg_coeff = (tf.reduce_sum((res)**2)) / (tf.reduce_sum(res))
         if self.regularizer is not None:
             loss += reg_coeff * tf.reduce_mean(self.regularizer(t_col, y, y_t))
             
@@ -42,8 +42,7 @@ class Loss():
     def regularizer_unstable_fp(self, t_col, y, y_t):
         a = 1 - 3 * self.model.y0**2 
         y = self.model(t_col)
-        reg_loss = tf.reduce_mean(tf.nn.relu(1 - 3 * y**2 - a))
-        # reg_loss = tf.exp(-y**2)
+        reg_loss = tf.nn.relu(1 - 3 * y**2 - a)
         return reg_loss
     
     def regularizer_fp(self, t_col, y, y_t):

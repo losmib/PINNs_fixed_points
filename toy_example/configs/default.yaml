@@ -12,7 +12,7 @@ seed: 1               # data sampling and weights initialization
 # Initial Condition
 y0: 0.1
 # Simulation Length
-T: 5
+T: 10
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -32,7 +32,7 @@ activation: 'swish'
 # Training settings
 #################################
 
-N_epochs: 20000
+N_epochs: 50000
 learning_rate: 0.001
 decay_rate: 1.0
 
@@ -49,7 +49,7 @@ freq_save: 100
 # Regularization settings
 #################################
 
-regularization: "reg_derivative_unstable_fp"
-reg_coeff: 0
+regularization: "reg_derivative"
+reg_coeff: 1
 reg_decay: 1
 reg_epochs: 1
