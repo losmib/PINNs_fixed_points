@@ -24,7 +24,7 @@ class Loss():
         '''
         res, y, y_t = self.physics_loss(t_col)
         loss = tf.reduce_mean(res) 
-        # reg_coeff = (tf.reduce_sum((res)**2)) / (tf.reduce_sum(res))
+        # reg_coeff = tf.reduce_sum(res**4)**0.25 
         if self.regularizer is not None:
             loss += reg_coeff * tf.reduce_mean(self.regularizer(t_col, y, y_t))
             
@@ -40,7 +40,7 @@ class Loss():
         return tf.square(res), y, y_t
         
     def regularizer_unstable_fp(self, t_col, y, y_t):
-        a = 1 - 3 * self.model.y0**2 
+        a = 0# 1 - 3 * self.model.y0**2 
         y = self.model(t_col)
         reg_loss = tf.nn.relu(1 - 3 * y**2 - a)
         return reg_loss
