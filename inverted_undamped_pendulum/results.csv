@@ -1,0 +1,5 @@
+,T,y0,network_architectures,activations,learning_rates,collocations,epochs,reg_epochs,reg_coeff,reg_decay,regularization,mean_loss,loss_successes_percent
+0,10,25,"(4, 50)",tanh,0.001,1024,500,1,1,1,no_reg,10.424703,0.0
+0,10,25,"(4, 50)",tanh,0.001,1024,500,1,1,1,unstable_fp,10.42539,0.0
+0,10,25,"(4, 50)",tanh,0.001,1024,500,1,1,1,reg_derivative,10.424306,0.0
+0,10,25,"(4, 50)",tanh,0.001,1024,500,1,1,1,reg_derivative_unstable_fp,10.426398,0.0

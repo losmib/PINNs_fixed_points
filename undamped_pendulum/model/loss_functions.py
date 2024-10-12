@@ -9,7 +9,7 @@ class Loss():
     args = ['g', 'l', 'theta0', 'omega0']
     
     
-    def __init__(self, model, config):
+    def __init__(self, model, config, regularization):
         
         # load and set class attributes from config
         for arg in self.args:
@@ -22,6 +22,14 @@ class Loss():
         
         # save neural network (weights are updated during training)
         self.model = model
+        
+        regularization_map = {
+            "no_reg": None,
+            "unstable_fp": self.regularizer_unstable_fp,
+            "reg_derivative": self.regularizer_derivative,
+            "reg_derivative_unstable_fp": self.regularizer_derivative_unstable_fp
+        }
+        self.regularizer = regularization_map[regularization]
         
         
     def initial_condition(self):
@@ -48,7 +56,8 @@ class Loss():
         res_squared, omega, omega_t = self.physics_loss(t_col)
        
         loss = tf.reduce_mean(res_squared)
-        loss += reg_coeff * self.regularizer_derivative(omega_t, omega, t_col)
+        if self.regularizer is not None:
+            loss += reg_coeff * tf.reduce_mean(self.regularizer(omega_t, omega, t_col))
         return loss
 
     def physics_loss(self, t_col):
@@ -68,15 +77,16 @@ class Loss():
         res = omega_t + self.g/self.l * tf.math.sin(theta)
         return tf.square(res), omega, omega_t
 
-    def regularizer_fp(self, omega, theta, t_col):
-        eps = 10**-2
-        loss = tf.reduce_mean(tf.exp(-(tf.math.sin(theta)**2 + omega**2) / eps))
-
-        # loss = -tf.sqrt(tf.reduce_sum(tf.math.sin(theta)**2) + tf.reduce_sum(omega_t**2))
+    def regularizer_unstable_fp(self, omega, theta, t_col):
+        loss = tf.nn.relu(-tf.cos(theta) * self.g / self.l)
         return loss
     
     def regularizer_derivative(self, omega_t, omega, t_col):
-        eps = 10**0
-        loss = tf.reduce_mean(tf.exp(-(omega_t**2 + omega**2) / eps))
-        
+        eps = 10**-2
+        loss = tf.exp(-(omega_t**2 + omega**2) / eps)
         return loss
+    
+    def regularizer_derivative_unstable_fp(self, omega_t, omega, t_col):
+        eps = 0.01
+        return self.regularizer_derivative(omega_t, omega, t_col) * \
+            self.regularizer_derivative_unstable_fp(omega_t, omega, t_col)

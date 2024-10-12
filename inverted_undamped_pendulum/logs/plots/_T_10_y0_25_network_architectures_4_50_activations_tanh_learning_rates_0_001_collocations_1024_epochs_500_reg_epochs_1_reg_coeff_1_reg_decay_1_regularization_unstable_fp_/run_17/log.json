@@ -1,0 +1,50 @@
+{
+  "version": "plots/_T_10_y0_25_network_architectures_4_50_activations_tanh_learning_rates_0_001_collocations_1024_epochs_500_reg_epochs_1_reg_coeff_1_reg_decay_1_regularization_unstable_fp_/run_17",
+  "seed": 1,
+  "g": 9.81,
+  "l": 1,
+  "theta0": 100,
+  "omega0": 0,
+  "T": 10,
+  "N_col": 1024,
+  "N_hidden": 4,
+  "N_neurons": 50,
+  "activation": "tanh",
+  "N_epochs": 500,
+  "learning_rate": 0.001,
+  "decay_rate": 1.0,
+  "freq_log": 100,
+  "freq_print": 1000,
+  "keys_print": [
+    "loss_P",
+    "loss_IC"
+  ],
+  "freq_save": 0,
+  "regularizer": "unstable_fp",
+  "reg_coeff": 1,
+  "reg_decay": 1,
+  "reg_epochs": 1,
+  "regularization": "unstable_fp",
+  "y0": 25,
+  "loss_train": [
+    37.36834716796875,
+    11.852505683898926,
+    11.700411796569824,
+    11.754432678222656,
+    11.69498348236084
+  ],
+  "loss_P": [
+    34.2347297668457,
+    9.603525161743164,
+    9.65589714050293,
+    9.748856544494629,
+    9.693079948425293
+  ],
+  "loss_IC": [
+    3.1336166858673096,
+    2.248980760574341,
+    2.0445144176483154,
+    2.005575656890869,
+    2.0019032955169678
+  ]
+}
