@@ -40,15 +40,6 @@ param_grid = {
     "epochs": [
         50000,
     ],
-    "reg_epochs": [
-        1
-    ],
-    "reg_coeff": [
-      0.0001  
-    ],
-    "reg_decay": [
-        1
-    ],
     "regularization": [
         "no_reg",
         "unstable_fp",
@@ -88,7 +79,9 @@ for params in grid_parameters(param_grid):
     config["y0"] = params["y0"]    
     losses = []
     loss_successes = []
-    
+    if config["regularization"] is "no_reg":
+        if config["reg_coeff"] > 1:
+            continue
     for i in range(NUM_TRAINING_RUNS):
         if not os.path.exists(f"logs/{dirname}/run_{i}"):
             os.makedirs(f"logs/{dirname}/run_{i}")
