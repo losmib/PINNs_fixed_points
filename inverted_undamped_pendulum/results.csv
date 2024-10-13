@@ -1,5 +1,10 @@
 ,T,y0,network_architectures,activations,learning_rates,collocations,epochs,reg_epochs,reg_coeff,reg_decay,regularization,mean_loss,loss_successes_percent
-0,10,25,"(4, 50)",tanh,0.001,1024,500,1,1,1,no_reg,10.424703,0.0
-0,10,25,"(4, 50)",tanh,0.001,1024,500,1,1,1,unstable_fp,10.42539,0.0
-0,10,25,"(4, 50)",tanh,0.001,1024,500,1,1,1,reg_derivative,10.424306,0.0
-0,10,25,"(4, 50)",tanh,0.001,1024,500,1,1,1,reg_derivative_unstable_fp,10.426398,0.0
+0,7.5,5,"(4, 50)",tanh,0.001,1024,50000,1,1,1,no_reg,10.224894,0.0
+0,7.5,5,"(4, 50)",tanh,0.001,1024,50000,1,1,1,unstable_fp,10.223728,0.0
+0,7.5,5,"(4, 50)",tanh,0.001,1024,50000,1,1,1,reg_derivative,10.2268505,0.0
+0,7.5,5,"(4, 50)",tanh,0.001,1024,50000,1,1,1,reg_derivative_unstable_fp,10.224756,0.0
+0,7.5,5,"(4, 50)",tanh,0.001,1024,50000,1,10,1,no_reg,0.0846413,1.0
+0,7.5,5,"(4, 50)",tanh,0.001,1024,50000,1,10,1,unstable_fp,0.085511774,1.0
+0,7.5,5,"(4, 50)",tanh,0.001,1024,50000,1,10,1,reg_derivative,0.07557338,1.0
+0,7.5,5,"(4, 50)",tanh,0.001,1024,50000,1,10,1,reg_derivative_unstable_fp,0.08780615,1.0
+0,7.5,5,"(4, 50)",tanh,0.001,1024,50000,1,100000,1,no_reg,8.483879,0.1
