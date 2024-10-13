@@ -50,6 +50,6 @@ freq_save: 100
 #################################
 
 regularization: "reg_derivative_unstable_fp"
-reg_coeff: 1
+reg_coeff: 100000
 reg_decay: 1
-reg_epochs: 0.6
+reg_epochs: 1
