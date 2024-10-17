@@ -20,11 +20,10 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
             yield dict(zip(parameters.keys(), params))
             
 
-
 config_base = load_config('configs/default.yaml')
 param_grid = {
     "T": [7.5, 10, 15],
-    "y0": [5, 25, 100],
+    "theta0": [5, 25, 100],
     "network_architectures": [
         (4, 50),
     ],
@@ -47,15 +46,16 @@ param_grid = {
         "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
-        1
+        1, 0.9
     ],
     "reg_coeff": [
       1, 10, 100000
     ],
     "reg_decay": [
-        1
+        None, "linear"
     ]
 }
+
 
 results_list = []
 
@@ -76,7 +76,7 @@ for params in grid_parameters(param_grid):
     config["N_col"] = params["collocations"]
     config["T"] = params["T"]
     config["freq_save"] = 0
-    config["y0"] = params["y0"]    
+    config["theta0"] = params["theta0"]    
     losses = []
     loss_successes = []
     if config["regularization"] is "no_reg":

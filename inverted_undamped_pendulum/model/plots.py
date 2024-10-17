@@ -1,6 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import seaborn as sns
 
 
 def learning_curves(log, path=None):
@@ -163,3 +164,9 @@ def plot_regularization(PINN, path=None):
         plt.close()
     else:
         plt.show()
+
+
+def plot_success_rates(results_table):
+    results_table["y0 T"] = results_table["y0"].astype(str) + " " + results_table["T"].astype(str) + " " + results_table["reg_coeff"].astype("str")
+    sns.barplot(results_table, x="y0 T", y="loss_successes_percent", hue="regularization")
+    plt.show()

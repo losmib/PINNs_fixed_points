@@ -81,8 +81,8 @@ class PhysicsInformedNN(Sequential):
         self.optimizer = Adam(learning_rate=lr_schedule)    
         print("Training started...")
 
-        reg_coeff = tf.constant(self.reg_coeff, dtype=tf.float32)
-        reg_decay = tf.constant(self.reg_decay, dtype=tf.float32)
+        reg_coeff = tf.Variable(self.reg_coeff, dtype=tf.float32)
+        # reg_decay = tf.constant(self.reg_decay, dtype=tf.float32)
         
         for epoch in range(self.N_epochs):
 
@@ -94,7 +94,8 @@ class PhysicsInformedNN(Sequential):
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
             
-            reg_coeff *= reg_decay
+            if self.reg_decay == "linear":
+                reg_coeff = self.reg_coeff * (1 - epoch / self.reg_epochs)
             
             if self.freq_save != 0:
                 if (epoch % self.freq_save) == 0:

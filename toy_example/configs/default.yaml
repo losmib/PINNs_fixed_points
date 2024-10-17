@@ -10,9 +10,9 @@ seed: 1               # data sampling and weights initialization
 #################################
 
 # Initial Condition
-y0: 0.001
+y0: 0.01
 # Simulation Length
-T: 10
+T: 8
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -24,15 +24,15 @@ N_col: 1024
 # PhysicsInformedNN settings
 #################################
 
-N_hidden: 4
-N_neurons: 50
+N_hidden: 2
+N_neurons: 20
 activation: 'swish'
 
 #################################
 # Training settings
 #################################
 
-N_epochs: 50000
+N_epochs: 10000
 learning_rate: 0.001
 decay_rate: 1.0
 
@@ -52,4 +52,4 @@ freq_save: 100
 regularization: "reg_derivative_unstable_fp"
 reg_coeff: 1
 reg_decay: 1
-reg_epochs: 0.6
+reg_epochs: 1

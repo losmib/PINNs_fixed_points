@@ -96,7 +96,9 @@ class PhysicsInformedNN(Model):
             decay_rate=self.decay_rate)                                    
         # Adam optimizer with default settings for momentum
         self.optimizer = Adam(learning_rate=lr_schedule)   
-                      
+        
+        reg_coeff = tf.Variable(self.reg_coeff, dtype=tf.float32)
+
         print("Training started...")
         for epoch in range(self.N_epochs):
             
@@ -106,11 +108,12 @@ class PhysicsInformedNN(Model):
             if epoch > self.reg_epochs:
                 self.reg_coeff = 0
                 
-            train_logs = self.train_step(t_col, self.reg_coeff)
+            train_logs = self.train_step(t_col, reg_coeff)
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
             
-            self.reg_coeff *= self.reg_decay
+            if self.reg_decay == "linear":
+                reg_coeff = self.reg_coeff * (1 - epoch / self.reg_epochs)
             
             if self.freq_save != 0:
                 if (epoch % self.freq_save) == 0:
