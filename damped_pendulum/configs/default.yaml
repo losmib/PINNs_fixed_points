@@ -1,0 +1,60 @@
+#################################
+# Version & seed settings
+#################################
+
+version: "default"    # is used for log-folder name
+seed: 1               # data sampling and weights initialization
+
+#################################
+# System settings
+#################################
+
+# Gravitational Acceleration
+g: 9.81
+# Length of Pendulum
+l: 1
+# Damping coefficient
+b: 0.3
+
+# Initial Angle (in degrees)
+theta0: 100
+# Initial Velocity
+omega0: 0
+
+# Simulation Length
+T: 15
+
+#################################
+# Data settings (sampled anewly at each epoch)
+#################################
+
+N_col: 1024
+
+#################################
+# PhysicsInformedNN settings
+#################################
+
+N_hidden: 4
+N_neurons: 50
+activation: 'tanh'
+
+N_epochs: 50000
+learning_rate: 0.001
+decay_rate: 1.0
+
+#################################
+# Callback and Log settings
+#################################
+
+freq_log: 100
+freq_print: 1000
+keys_print: ['loss_P', 'loss_IC']
+freq_save: 100
+
+#################################
+# Regularization settings
+#################################
+
+reg_coeff: 0
+reg_decay: 0
+reg_epochs: 0
