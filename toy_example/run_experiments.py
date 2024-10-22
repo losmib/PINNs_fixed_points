@@ -45,13 +45,13 @@ param_grid = {
         "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
-        1
+        0.85
     ],
     "reg_coeff": [
-      100000
+      1, 100000
     ],
     "reg_decay": [
-        1
+        "linear", None
     ]
 }
 

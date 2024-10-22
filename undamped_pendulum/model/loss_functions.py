@@ -53,11 +53,11 @@ class Loss():
         '''
         Determines physics loss of the pendulum's differential equation
         '''
-        res_squared, omega, omega_t = self.physics_loss(t_col)
+        res_squared, theta, omega, omega_t = self.physics_loss(t_col)
        
         loss = tf.reduce_mean(res_squared)
         if self.regularizer is not None:
-            loss += reg_coeff * tf.reduce_mean(self.regularizer(omega_t, omega, t_col))
+            loss += reg_coeff * tf.reduce_mean(self.regularizer(omega_t, omega, theta, t_col))
         return loss
 
     def physics_loss(self, t_col):
@@ -75,18 +75,18 @@ class Loss():
         omega_t = t.gradient(omega, t_col)
         
         res = omega_t + self.g/self.l * tf.math.sin(theta)
-        return tf.square(res), omega, omega_t
+        return tf.square(res), theta, omega, omega_t
 
-    def regularizer_unstable_fp(self, omega, theta, t_col):
+    def regularizer_unstable_fp(self, omega_t, omega, theta, t_col):
         loss = tf.nn.relu(-tf.cos(theta) * self.g / self.l)
         return loss
     
-    def regularizer_derivative(self, omega_t, omega, t_col):
+    def regularizer_derivative(self, omega_t, omega, theta, t_col):
         eps = 10**-2
         loss = tf.exp(-(omega_t**2 + omega**2) / eps)
         return loss
     
-    def regularizer_derivative_unstable_fp(self, omega_t, omega, t_col):
+    def regularizer_derivative_unstable_fp(self, omega_t, omega, theta, t_col):
         eps = 0.01
         return self.regularizer_derivative(omega_t, omega, t_col) * \
             self.regularizer_derivative_unstable_fp(omega_t, omega, t_col)

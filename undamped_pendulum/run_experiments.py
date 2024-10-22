@@ -24,7 +24,7 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 config_base = load_config('configs/default.yaml')
 param_grid = {
     "T": [10, 15, 20],
-    "y0": [25, 100, 175],
+    "theta0": [25, 100, 175],
     "network_architectures": [
         (4, 50),
     ],
@@ -69,7 +69,7 @@ for params in grid_parameters(param_grid):
     config["N_col"] = params["collocations"]
     config["T"] = params["T"]
     config["freq_save"] = 0
-    config["y0"] = params["y0"]    
+    config["theta0"] = params["theta0"]    
     losses = []
     loss_successes = []
     
