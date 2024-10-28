@@ -19,7 +19,7 @@ class PhysicsInformedNN(Model):
     with hard constraints for the initial condition
     '''       
     # settings read from config (set as class attributes)
-    args = ['version', 'seed', 'y0',
+    args = ['version', 'seed', 'y0', 'T',
             'N_hidden', 'N_neurons', 'activation',
             'N_epochs', 'learning_rate', 'decay_rate', 
             'reg_epochs', 'regularization', 'reg_coeff', 'reg_decay', 
@@ -81,6 +81,7 @@ class PhysicsInformedNN(Model):
         implementing hard constraints (initial condition)
         '''   
         # hyperbolic tangent distance function
+        # t = t / self.T
         return self.y0 + tf.math.tanh(t) * self.neural_net(t)
     
     

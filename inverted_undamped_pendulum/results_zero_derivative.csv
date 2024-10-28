@@ -1,4 +1,4 @@
-,T,y0,network_architectures,activations,learning_rates,collocations,epochs,reg_epochs,reg_coeff,reg_decay,mean_loss,loss_successes_percent
+,T,theta0,network_architectures,activations,learning_rates,collocations,epochs,reg_epochs,reg_coeff,reg_decay,mean_loss,loss_successes_percent
 0,10,25,"(4, 50)",tanh,0.001,1024,50000,0.0,1,1,0.007029795,0.9
 0,10,25,"(4, 50)",tanh,0.001,1024,50000,0.5,1,1,0.0008305231,1.0
 0,10,25,"(4, 50)",tanh,0.001,1024,50000,0.95,1,1,0.0014997905,1.0
