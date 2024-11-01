@@ -13,16 +13,16 @@ seed: 1               # data sampling and weights initialization
 g: 9.81
 # Length of Pendulum
 l: 1
-# Damping coefficient
-b: 0.2
+# damping
+b: 0.3
 
 # Initial Angle (in degrees)
 theta0: 100
 # Initial Velocity
-omega0: 0
+omega0: 500
 
 # Simulation Length
-T: 15
+T: 10
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -38,7 +38,7 @@ N_hidden: 4
 N_neurons: 50
 activation: 'tanh'
 
-N_epochs: 50000
+N_epochs: 500
 learning_rate: 0.001
 decay_rate: 1.0
 
@@ -49,12 +49,12 @@ decay_rate: 1.0
 freq_log: 100
 freq_print: 1000
 keys_print: ['loss_P', 'loss_IC']
-freq_save: 100
+freq_save: 1000
 
 #################################
 # Regularization settings
 #################################
-
+regularizer: "unstable_fp"
 reg_coeff: 0
-reg_decay: 0
-reg_epochs: 0
+reg_decay: 1
+reg_epochs: 1

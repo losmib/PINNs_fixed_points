@@ -1,6 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
+import pandas as pd
+import seaborn as sns
 
 
 def learning_curves(log, path=None):
@@ -121,3 +123,13 @@ def plot_regularization(PINN, path=None):
         plt.close()
     else:
         plt.show()
+        
+    
+def results_heatmap(results):
+    results["reg_decay"].fillna("no decay", inplace=True)
+    table = pd.pivot_table(results, values="loss_successes_percent", 
+                           index=["regularization", "reg_epochs", "reg_coeff", "reg_decay"],
+                           columns=["y0", "T"],
+                           aggfunc="mean")
+    sns.heatmap(table)
+    plt.show()
