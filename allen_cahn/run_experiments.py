@@ -4,7 +4,7 @@ from typing import Any, Dict, Iterable
 from sklearn.metrics import mean_squared_error
 from configs.config_loader import load_config
 from model.neural_net import PhysicsInformedNN
-from model.plots import learning_curves, allen_cahn_mesh
+from model.plots import learning_curves, allen_cahn_mesh, allen_cahn_xcut
 import pandas as pd
 import numpy as np
 
@@ -12,7 +12,7 @@ import re
 import os
 
 
-NUM_TRAINING_RUNS = 20
+NUM_TRAINING_RUNS = 10
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
@@ -45,10 +45,10 @@ param_grid = {
         1.0
     ],
     "reg_coeff": [
-      1  
+      1, 1000, 100000
     ],
     "reg_decay": [
-        1
+        "linear"
     ]
 }
 
@@ -56,7 +56,7 @@ results_list = []
 
 for params in grid_parameters(param_grid):
     print(params)
-    dirname = "model_weights/" + re.sub('\W+', '_', str(params))
+    dirname = "plots/" + re.sub('\W+', '_', str(params))
 
     config = config_base
     config["activation"] = params["activations"]
@@ -82,16 +82,16 @@ for params in grid_parameters(param_grid):
             i -= 1
             continue
         
-        t_line, theta_true, omega_true = PINN.data.reference()
-        theta_pred = PINN(t_line)
-        # get PINN prediction
-        y_pred = PINN(t_line)
-        loss = mean_squared_error(theta_true, theta_pred)
-        loss_success = (np.linalg.norm(theta_true - theta_pred) / np.linalg.norm(theta_true)) < 0.15
+        X_ref, u_ref = PINN.data.reference_mesh()
+        u_pred = PINN(X_ref)
+        
+        loss = mean_squared_error(u_ref, u_pred)
+        loss_success = (np.linalg.norm(u_ref - u_pred) / np.linalg.norm(u_ref)) < 0.15
         losses.append(loss)
         loss_successes.append(loss_success)
         
-        pendulum_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
+        allen_cahn_mesh(PINN, path=f"logs/{dirname}/run_{i}/mesh")
+        allen_cahn_xcut(PINN, path=f"logs/{dirname}/run_{i}/xcut")
         learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
     
     table_entry = pd.DataFrame({k: [v] for k, v in params.items()})

@@ -20,7 +20,7 @@ class PhysicsInformedNN(Sequential):
     # settings read from config (set as class attributes)
     args = ['version', 'seed',
             'N_hidden', 'N_neurons', 'activation', 'N_epochs', 
-            'learning_rate', 'decay_rate', 'reg_coeff', 'reg_decay', 'reg_epochs', 'freq_save']
+            'learning_rate', 'decay_rate', 'regularization', 'reg_coeff', 'reg_decay', 'reg_epochs', 'freq_save']
     # default log Path
     log_path = Path('logs')
     
@@ -38,7 +38,7 @@ class PhysicsInformedNN(Sequential):
         # data loader for sampling data at each training epoch
         self.data = DataLoader(config) 
         # loss functions for IC and physics
-        self.loss = Loss(self)
+        self.loss = Loss(self, self.regularization)
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs
@@ -79,8 +79,8 @@ class PhysicsInformedNN(Sequential):
         # Adam optimizer with default settings for momentum
         self.optimizer = Adam(learning_rate=lr_schedule)    
         
-        reg_coeff = tf.constant(self.reg_coeff, dtype=tf.float32)
-        reg_decay = tf.constant(self.reg_decay, dtype=tf.float32)
+        reg_coeff = tf.Variable(self.reg_coeff, dtype=tf.float32)
+        init_reg_coeff = tf.constant(self.reg_coeff, dtype=tf.float32)
             
         print("Training started...")
         for epoch in range(self.N_epochs):
@@ -96,7 +96,8 @@ class PhysicsInformedNN(Sequential):
                                          X_BC_top, X_BC_bottom, 
                                          X_col, reg_coeff)
             
-            reg_coeff *= reg_decay
+            if self.reg_decay == "linear" and self.reg_epochs != 0:
+                reg_coeff = init_reg_coeff * (1 - epoch / self.reg_epochs)
             
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)

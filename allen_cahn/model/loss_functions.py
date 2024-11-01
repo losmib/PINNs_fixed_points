@@ -5,10 +5,17 @@ class Loss():
     '''
     This class provides the physics loss function to the network training
     '''   
-    def __init__(self, model):       
+    def __init__(self, model, regularization):       
         # save neural network (weights are updated during training)
         self.model = model
         
+        regularization_map = {
+            "no_reg": None,
+            # "unstable_fp": self.regularizer_unstable_fp,
+            "reg_derivative": self.regularizer_derivative,
+            # "reg_derivative_unstable_fp": self.regularizer_derivative_unstable_fp
+        }
+        self.regularizer = regularization_map[regularization]
    
     @tf.function
     def initial_condition(self, X_IC, u_IC):
@@ -71,10 +78,11 @@ class Loss():
         # Allen-Cahn equation
         res = u_t - 0.0001*u_xx + 5*u**3 - 5*u 
         loss = tf.reduce_mean(tf.square(res))
-        loss += reg_coeff * self.regularizer_derivative(u_t)
+        if self.regularizer is not None:
+            loss += reg_coeff * tf.reduce_mean(self.regularizer(u_t))
         return loss
     
     
     def regularizer_derivative(self, u_t):
         eps = 10**0
-        return tf.reduce_mean(tf.exp(-(u_t**2) / eps))
+        return tf.exp(-(u_t**2) / eps)
