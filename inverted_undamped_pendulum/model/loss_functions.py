@@ -78,8 +78,8 @@ class Loss():
         return tf.square(res), theta, omega, omega_t
 
     def regularizer_unstable_fp(self, t_col, theta, omega, omega_t):
-        a = np.radians(90) - self.theta0
-        loss = tf.nn.relu(tf.cos(theta + a) * self.g / self.l)
+        a = self.theta0
+        loss = tf.nn.relu((tf.cos(theta) - tf.cos(a)) * self.g / self.l)
         return loss
     
     def regularizer_derivative(self, t_col, theta, omega, omega_t):
