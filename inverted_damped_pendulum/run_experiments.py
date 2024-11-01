@@ -50,7 +50,7 @@ param_grid = {
         1
     ],
     "reg_coeff": [
-      1, 100, 10000
+      1, 10, 100000
     ],
     "reg_decay": [
         None, 

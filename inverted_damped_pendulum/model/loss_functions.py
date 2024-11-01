@@ -6,7 +6,7 @@ class Loss():
     This class provides the physics loss function 
     '''       
      # settings read from config (set as class attributes)
-    args = ['g', 'l', 'theta0', 'omega0']
+    args = ['g', 'l', 'b', 'theta0', 'omega0']
     
     
     def __init__(self, model, config, regularization):
@@ -74,11 +74,12 @@ class Loss():
             omega = tt.gradient(theta, t_col) 
         omega_t = t.gradient(omega, t_col)
         
-        res = omega_t - self.g/self.l * tf.math.sin(theta)
+        res = omega_t - self.g/self.l * tf.math.sin(theta) + self.b * omega
         return tf.square(res), theta, omega, omega_t
 
     def regularizer_unstable_fp(self, t_col, theta, omega, omega_t):
-        loss = tf.nn.relu((tf.cos(theta) - tf.cos(self.theta0)) * self.g / self.l)
+        a = self.theta0
+        loss = tf.nn.relu((tf.cos(theta) - tf.cos(a)) * self.g / self.l)
         return loss
     
     def regularizer_derivative(self, t_col, theta, omega, omega_t):
