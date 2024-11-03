@@ -19,7 +19,7 @@ b: 0.3
 # Initial Angle (in degrees)
 theta0: 100
 # Initial Velocity
-omega0: 500
+omega0: 700
 
 # Simulation Length
 T: 10
@@ -38,7 +38,7 @@ N_hidden: 4
 N_neurons: 50
 activation: 'tanh'
 
-N_epochs: 500
+N_epochs: 50000
 learning_rate: 0.001
 decay_rate: 1.0
 
