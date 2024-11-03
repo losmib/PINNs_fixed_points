@@ -49,6 +49,12 @@ def pendulum_dynamics(PINN, path=None):
     theta_pred = PINN(t_line)
     omega_pred = PINN.omega(t_line)
 
+    theta_max = max(np.ceil(np.max(theta_true) / np.pi) * np.pi, 2*np.pi)
+    theta_min = min(np.floor(np.min(theta_true) / np.pi) * np.pi, -2*np.pi)
+
+    omega_max = max(np.ceil(np.max(omega_true) / np.pi) * np.pi, 2*np.pi)
+    omega_min = min(np.floor(np.min(omega_true) / np.pi) * np.pi, -2*np.pi)
+
     # make plot
     axes[0].plot(t_line, theta_true, c='blue', lw=1, label='Reference')
     axes[0].plot(t_line, theta_pred, c='red', lw=1, ls='--', label='Prediction')
@@ -57,16 +63,18 @@ def pendulum_dynamics(PINN, path=None):
     axes[0].set_xlabel(r'$t$')
     axes[0].set_ylabel(r'$\theta$')
     axes[0].legend(frameon=False, loc=1, ncol=2, fontsize=8)
-    axes[0].set_ylim([-7, 7])
+    axes[0].set_ylim([theta_min, theta_max])
 
+    axes[0].set_yticks([i * np.pi for i in range(int(theta_min / np.pi), int(theta_max / np.pi))])
+    axes[0].set_yticklabels([str(i) + r'$\pi$' for i in range(int(theta_min / np.pi), int(theta_max / np.pi))])
     #################
     # Quiver plot (Phase Space)
     #################
 
     # Background arrows
     xscale, yscale, n_arrows = 1.2, 2, 10
-    theta = np.linspace(-xscale*np.pi, xscale*np.pi, n_arrows)
-    omega = np.linspace(-yscale*np.pi, yscale*np.pi, n_arrows)
+    theta = np.linspace(theta_min, theta_max, n_arrows)
+    omega = np.linspace(omega_min, omega_max, n_arrows)
     XX, YY = np.meshgrid(theta, omega)
     Y = np.vstack([XX.flatten(), YY.flatten()])
     t = np.zeros(len(Y))
@@ -88,9 +96,10 @@ def pendulum_dynamics(PINN, path=None):
     # Axis appearance
     axes[1].set_xlabel(r'$\theta$')
     axes[1].set_ylabel(r'$\omega$')
-    axes[1].set_xticks([-np.pi, 0, np.pi])
-    axes[1].set_xticklabels([r'$\pi$', 0, r'$\pi$'])                
-
+    axes[1].set_xticks([i * np.pi for i in range(int(theta_min / np.pi), int(theta_max / np.pi))])
+    axes[1].set_xticklabels([str(i) + r'$\pi$' for i in range(int(theta_min / np.pi), int(theta_max / np.pi))])                
+    print(theta_min)
+    print(theta_max)
     plt.tight_layout()
     
     if path == None:
