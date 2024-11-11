@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#SBATCH --gres=cpu:1
 #SBATCH --mem-per-cpu=2G
 
 #SBATCH --time=72:00:00
