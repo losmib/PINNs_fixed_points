@@ -40,9 +40,9 @@ class Loss():
         return tf.square(res), y, y_t
         
     def regularizer_unstable_fp(self, t_col, y, y_t):
-        a = 1 - 3 * self.model.y0**2 
+        # a = 1 - 3 * self.model.y0**2 
         y = self.model(t_col)
-        reg_loss = tf.nn.relu(1 - 3 * y**2 - a)
+        reg_loss = tf.nn.relu(1 - 3 * y**2)
         return reg_loss
     
     def regularizer_fp(self, t_col, y, y_t):
