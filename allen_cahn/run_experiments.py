@@ -35,9 +35,10 @@ param_grid = {
         1024, 
     ],
     "epochs": [
-        50000,
+        100000,
     ],
     "reg_epochs": [
+        0,
         0.2,
         0.4,
         0.6,
@@ -56,7 +57,6 @@ results_list = []
 
 for params in grid_parameters(param_grid):
     print(params)
-    dirname = "plots/" + re.sub('\W+', '_', str(params))
 
     config = config_base
     config["activation"] = params["activations"]
@@ -71,6 +71,12 @@ for params in grid_parameters(param_grid):
     config["freq_save"] = 0
     losses = []
     loss_successes = []
+
+    dirname = f"plots/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/" + re.sub('\W+', '_', str(params))
+
+    if config['reg_epochs'] == 0 and config['reg_coeff'] > 1:
+         continue
+
     for i in range(NUM_TRAINING_RUNS):
         if not os.path.exists(f"logs/{dirname}/run_{i}"):
             os.makedirs(f"logs/{dirname}/run_{i}")

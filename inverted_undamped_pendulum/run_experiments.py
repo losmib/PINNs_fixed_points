@@ -80,7 +80,7 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
         config["freq_save"] = 0
         config["theta0"] = params["theta0"]    
 
-        dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/theta0_{config['theta0']}" + re.sub('\W+', '_', str(params))
+        dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/theta0_{config['theta0']}/" + re.sub('\W+', '_', str(params))
 
         losses = []
         loss_successes = []
