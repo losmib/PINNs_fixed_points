@@ -23,8 +23,8 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [7.5, 10, 15],
-    "theta0": [5, 25, 100],
+    "T": [5, 10],
+    "theta0": [20, 100],
     "network_architectures": [
         (4, 50),
     ],
@@ -61,7 +61,6 @@ results_list = []
 
 for params in grid_parameters(param_grid):
     print(params)
-    dirname = "plots/" + re.sub('\W+', '_', str(params))
 
     config = config_base
     config["activation"] = params["activations"]
@@ -77,6 +76,9 @@ for params in grid_parameters(param_grid):
     config["T"] = params["T"]
     config["freq_save"] = 0
     config["theta0"] = params["theta0"]    
+
+    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/theta0_{config['theta0']}/" + re.sub('\W+', '_', str(params))
+
     losses = []
     loss_successes = []
     if config["regularization"] is "no_reg":
