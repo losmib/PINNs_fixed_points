@@ -59,7 +59,6 @@ results_list = []
 
 for params in grid_parameters(param_grid):
     print(params)
-    dirname = "plots/" + re.sub('\W+', '_', str(params))
     
     config = config_base
     config["activation"] = params["activations"]
@@ -75,6 +74,9 @@ for params in grid_parameters(param_grid):
     config["T"] = params["T"]
     config["freq_save"] = 0
     config["y0"] =params["y0"]
+
+    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/y0_{config['y0']}" + re.sub('\W+', '_', str(params))
+
     losses = []
     loss_successes = []
     
