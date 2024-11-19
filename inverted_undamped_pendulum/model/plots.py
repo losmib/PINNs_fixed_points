@@ -167,11 +167,45 @@ def plot_regularization(PINN, path=None):
         plt.show()
         
         
-def results_heatmap(results):
+def results_heatmaps(results):
+    results_no_reg = results.loc[results["regularization"] == "no_reg"]
+    table_no_reg = pd.pivot_table(results_no_reg, values="loss_successes_percent", 
+                           index=["T"],
+                           columns=["theta0"],
+                           aggfunc="mean")
+    
+    sns.heatmap(table_no_reg, vmin=0, vmax=1.0)
+    plt.title("results without regulariyzation")
+    plt.show()
+
+    results = results.loc[results["reg_decay"] == "linear"]
+
     results["reg_decay"].fillna("no decay", inplace=True)
     table = pd.pivot_table(results, values="loss_successes_percent", 
-                           index=["regularization", "reg_epochs", "reg_coeff", "reg_decay"],
-                           columns=["theta0", "T"],
+                           index=["regularization"],
+                           columns=["reg_coeff", "reg_epochs"],
                            aggfunc="mean")
-    sns.heatmap(table)
+    sns.heatmap(table, vmin=0, vmax=1.0)
+    plt.title("results across regularization-regularization coefficient")
     plt.show()
+
+    for regularization in results["regularization"].unique():
+        if regularization == "no_reg":
+            continue
+        results_reg = results.loc[results["regularization"] == regularization]
+        table_reg = pd.pivot_table(results_reg, values="loss_successes_percent", 
+                           index=["T", "theta0"],
+                           columns=["reg_coeff", "reg_epochs"],
+                           aggfunc="mean")
+        table_reg_coeffs = pd.pivot_table(results_reg, values="loss_successes_percent", 
+                           index=["reg_coeff"],
+                           columns=["reg_epochs"],
+                           aggfunc="mean")
+        plt.subplot(1, 2, 1)
+        sns.heatmap(table_reg, vmin=0, vmax=1.0)
+
+        plt.subplot(1, 2, 2)
+        sns.heatmap(table_reg_coeffs, vmin=0, vmax=1.0)
+        plt.title(f"results {regularization}")
+        
+        plt.show()

@@ -125,11 +125,34 @@ def plot_regularization(PINN, path=None):
         plt.show()
         
     
-def results_heatmap(results):
+def results_heatmaps(results):
+    results_no_reg = results.loc[results["regularization"] == "no_reg"]
+    table_no_reg = pd.pivot_table(results_no_reg, values="loss_successes_percent", 
+                           index=["T"],
+                           columns=["y0"],
+                           aggfunc="mean")
+    sns.heatmap(table_no_reg, vmin=0, vmax=1.0)
+    plt.title("results without regulariyzation")
+    plt.show()
+
     results["reg_decay"].fillna("no decay", inplace=True)
     table = pd.pivot_table(results, values="loss_successes_percent", 
-                           index=["regularization", "reg_epochs", "reg_coeff", "reg_decay"],
-                           columns=["y0", "T"],
+                           index=["regularization"],
+                           columns=["reg_coeff"],
                            aggfunc="mean")
-    sns.heatmap(table)
+    sns.heatmap(table, vmin=0, vmax=1.0)
+    plt.title("results across regularization-regularization coefficient")
     plt.show()
+
+    for regularization in results["regularization"].unique():
+        if regularization == "no_reg":
+            continue
+        results_reg = results.loc[results["regularization"] == regularization]
+        table_reg = pd.pivot_table(results_reg, values="loss_successes_percent", 
+                           index=["T", "y0"],
+                           columns=["reg_coeff"],
+                           aggfunc="mean")
+        sns.heatmap(table_reg, vmin=0, vmax=1.0)
+        plt.title(f"results {regularization}")
+        plt.show()
+
