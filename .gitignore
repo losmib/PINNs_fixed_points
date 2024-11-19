@@ -7,3 +7,7 @@ env/
 **/logs/
 
 *.pyc
+
+*.csv
+
+*.slurm
