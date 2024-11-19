@@ -51,7 +51,7 @@ param_grid = {
       1#, 10, 100, 1000
     ],
     "reg_decay": [
-        "linear" #None
+        None
     ]
 }
 
