@@ -21,7 +21,7 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [5, 7.5],
+    "T": [2, 2.5, 3, 5, 7.5],
     "y0": [0.01, 0.1],
     "network_architectures": [
         (4, 50),
@@ -40,18 +40,18 @@ param_grid = {
     ],
     "regularization": [
         "no_reg",
-        "unstable_fp",
-        "reg_derivative",
-        "reg_derivative_unstable_fp"
+        #"unstable_fp",
+        #"reg_derivative",
+        #"reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
-        0.85
+        0#0.85
     ],
     "reg_coeff": [
-      1, 10, 100, 1000
+      1#, 10, 100, 1000
     ],
     "reg_decay": [
-        "linear", None
+        "linear" #None
     ]
 }
 
