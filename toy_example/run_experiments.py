@@ -22,7 +22,7 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 config_base = load_config('configs/default.yaml')
 param_grid = {
     "T": [2, 2.5, 3, 5, 7.5],
-    "y0": [0.01, 0.1],
+    "y0": [0.01, 0.1, 0.25],
     "network_architectures": [
         (4, 50),
     ],
