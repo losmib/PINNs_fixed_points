@@ -23,8 +23,8 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [1, 2, 3, 4, 5],
-    "theta0": [10, 20, 100],
+    "T": [2.5, 5],
+    "theta0": [10, 100],
     "network_architectures": [
         (4, 50),
     ],
@@ -42,18 +42,18 @@ param_grid = {
     ],
     "regularization": [
         "no_reg",
-        #"unstable_fp",
-        #"reg_derivative",
-        #"reg_derivative_unstable_fp"
+        "unstable_fp",
+        "reg_derivative",
+        "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
-        0#0.5, 0.9
+        0, 0.25, 0.5, 0.75
     ],
     "reg_coeff": [
-      1#, 100, 10000
+      1, 10, 100, 1000
     ],
     "reg_decay": [
-        None, 
+        "linear", 
     ]
 }
 
@@ -84,7 +84,7 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
 
         losses = []
         loss_successes = []
-        if config["regularization"] is "no_reg":
+        if config["regularization"] is "no_reg" or config["reg_epochs"] == 0:
             if config["reg_coeff"] > 1:
                 continue
         for i in range(NUM_TRAINING_RUNS):
