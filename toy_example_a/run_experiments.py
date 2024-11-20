@@ -21,7 +21,7 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [5, 7.5],
+    "T": [3, 6],
     "y0": [0.01, 0.1],
     "network_architectures": [
         (4, 50),
@@ -48,7 +48,7 @@ param_grid = {
         1
     ],
     "reg_coeff": [
-      1, 10, 100, 1000
+      0, 1, 10, 100, 1000
     ],
     "reg_decay": [
         None
@@ -81,6 +81,10 @@ for params in grid_parameters(param_grid):
     loss_successes = []
     
     for i in range(NUM_TRAINING_RUNS):
+        if config["regularization"] is "no_reg" or config["reg_epochs"] == 0:
+            if config["reg_coeff"] > 1:
+                continue
+
         if not os.path.exists(f"logs/{dirname}/run_{i}"):
             os.makedirs(f"logs/{dirname}/run_{i}")
         config["version"] = f"{dirname}/run_{i}"
