@@ -10,4 +10,4 @@ env/
 
 *.csv
 
-*.slurm
+*.out
