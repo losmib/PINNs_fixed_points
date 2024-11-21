@@ -81,7 +81,7 @@ for params in grid_parameters(param_grid):
     loss_successes = []
     
     for i in range(NUM_TRAINING_RUNS):
-        if config["regularization"] is "no_reg" or config["reg_epochs"] == 0:
+        if config["regularization"] == "no_reg" or config["reg_epochs"] == 0:
             if config["reg_coeff"] > 1:
                 continue
 
