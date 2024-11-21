@@ -9,13 +9,13 @@ class Loss():
         
         # save neural network (weights are updated during training)
         self.model = model
-        regularization_map = {
+        self.regularization_map = {
             "no_reg": None,
             "unstable_fp": self.regularizer_unstable_fp,
             "reg_derivative": self.regularizer_derivative,
             "reg_derivative_unstable_fp": self.regularizer_derivative_unstable_fp
         }
-        self.regularizer = regularization_map[regularization]
+        self.regularizer = self.regularization_map[regularization]
 
         
     def toy_example(self, t_col, reg_coeff):
