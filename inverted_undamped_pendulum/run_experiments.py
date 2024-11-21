@@ -84,7 +84,7 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
 
         losses = []
         loss_successes = []
-        if config["regularization"] is "no_reg" or config["reg_epochs"] == 0:
+        if config["regularization"] == "no_reg" or config["reg_epochs"] == 0:
             if config["reg_coeff"] > 1:
                 continue
         for i in range(NUM_TRAINING_RUNS):
