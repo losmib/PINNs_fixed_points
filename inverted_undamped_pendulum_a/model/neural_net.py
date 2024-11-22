@@ -18,7 +18,7 @@ class PhysicsInformedNN(Sequential):
     This class provides the Physics-Informed Neural Network
     '''       
     # settings read from config (set as class attributes)
-    args = ['version', 'seed',
+    args = ['version', 'seed', 'T',
             'N_hidden', 'N_neurons', 'activation',
             'N_epochs', 'learning_rate', 'decay_rate', 'regularizer', 'reg_coeff',
             'reg_decay', 'reg_epochs', 'freq_save']
@@ -64,7 +64,17 @@ class PhysicsInformedNN(Sequential):
         self.add(Dense(units=1, 
                        activation=None))
         if verbose:
-            self.summary()                         
+            self.summary()      
+
+
+    def call(self, t):
+        '''
+        Overwrites default call function for
+        implementing hard constraints (initial condition)
+        '''   
+        # hyperbolic tangent distance function
+        t = t / self.T
+        return super().call(t)                          
 
             
     def train(self):

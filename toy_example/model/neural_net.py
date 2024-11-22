@@ -81,7 +81,7 @@ class PhysicsInformedNN(Model):
         implementing hard constraints (initial condition)
         '''   
         # hyperbolic tangent distance function
-        # t = t / self.T
+        t = t / self.T
         return self.y0 + tf.math.tanh(t) * self.neural_net(t)
     
     
