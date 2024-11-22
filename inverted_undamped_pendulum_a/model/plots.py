@@ -197,3 +197,9 @@ def results_heatmaps(results):
         sns.heatmap(table_reg, vmin=0, vmax=1.0)
         plt.title(f"results {regularization}")
         plt.show()
+
+
+def plot_comparissons(results):
+    results["T-theta0"] = results["T"].astype(str) + "-" + results["theta0"].astype(str)
+    sns.barplot(results, x="T-theta0", y="loss_successes_percent", hue="regularization")
+    plt.show()

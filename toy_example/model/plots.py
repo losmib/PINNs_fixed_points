@@ -133,3 +133,9 @@ def results_heatmap(results):
                            aggfunc="mean")
     sns.heatmap(table)
     plt.show()
+
+
+def plot_comparissons(results):
+    results["T-y0"] = results["T"].astype(str) + "-" + results["y0"].astype(str)
+    sns.barplot(results, x="T-y0", y="loss_successes_percent", hue="regularization")
+    plt.show()

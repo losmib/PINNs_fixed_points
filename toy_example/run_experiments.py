@@ -21,8 +21,8 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [3, 6],
-    "y0": [0.01, 0.1],
+    "T": [2, 2.5, 3, 4, 5, 6, 7.5],
+    "y0": [0.01, 0.1, 0.2, 0.3],
     "network_architectures": [
         (4, 50),
     ],
@@ -40,18 +40,15 @@ param_grid = {
     ],
     "regularization": [
         "no_reg",
-        "unstable_fp",
-        "reg_derivative",
-        "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
-        0.75
+        1
     ],
     "reg_coeff": [
-      0, 1, 10, 100, 1000
+      0
     ],
     "reg_decay": [
-        "linear"
+        None
     ]
 }
 
@@ -116,5 +113,5 @@ for params in grid_parameters(param_grid):
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     results_list.append(table_entry)
-    pd.concat(results_list).to_csv("results_linear_decay.csv")
+    pd.concat(results_list).to_csv("results_no_reg.csv")
 
