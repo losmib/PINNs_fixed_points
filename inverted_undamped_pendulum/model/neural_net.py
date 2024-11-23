@@ -32,7 +32,7 @@ class PhysicsInformedNN(Sequential):
         # load and set class attributes from config
         for arg in self.args:
             setattr(self, arg, config[arg])
-            
+
         self.T = tf.constant(self.T, dtype=tf.float32)
         self.reg_epochs = int(self.reg_epochs * self.N_epochs)
         
@@ -68,14 +68,14 @@ class PhysicsInformedNN(Sequential):
             self.summary()      
 
 
-    def call(self, t):
+    def call(self, t, training=False, mask=False):
         '''
         Overwrites default call function for
         implementing hard constraints (initial condition)
         '''   
         # hyperbolic tangent distance function
         t = t / self.T
-        return super().call(t)                   
+        return super().call(t, training=training, mask=mask)                   
 
             
     def train(self):
