@@ -33,6 +33,7 @@ class PhysicsInformedNN(Sequential):
         for arg in self.args:
             setattr(self, arg, config[arg])
         
+        self.T = tf.constant(self.T, dtype=tf.float32)
         self.reg_epochs = int(self.reg_epochs * self.N_epochs)
         
         self.build_layers(verbose) 
