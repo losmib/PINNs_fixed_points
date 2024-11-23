@@ -68,14 +68,14 @@ class PhysicsInformedNN(Sequential):
             self.summary()      
 
 
-    def call(self, t):
+    def call(self, t, training=False, mask=False):
         '''
         Overwrites default call function for
         implementing hard constraints (initial condition)
         '''   
         # hyperbolic tangent distance function
         t = t / self.T
-        return super().call(t)                          
+        return super().call(t, training=training, mask=mask)                          
 
             
     def train(self):
