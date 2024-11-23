@@ -30,6 +30,7 @@ def learning_curves(log, path=None):
 def toy_example_dynamics(PINN, path=None):
     # get reference solution (analytical)
     t_line, x_true, y_true = PINN.data.reference()
+  
     # get PINN prediction
     preds = PINN(t_line)
     x_pred = preds[:, 0]
@@ -80,8 +81,11 @@ def loss_over_tcoll(PINN, path=None):
     :param PINN: 
     :param path: , defaults to None
     """
-    t_col, x_pred, y_pred = PINN.data.reference()
-    
+    t_col, x_true, y_true = PINN.data.reference()
+    preds = PINN(t_col)
+    x_pred = preds[:, 0]
+    y_pred = preds[:, 1]
+
     plt.figure()
     plt.subplot(3, 1, 1)
     plt.plot(t_col, x_pred, label="predictions x")
@@ -91,6 +95,7 @@ def loss_over_tcoll(PINN, path=None):
     with tf.GradientTape() as tape:
         tape.watch(t_col)
         loss, _, _, _, _ = PINN.loss.physics_loss(t_col)
+        tf.print(loss.shape)
         loss_grad = tape.gradient(loss, t_col)
         
     plt.subplot(3, 1, 2)
@@ -117,11 +122,11 @@ def plot_regularization(PINN, path=None):
     plt.plot(t_col, PINN(t_col), label="predictions")
     plt.legend()
     
-    physics_loss, y, y_t = PINN.loss.physics_loss(t_col)
+    physics_loss, x, x_t, y, y_t = PINN.loss.physics_loss(t_col)
     
     reg_loss = tf.zeros_like(t_col)
     if PINN.loss.regularizer is not None:
-        reg_loss = PINN.loss.regularizer(t_col, y, y_t)
+        reg_loss = PINN.loss.regularizer(t_col, x, x_t, y, y_t)
         
     plt.subplot(3, 1, 2)
     plt.plot(t_col, reg_loss, label="regularization loss")

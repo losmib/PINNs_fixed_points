@@ -10,10 +10,10 @@ seed: 1               # data sampling and weights initialization
 #################################
 
 # Initial Condition
-x0: 0.5
-y0: 0.5
+x0: 0.9
+y0: 1.5
 # Simulation Length
-T: 5
+T: 2.5
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -27,7 +27,7 @@ N_col: 1024
 
 N_hidden: 4
 N_neurons: 50
-activation: 'swish'
+activation: 'tanh'
 
 #################################
 # Training settings

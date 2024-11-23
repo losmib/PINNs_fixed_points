@@ -42,7 +42,7 @@ class PhysicsInformedNN(Model):
         # data loader for sampling data at each training epoch
         self.data = DataLoader(config) 
         # loss functions for IC and physics
-        self.loss = Loss(self, self.regularization)
+        self.loss = Loss(self, config, self.regularization)
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs
@@ -137,8 +137,13 @@ class PhysicsInformedNN(Model):
         '''    
         # open a GradientTape to record forward/loss pass                   
         with tf.GradientTape() as tape:     
+            # initial condition loss
+            loss_IC = self.loss.initial_condition()
+            
             # get physcics loss of toy example equation
-            loss = self.loss.toy_example(t_col, reg)
+            loss_physics = self.loss.toy_example(t_col, reg)
+
+            loss = loss_IC + loss_physics
             
         # retrieve gradients
         grads = tape.gradient(loss, self.weights)        
