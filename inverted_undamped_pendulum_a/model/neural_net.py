@@ -68,7 +68,7 @@ class PhysicsInformedNN(Sequential):
             self.summary()      
 
 
-    def call(self, t, training=False, mask=False):
+    def call(self, t, training=False, mask=None):
         '''
         Overwrites default call function for
         implementing hard constraints (initial condition)
