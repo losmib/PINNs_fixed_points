@@ -23,10 +23,10 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 config_base = load_config('configs/default.yaml')
 param_grid = {
     "network_architectures": [
-        (4, 50),
+        (6, 100),
     ],
     "activations": [
-        "tanh",
+        "swish",
     ],
     "learning_rates": [
         0.001,
@@ -35,7 +35,7 @@ param_grid = {
         1024, 
     ],
     "epochs": [
-        100000,
+        50000,
     ],
     "reg_epochs": [
         0,

@@ -1,8 +1,18 @@
+from matplotlib.patches import FancyArrowPatch
 import numpy as np
 import matplotlib.pyplot as plt
 import tensorflow as tf
 import pandas as pd
 import seaborn as sns
+
+
+def arrow(x,y,ax,n):
+    d = len(x)//(n+1)    
+    ind = np.arange(d,len(x),d)
+    for i in ind:
+        ar = FancyArrowPatch((x[i-1],y[i-1]),(x[i],y[i]), 
+                              arrowstyle='->', mutation_scale=20)
+        ax.add_patch(ar)
 
 
 def learning_curves(log, path=None):
@@ -72,7 +82,61 @@ def toy_example_dynamics(PINN, path=None):
         plt.close()
     else:
         plt.show()
+
+
+def plot_toy_example_direction(PINN, path=None):
+    # get reference solution (analytical)
+    t_line, x_true, y_true = PINN.data.reference()
+  
+    # get PINN prediction
+    preds = PINN(t_line)
+    x_pred = preds[:, 0]
+    y_pred = preds[:, 1]
+
+    fig, ax = plt.subplots()
+    ax.plot(x_true, y_true, c='blue', lw=1, label='Reference')
+    ax.plot(x_pred, y_pred, c='red', lw=1, ls='--', label='Prediction')
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
+    ax.grid(ls='--')
+    ax.legend()
+    print(tf.squeeze(x_true).shape)
+    print(x_pred.shape)
+    arrow(tf.squeeze(x_true), tf.squeeze(y_true), ax=ax, n=3)
+    arrow(x_pred, y_pred, ax=ax, n=3)
         
+    plt.tight_layout()
+    if path is not None:
+        plt.savefig(path)
+        plt.close()
+    else:
+        plt.show()
+
+
+def plot_regularization_over_domain(PINN, path=None):
+    N = 500
+    x = np.linspace(-1, 3, N)
+    y = np.linspace(-1, 3, N)
+
+    xx, yy = np.meshgrid(x, y)
+    mesh_shape = xx.shape
+    xx, yy = xx.reshape(-1, 1), yy.reshape(-1, 1)
+
+    unstable_fp_reg_loss = PINN.loss.regularizer_unstable_fp(t_col=None, x=xx, x_t=None, y=yy, y_t=None)
+    zz = unstable_fp_reg_loss.numpy().reshape(mesh_shape)
+    xx, yy = xx.reshape(mesh_shape), yy.reshape(mesh_shape)
+
+    plt.figure()
+    # plt.contourf(xx, yy, zz)
+    plt.imshow(zz, vmin = 0., vmax = 3., cmap=plt.cm.coolwarm, origin='lower', 
+           extent=[xx.min(), xx.max(), yy.min(), yy.max()])
+    plt.colorbar()
+    plt.tight_layout()
+    if path is not None:
+        plt.savefig(path)
+        plt.close()
+    else:
+        plt.show()
     
 def loss_over_tcoll(PINN, path=None):
     """
