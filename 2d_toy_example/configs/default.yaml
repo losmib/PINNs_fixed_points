@@ -27,7 +27,7 @@ N_col: 1024
 
 N_hidden: 4
 N_neurons: 50
-activation: 'tanh'
+activation: 'swish'
 
 #################################
 # Training settings

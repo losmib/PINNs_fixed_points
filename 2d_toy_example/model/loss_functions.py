@@ -8,7 +8,7 @@ class Loss():
 
     args = ['x0', 'y0']
 
-    
+
     def __init__(self, model, config, regularization):
         
         # save neural network (weights are updated during training)
@@ -75,9 +75,10 @@ class Loss():
         return tf.square(res1) + tf.square(res2), x, x_t, y, y_t
         
     def regularizer_unstable_fp(self, t_col, x, x_t, y, y_t):
-        # a = 1 - 3 * self.model.y0**2 
-        y = self.model(t_col)
-        reg_loss = tf.nn.relu(1 - 3 * y**2)
+      
+        lam1 = 0.5 * (-1*(3*x + 4*y - 5) - tf.sqrt(tf.nn.relu((3*x + 4*y - 5)**2 - 4 * (2 * x**2 + 4*y**2 + 4*x*y - 7*x - 10*y + 6))))
+        lam2 = 0.5 * (-1*(3*x + 4*y - 5) + tf.sqrt(tf.nn.relu((3*x + 4*y - 5)**2 - 4 * (2 * x**2 + 4*y**2 + 4*x*y - 7*x - 10*y + 6))))
+        reg_loss = tf.nn.relu(lam1) + tf.nn.relu(lam2)
         return reg_loss
     
     def regularizer_fp(self, t_col, x, x_t, y, y_t):
