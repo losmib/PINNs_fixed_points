@@ -26,7 +26,7 @@ param_grid = {
         (6, 100),
     ],
     "activations": [
-        "swish",
+        "tanh",
     ],
     "learning_rates": [
         0.001,

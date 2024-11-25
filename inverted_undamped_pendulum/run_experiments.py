@@ -12,7 +12,7 @@ import re
 import os
 
 
-NUM_TRAINING_RUNS = 10
+NUM_TRAINING_RUNS = 20
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
@@ -23,8 +23,8 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [2, 2.5, 3, 4, 5, 6, 7.5],
-    "theta0": [10, 45, 90, 100],
+    "T": [2, 2.5, 3, 4, 5, 7.5],
+    "theta0": [10, 90, 100, 135, 150],
     "network_architectures": [
         (4, 50),
     ],

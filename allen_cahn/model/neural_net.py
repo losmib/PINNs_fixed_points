@@ -42,8 +42,8 @@ class PhysicsInformedNN(Sequential):
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs
-        self.path = self.log_path.joinpath(self.version)
-        self.path.mkdir(parents=True, exist_ok=True)
+        self.path_ = self.log_path.joinpath(self.version)
+        self.path_.mkdir(parents=True, exist_ok=True)
         print('*** PINN build & initialized ***')            
         
 
@@ -107,7 +107,7 @@ class PhysicsInformedNN(Sequential):
                     self.save_weights(flag=epoch)
            
         # save log
-        self.callback.save_logs(self.path)
+        self.callback.save_logs(self.path_)
         print("Training finished!")
         return self.callback.log
     
