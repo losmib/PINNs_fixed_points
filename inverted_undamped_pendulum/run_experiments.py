@@ -98,9 +98,10 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
                 continue
             
             t_line, theta_true, omega_true = PINN.data.reference()
-            theta_pred = PINN(t_line)
+            
             # get PINN prediction
-            y_pred = PINN(t_line)
+            theta_pred = PINN(t_line)
+            
             loss = mean_squared_error(theta_true, theta_pred)
             loss_success = (np.linalg.norm(theta_true - theta_pred) / np.linalg.norm(theta_true)) < 0.15
             losses.append(loss)

@@ -4,7 +4,7 @@ from typing import Any, Dict, Iterable
 from sklearn.metrics import mean_squared_error
 from configs.config_loader import load_config
 from model.neural_net import PhysicsInformedNN
-from model.plots import learning_curves, pendulum_dynamics, loss_over_tcoll, plot_regularization
+from model.plots import learning_curves, van_der_pol_dynamics, loss_over_tcoll, plot_regularization
 import pandas as pd
 import numpy as np
 
@@ -74,7 +74,7 @@ for params in grid_parameters(param_grid):
     config["freq_save"] = 0
     config["x0"] = params["x0"]    
 
-    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/theta0_{config['theta0']}/" + re.sub('\W+', '_', str(params))
+    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/x0_{config['x0']}/" + re.sub('\W+', '_', str(params))
 
     losses = []
     loss_successes = []
@@ -94,16 +94,17 @@ for params in grid_parameters(param_grid):
             i -= 1
             continue
         
-        t_line, theta_true, omega_true = PINN.data.reference()
-        theta_pred = PINN(t_line)
+        t_line, x_true, x_t_true = PINN.data.reference()
+
         # get PINN prediction
-        y_pred = PINN(t_line)
-        loss = mean_squared_error(theta_true, theta_pred)
-        loss_success = (np.linalg.norm(theta_true - theta_pred) / np.linalg.norm(theta_true)) < 0.15
+        x_pred = PINN(t_line)
+        
+        loss = mean_squared_error(x_true, x_pred)
+        loss_success = (np.linalg.norm(x_true - x_pred) / np.linalg.norm(x_true)) < 0.15
         losses.append(loss)
         loss_successes.append(loss_success)
         
-        pendulum_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
+        van_der_pol_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
         learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
         loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol")
         plot_regularization(PINN, path=f"logs/{dirname}/run_{i}/regularization_plot")
