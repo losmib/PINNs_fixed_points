@@ -73,7 +73,7 @@ for params in grid_parameters(param_grid):
     config["freq_save"] = 0
     config["y0"] =params["y0"]
 
-    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/y0_{config['y0']}/" + re.sub('\W+', '_', str(params))
+    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/x0_{config['x0']}_y0_{config['y0']}/" + re.sub('\W+', '_', str(params))
 
     losses = []
     loss_successes = []
@@ -94,13 +94,16 @@ for params in grid_parameters(param_grid):
             print(e)
             i -= 1
             continue
-        t_line = PINN.data.t_line()
+        
         # get reference solution (analytical)
-        y_true = PINN.data.reference(t_line)
+        t_line, x_true, y_true = PINN.data.reference()
+
+        xy_true = np.concat([x_true.numpy(), y_true.numpy()], axis=1)
         # get PINN prediction
-        y_pred = PINN(t_line)
-        loss = mean_squared_error(y_true, y_pred)
-        loss_success = np.linalg.norm(y_true - y_pred) / np.linalg.norm(y_true) < 0.15
+        xy_pred = PINN(t_line)
+        
+        loss = mean_squared_error(xy_true, xy_pred)
+        loss_success = np.linalg.norm(xy_true - xy_pred) / np.linalg.norm(xy_true) < 0.15
         losses.append(loss)
         loss_successes.append(loss_success)
         
