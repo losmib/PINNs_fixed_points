@@ -19,8 +19,9 @@ class PhysicsInformedNN(Sequential):
     '''       
     # settings read from config (set as class attributes)
     args = ['version', 'seed',
-            'N_hidden', 'N_neurons', 'activation', 'N_epochs', 
-            'learning_rate', 'decay_rate', 'regularization', 'reg_coeff', 'reg_decay', 'reg_epochs', 'freq_save']
+            'N_hidden', 'N_neurons', 'activation',
+            'N_epochs', 'learning_rate', 'decay_rate', 'regularizer', 'reg_coeff',
+            'reg_decay', 'reg_epochs', 'freq_save']
     # default log Path
     log_path = Path('logs')
     
@@ -31,22 +32,22 @@ class PhysicsInformedNN(Sequential):
         # load and set class attributes from config
         for arg in self.args:
             setattr(self, arg, config[arg])
-            
+        
         self.reg_epochs = int(self.reg_epochs * self.N_epochs)
         
         self.build_layers(verbose) 
         # data loader for sampling data at each training epoch
         self.data = DataLoader(config) 
         # loss functions for IC and physics
-        self.loss = Loss(self, self.regularization)
+        self.loss = Loss(self, config, self.regularizer)
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs
-        self.path_ = self.log_path.joinpath(self.version)
-        self.path_.mkdir(parents=True, exist_ok=True)
-        print('*** PINN build & initialized ***')            
+        self._path = self.log_path.joinpath(self.version)
+        self._path.mkdir(parents=True, exist_ok=True)
+        print('*** PINN build & initialized ***')  
         
-
+ 
     def build_layers(self, verbose):
         '''
         Builds the network layers
@@ -54,7 +55,7 @@ class PhysicsInformedNN(Sequential):
         # set seed for weights initialization
         tf.random.set_seed(self.seed)         
         # build input layer
-        self.add(InputLayer(input_shape=(2,)))
+        self.add(InputLayer(input_shape=(1,)))
         # build hidden layers
         for i in range(self.N_hidden):
             self.add(Dense(units=self.N_neurons, 
@@ -63,13 +64,13 @@ class PhysicsInformedNN(Sequential):
         self.add(Dense(units=1, 
                        activation=None))
         if verbose:
-            self.summary()             
- 
-        
+            self.summary()                         
+
+            
     def train(self):
         '''
         Training loop with batch gradiend-descent optimization 
-        Samples training data (collocation, IC, BC) at each batch iteration
+        Samples training data (collocation, IC) at each batch iteration
         '''                 
         # learning rate schedule
         lr_schedule = ExponentialDecay(
@@ -78,68 +79,65 @@ class PhysicsInformedNN(Sequential):
             decay_rate=self.decay_rate)          
         # Adam optimizer with default settings for momentum
         self.optimizer = Adam(learning_rate=lr_schedule)    
-        
+        print("Training started...")
+
         reg_coeff = tf.Variable(self.reg_coeff, dtype=tf.float32)
         init_reg_coeff = tf.constant(self.reg_coeff, dtype=tf.float32)
-            
-        print("Training started...")
+        
         for epoch in range(self.N_epochs):
+
+            t_col = self.data.collocation() 
+            # perform one train step
             if epoch > self.reg_epochs:
                 reg_coeff = 0
-                                
-            X_col = self.data.collocation() 
-            X_IC, u_IC = self.data.initial_condition()
-            X_BC_top, X_BC_bottom = self.data.boundary_condition()
-                      
-            # perform one train step
-            train_logs = self.train_step(X_IC, u_IC, 
-                                         X_BC_top, X_BC_bottom, 
-                                         X_col, reg_coeff)
-            
-            if self.reg_decay == "linear" and self.reg_epochs != 0:
-                reg_coeff = init_reg_coeff * (1 - epoch / self.reg_epochs)
-            
+            train_logs = self.train_step(t_col, reg_coeff)
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
+            
+            if self.reg_decay == "linear":
+                reg_coeff = init_reg_coeff * (1 - epoch / self.reg_epochs)
             
             if self.freq_save != 0:
                 if (epoch % self.freq_save) == 0:
                     self.save_weights(flag=epoch)
-           
+
         # save log
-        self.callback.save_logs(self.path_)
+        self.callback.save_logs(self._path)
         print("Training finished!")
         return self.callback.log
-    
+
     
     @tf.function
-    def train_step(self, X_IC, u_IC, X_BC_top, X_BC_bottom, X_col, reg_coeff):
+    def train_step(self, t_col, reg_coeff):
         '''
         Performs a single SGD training step by minimizing the 
-        IC, BC and physics loss residuals using MSE
+        IC and physics loss residuals using MSE
         '''      
         # open a GradientTape to record forward/loss pass                   
         with tf.GradientTape() as tape: 
-
             # inital condition loss
-            loss_IC = self.loss.initial_condition(X_IC, u_IC)
-            # boundary condition loss
-            loss_BC = self.loss.boundary_condition(X_BC_top, X_BC_bottom)
+            loss_IC = self.loss.initial_condition()
             # physics loss
-            loss_AC = self.loss.allen_cahn(X_col, reg_coeff)
-            # final training loss (with greater weight for IC loss)
-            loss_train = 100 * loss_IC + loss_BC + loss_AC
-                       
+            loss_P = self.loss.van_der_pol(t_col, reg_coeff)
+            # final training loss
+            loss_train = loss_IC + loss_P
+            
         # retrieve gradients
         grads = tape.gradient(loss_train, self.weights)        
         # perform single GD step 
-        self.optimizer.apply_gradients(zip(grads, self.weights))       
-        
+        self.optimizer.apply_gradients(zip(grads, self.weights))              
         # save logs for recording
-        train_logs = {'loss_train': loss_train, 'loss_IC': loss_IC, 
-                      'loss_BC': loss_BC, 'loss_AC': loss_AC}       
+        train_logs = {'loss_train': loss_train, 'loss_P': loss_P, 'loss_IC': loss_IC}       
         return train_logs
     
+    
+    def x_t(self, t):
+        with tf.GradientTape() as tape:
+            tape.watch(t)
+            x = self(t)
+        x_t = tape.gradient(x, t)
+        return x_t
+
     def save_weights(self, flag=''):        
         weights_file = self.log_path.joinpath(f'model_weights/weights_{flag}.pkl')
         with open(weights_file, 'wb') as pickle_file:
@@ -149,6 +147,3 @@ class PhysicsInformedNN(Sequential):
         with open(weights_file, 'rb') as pickle_file:
             weights = pickle.load(pickle_file)
         self.set_weights(weights)
-    
-    
-    

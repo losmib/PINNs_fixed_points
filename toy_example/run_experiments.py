@@ -10,7 +10,7 @@ import numpy as np
 import os
 import re
 
-NUM_TRAINING_RUNS = 10
+NUM_TRAINING_RUNS = 20
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
