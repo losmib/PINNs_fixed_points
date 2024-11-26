@@ -23,8 +23,9 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [2.5, 5, 7.5, 10, 12.5],
-    "x0": [0.001, 0.01, 0.01, 0.1, 0.5],
+    "mu": [0.1, 1, 5],
+    "T": [5, 7.5, 10, 12.5, 15],
+    "x0": [0.001, 0.01, 0.1, 0.5],
     "network_architectures": [
         (4, 50),
     ],
@@ -73,8 +74,9 @@ for params in grid_parameters(param_grid):
     config["T"] = params["T"]
     config["freq_save"] = 0
     config["x0"] = params["x0"]    
+    config["mu"] = params["mu"]
 
-    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/x0_{config['x0']}/" + re.sub('\W+', '_', str(params))
+    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/mu_{config["mu"]}/T_{config['T']}/x0_{config['x0']}/" + re.sub('\W+', '_', str(params))
 
     losses = []
     loss_successes = []
