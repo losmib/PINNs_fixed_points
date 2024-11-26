@@ -22,8 +22,7 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 config_base = load_config('configs/default.yaml')
 param_grid = {
     "T": [2.5, 5, 7.5],
-    "x0": [0.01, 0.1, 0.5, 1.5],
-    "y0": [0.01, 0.1, 0.5, 1.5],
+    "x0-y0": [(0.01, 0.01), (0.1, 0.1) (0.5, 0.5), (0.9, 0.9), (1.1, 1.1), (1.5, 1.5), (0.1, 0.9)],
     "network_architectures": [
         (4, 50),
     ],
@@ -71,7 +70,8 @@ for params in grid_parameters(param_grid):
     config["N_col"] = params["collocations"]
     config["T"] = params["T"]
     config["freq_save"] = 0
-    config["y0"] =params["y0"]
+    config["x0"], config["y0"] =params["x0-y0"]
+    
 
     dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/x0_{config['x0']}_y0_{config['y0']}/" + re.sub('\W+', '_', str(params))
 
