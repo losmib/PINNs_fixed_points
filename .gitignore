@@ -12,3 +12,5 @@ venv/
 *.csv
 
 *.out
+
+navier_stokes/data/fixed_cylinder_atRe100
