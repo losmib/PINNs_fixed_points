@@ -98,7 +98,7 @@ for params in grid_parameters(param_grid):
         # get reference solution (analytical)
         t_line, x_true, y_true = PINN.data.reference()
 
-        xy_true = np.concat([x_true.numpy(), y_true.numpy()], axis=1)
+        xy_true = np.concatenate([x_true.numpy(), y_true.numpy()], axis=1)
         # get PINN prediction
         xy_pred = PINN(t_line)
         
