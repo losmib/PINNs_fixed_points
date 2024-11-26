@@ -76,7 +76,7 @@ for params in grid_parameters(param_grid):
     config["x0"] = params["x0"]    
     config["mu"] = params["mu"]
 
-    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/mu_{config["mu"]}/T_{config['T']}/x0_{config['x0']}/" + re.sub('\W+', '_', str(params))
+    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/mu_{config['mu']}/T_{config['T']}/x0_{config['x0']}/" + re.sub('\W+', '_', str(params))
 
     losses = []
     loss_successes = []
