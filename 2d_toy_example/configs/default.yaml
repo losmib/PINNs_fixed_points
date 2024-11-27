@@ -10,10 +10,10 @@ seed: 1               # data sampling and weights initialization
 #################################
 
 # Initial Condition
-x0: 0.9
-y0: 1.5
+x0: 0.1
+y0: 0.1
 # Simulation Length
-T: 2.5
+T: 10
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -33,7 +33,7 @@ activation: 'swish'
 # Training settings
 #################################
 
-N_epochs: 50000
+N_epochs: 1000
 learning_rate: 0.001
 decay_rate: 1.0
 

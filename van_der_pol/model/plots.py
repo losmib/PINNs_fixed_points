@@ -106,6 +106,65 @@ def van_der_pol_dynamics(PINN, path=None):
     else:
         plt.savefig(path)
         
+
+def regularization_over_domain(PINN, path=None):
+    t_line, x_true, x_t_true = PINN.data.reference()
+    x_pred = PINN(t_line)
+    x_t_pred = PINN.x_t(t_line)
+
+    plot_lim_offset = 0.02
+
+    x_max = np.max(x_true) + plot_lim_offset
+    x_min = np.min(x_true) - plot_lim_offset
+
+    x_t_max = np.max(x_t_true) + plot_lim_offset
+    x_t_min = np.min(x_t_true) - plot_lim_offset
+
+    #################
+    # Quiver plot (Phase Space) over regularization loss landscape
+    #################
+
+    plt.figure()
+
+    # Background arrows
+    xscale, yscale, n_arrows = 1.2, 2, 10
+    x = np.linspace(x_min, x_max, 500)
+    x_t = np.linspace(x_t_min, x_t_max, 500)
+    XX, YY = np.meshgrid(x, x_t)
+    grid_shape = XX.shape
+    x, x_t = XX.flatten(), YY.flatten()
+    
+    reg_loss = PINN.loss.regularizer_unstable_fp(t_col=None, x=x, x_t=x_t, x_tt=None)
+    # Plot regularization loss landscape
+    # plt.contourf(x, x_t, reg_loss)
+    plt.imshow(reg_loss.numpy().reshape(grid_shape), vmin=0., vmax=np.max(reg_loss), cmap=plt.cm.coolwarm, origin='lower', 
+           extent=[x.min(), x.max(), x_t.min(), x_t.max()])
+    plt.colorbar()
+
+    x = np.linspace(x_min, x_max, n_arrows)
+    x_t = np.linspace(x_t_min, x_t_max, n_arrows)
+    XX, YY = np.meshgrid(x, x_t)
+    
+    Y = np.vstack([XX.flatten(), YY.flatten()])
+    t = np.zeros(len(Y))
+    [dx, dx_t] = PINN.data.diff_equations(t, Y)
+    x, x_t = XX.flatten(), YY.flatten()
+
+    plt.quiver(x, x_t, dx, dx_t, color='0.5')
+    # Fixed Points
+    plt.scatter(0, 0, edgecolors='r', facecolors='none')
+    # Axis lines
+    plt.axhline(0, lw=1, ls='--', c='black')
+    plt.axvline(0, lw=1, ls='--', c='black')
+
+    # Plot trajectories
+    plt.plot(x_true, x_t_true, c='blue', lw=1, label='Reference')
+    plt.plot(x_pred, x_t_pred, c='red', lw=1, ls='--', label='Prediction')
+
+    # Axis appearance
+    plt.xlabel(f"x")
+    plt.ylabel(f"x_t")
+
         
 def loss_over_tcoll(PINN, path=None):
     """
