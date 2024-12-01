@@ -67,13 +67,14 @@ for params in grid_parameters(param_grid):
     config["reg_epochs"] = params["reg_epochs"]
     config["reg_coeff"] = params["reg_coeff"]
     config["reg_decay"] = params["reg_decay"]
+    config["regularization"] = params["regularization"]
     config["learning_rate"] = params["learning_rates"]
     config["N_col"] = params["collocations"]
     config["freq_save"] = 0
     losses = []
     loss_successes = []
 
-    dirname = f"plots/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/" + re.sub('\W+', '_', str(params))
+    dirname = f"plots/{config["regularization"]}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/" + re.sub('\W+', '_', str(params))
 
     if config['reg_epochs'] == 0 and config['reg_coeff'] > 1:
          continue
