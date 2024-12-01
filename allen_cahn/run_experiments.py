@@ -37,16 +37,17 @@ param_grid = {
     "epochs": [
         50000,
     ],
+    "regularization": [
+      "unstable_fp",
+      "reg_derivative_unstable_fp"   
+    ],
     "reg_epochs": [
-        0,
-        0.2,
-        0.4,
-        0.6,
-        0.8,
-        1.0
+        0.25,
+        0.5,
+        0.75,
     ],
     "reg_coeff": [
-      1, 100, 1000, 10000
+      0.1, 1, 10, 100, 1000, 
     ],
     "reg_decay": [
         "linear"

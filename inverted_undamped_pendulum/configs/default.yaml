@@ -15,7 +15,7 @@ g: 9.81
 l: 1
 
 # Initial Angle (in degrees)
-theta0: 100
+theta0: 340
 # Initial Velocity
 omega0: 0
 
@@ -34,9 +34,9 @@ N_col: 1024
 
 N_hidden: 4
 N_neurons: 50
-activation: 'tanh'
+activation: 'swish'
 
-N_epochs: 50000
+N_epochs: 25000
 learning_rate: 0.001
 decay_rate: 1.0
 

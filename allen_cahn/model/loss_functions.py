@@ -11,9 +11,9 @@ class Loss():
         
         regularization_map = {
             "no_reg": None,
-            # "unstable_fp": self.regularizer_unstable_fp,
+            "unstable_fp": self.regularizer_unstable_fp,
             "reg_derivative": self.regularizer_derivative,
-            # "reg_derivative_unstable_fp": self.regularizer_derivative_unstable_fp
+            "reg_derivative_unstable_fp": self.regularizer_derivative_unstable_fp
         }
         self.regularizer = regularization_map[regularization]
    
@@ -79,10 +79,18 @@ class Loss():
         res = u_t - 0.0001*u_xx + 5*u**3 - 5*u 
         loss = tf.reduce_mean(tf.square(res))
         if self.regularizer is not None:
-            loss += reg_coeff * tf.reduce_mean(self.regularizer(u_t))
+            loss += reg_coeff * tf.reduce_mean(self.regularizer(X_col, u_t, u_xx, u))
         return loss
     
     
-    def regularizer_derivative(self, u_t):
+    def regularizer_derivative(self, X_col, u_t, u_xx, u):
         eps = 10**0
         return tf.exp(-(u_t**2) / eps)
+
+    def regularizer_unstable_fp(self, X_col, u_t, u_xx, u):
+        loss = tf.nn.relu(0.0001 * u_xx - 15 * u**2 + 5)
+        return loss
+    
+    def regularizer_derivative_unstable_fp(self, X_col, u_t, u_xx, u):
+        return self.regularizer_derivative(X_col, u_t, u_xx, u) * \
+            self.regularizer_derivative_unstable_fp(X_col, u_t, u_xx, u)
