@@ -74,7 +74,7 @@ for params in grid_parameters(param_grid):
     losses = []
     loss_successes = []
 
-    dirname = f"plots/{config["regularization"]}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/" + re.sub('\W+', '_', str(params))
+    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/" + re.sub('\W+', '_', str(params))
 
     if config['reg_epochs'] == 0 and config['reg_coeff'] > 1:
          continue
