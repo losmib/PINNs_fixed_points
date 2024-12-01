@@ -13,12 +13,12 @@ seed: 1               # data sampling and weights initialization
 mu: 1
 
 # Initial Angle (in degrees)
-x0: 0.01
+x0: 1
 # Initial Velocity
 x_t0: 0
 
 # Simulation Length
-T: 10
+T: 15
 
 #################################
 # Data settings (sampled anewly at each epoch)

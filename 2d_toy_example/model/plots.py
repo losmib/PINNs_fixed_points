@@ -49,9 +49,9 @@ def toy_example_dynamics(PINN, path=None):
     fig, axes = plt.subplots(nrows=2, ncols=1, figsize=(4, 2.5))
 
     # include fixed point lines
-    for x_fix in [0, 3]:
-        axes[0].axhline(x_fix, lw=1, ls='--', c='green')
-    axes[0].axhline(0, lw=1, ls='--', c='red')
+    for x_fix in [0, 1]:
+        axes[0].axhline(x_fix, lw=1, ls='--', c='red')
+    axes[0].axhline(3, lw=1, ls='--', c='green')
 
     # make plots
     axes[0].plot(t_line, x_true, c='blue', lw=1, label='Reference')
@@ -63,9 +63,9 @@ def toy_example_dynamics(PINN, path=None):
     axes[0].set_xlabel(r'$t$')
 
     # include fixed point lines
-    for y_fix in [0, 2]:
-        axes[1].axhline(y_fix, lw=1, ls='--', c='green')
-    axes[1].axhline(0, lw=1, ls='--', c='red')
+    for y_fix in [0, 1]:
+        axes[1].axhline(y_fix, lw=1, ls='--', c='red')
+    axes[1].axhline(2, lw=1, ls='--', c='green')
 
     # make plots
     axes[1].plot(t_line, y_true, c='blue', lw=1, label='Reference')
@@ -100,11 +100,14 @@ def plot_toy_example_direction(PINN, path=None):
     ax.set_ylabel("y")
     ax.grid(ls='--')
     ax.legend()
-    print(tf.squeeze(x_true).shape)
-    print(x_pred.shape)
+    
     arrow(tf.squeeze(x_true), tf.squeeze(y_true), ax=ax, n=3)
     arrow(x_pred, y_pred, ax=ax, n=3)
         
+    # include fixed points
+    for x_fix, y_fix, col in [(0, 0, 'red'), (0, 2, 'green'), (3, 0, 'green'), (1, 1, 'red')]:
+        ax.scatter(x_fix, y_fix, c=col)
+
     plt.tight_layout()
     if path is not None:
         plt.savefig(path)
@@ -114,10 +117,17 @@ def plot_toy_example_direction(PINN, path=None):
 
 
 def plot_regularization_over_domain(PINN, path=None):
+    fig, ax = plt.subplots()
+
+    t_line, x_true, y_true = PINN.data.reference()
     N = 500
+    eps = 0.1
+    # x = np.linspace(min(0, np.min(x_true)) - eps, np.max(x_true) + eps, N)
+    # y = np.linspace(min(0, np.min(y_true)) - eps, np.max(y_true) + eps, N)
+
     x = np.linspace(-1, 3, N)
     y = np.linspace(-1, 3, N)
-
+    
     xx, yy = np.meshgrid(x, y)
     mesh_shape = xx.shape
     xx, yy = xx.reshape(-1, 1), yy.reshape(-1, 1)
@@ -126,11 +136,14 @@ def plot_regularization_over_domain(PINN, path=None):
     zz = unstable_fp_reg_loss.numpy().reshape(mesh_shape)
     xx, yy = xx.reshape(mesh_shape), yy.reshape(mesh_shape)
 
-    plt.figure()
     # plt.contourf(xx, yy, zz)
-    plt.imshow(zz, vmin = 0., vmax = 3., cmap=plt.cm.coolwarm, origin='lower', 
+    im = ax.imshow(zz, vmin = 0., vmax = np.max(zz), cmap=plt.cm.coolwarm, origin='lower', 
            extent=[xx.min(), xx.max(), yy.min(), yy.max()])
-    plt.colorbar()
+    plt.colorbar(im, ax=ax)
+    ax.plot(x_true, y_true, c='blue', lw=1, label='Reference')
+    arrow(tf.squeeze(x_true), tf.squeeze(y_true), ax=ax, n=3)
+    ax.set_xlabel("x")
+    ax.set_ylabel("y")
     plt.tight_layout()
     if path is not None:
         plt.savefig(path)

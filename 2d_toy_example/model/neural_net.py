@@ -38,6 +38,8 @@ class PhysicsInformedNN(Model):
         
         self.reg_epochs = int(self.reg_epochs * self.N_epochs)
         
+        self.IC = tf.constant([self.x0, self.y0])
+
         self.build_layers(verbose) 
         # data loader for sampling data at each training epoch
         self.data = DataLoader(config) 
@@ -82,7 +84,7 @@ class PhysicsInformedNN(Model):
         '''   
         # hyperbolic tangent distance function
         t = t / self.T
-        return self.neural_net(t)
+        return self.IC + tf.math.tanh(t) * self.neural_net(t)
     
     
     def train(self):                                     

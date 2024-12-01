@@ -78,8 +78,10 @@ class Loss():
         return tf.square(res), x, x_t, x_tt
 
     def regularizer_unstable_fp(self, t_col, x, x_t, x_tt):
-        pass
-    
+        lam1 = 0.5 * (self.mu * (1 + x**2) + tf.sqrt(tf.nn.relu(self.mu**2 + 2*self.mu**2*x**2 + self.mu**2*x**4 - 4 - 8*self.mu*x_t)))
+        lam2 = 0.5 * (self.mu * (1 + x**2) - tf.sqrt(tf.nn.relu(self.mu**2 + 2*self.mu**2*x**2 + self.mu**2*x**4 - 4 - 8*self.mu*x_t)))
+        return tf.nn.relu(lam1) + tf.nn.relu(lam2)
+
     def regularizer_derivative(self, t_col, x, x_t, x_tt):
         eps = 10**-2
         loss = tf.exp(-(x_tt**2 + x_t**2) / eps)

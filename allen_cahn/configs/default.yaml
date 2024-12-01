@@ -24,8 +24,8 @@ N_BC: 128
 # Network Settings
 ######################
 
-N_hidden: 6
-N_neurons: 100
+N_hidden: 4
+N_neurons: 50
 activation: 'swish'
 
 ######################
@@ -49,7 +49,7 @@ freq_save: 1000
 # Regularization settings
 #################################
 
-regularization: "no_reg"
-reg_coeff: 0
+regularization: "unstable_fp"
+reg_coeff: 10
 reg_decay: "linear"
-reg_epochs: 0.25
+reg_epochs: 0.5
