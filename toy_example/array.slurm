@@ -2,8 +2,8 @@
 #SBATCH --job-name=vanilla_PINN
 
 #SBATCH --ntasks=1
-#SBATCH --cpus-per-task=2
-#SBATCH --mem-per-cpu=2G
+#SBATCH --cpus-per-task=1
+#SBATCH --mem-per-cpu=1G
 
 #SBATCH --time=2:00:00
 
