@@ -40,6 +40,16 @@ decay_rate: 1.0
 # Callback and Log settings
 #################################
 
-freq_log: 1000
-freq_print: 10000
-keys_print: ['loss', 'rel_l2']
+freq_log: 100
+freq_print: 1000
+keys_print: ['loss']
+freq_save: 100
+
+#################################
+# Regularization settings
+#################################
+
+regularization: "no_reg"
+reg_coeff: 0
+reg_decay: None
+reg_epochs: 0.6
