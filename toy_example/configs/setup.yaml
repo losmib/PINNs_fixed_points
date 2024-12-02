@@ -32,7 +32,7 @@ activation: 'swish'
 # Training settings
 #################################
 
-N_epochs: 1000
+N_epochs: 50000
 learning_rate: 0.001
 decay_rate: 1.0
 

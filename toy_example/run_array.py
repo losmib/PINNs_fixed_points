@@ -12,7 +12,7 @@ import pandas as pd
 from sklearn.metrics import mean_squared_error
 
 
-NUM_TRAINING_RUNS = 5
+NUM_TRAINING_RUNS = 20
 
 
 def parse_arguments():
@@ -71,5 +71,5 @@ if __name__ == "__main__":
     
     if not os.path.exists("vanilla_PINN"):
         os.makedirs("vanilla_PINN")
-
+    
     table_entry.to_csv(f"vanilla_PINN/results_vanilla_T{config['T']}-y0{config['y0']}.csv")
