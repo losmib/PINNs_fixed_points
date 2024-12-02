@@ -69,4 +69,7 @@ if __name__ == "__main__":
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     
-    table_entry.to_csv(f"results_vanilla_T{config['T']}-y0{config['y0']}.csv")
+    if not os.path.exists("vanilla_PINN"):
+        os.makedirs("vanilla_PINN")
+
+    table_entry.to_csv(f"vanilla_PINN/results_vanilla_T{config['T']}-y0{config['y0']}.csv")
