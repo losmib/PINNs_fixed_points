@@ -13,7 +13,7 @@ echo "The reserved GPUs are: $CUDA_VISIBLE_DEVICES"
 
 source env/bin/activate
 
-python3 train.py -c "config/$1/job_${SLURM_ARRAY_TASK_ID}.yaml"
+python3 train.py -c "configs/$1/job_${SLURM_ARRAY_TASK_ID}.yaml"
 
 rm config/$1/job_${SLURM_ARRAY_TASK_ID}.yaml
  
