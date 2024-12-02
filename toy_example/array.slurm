@@ -7,11 +7,11 @@
 
 #SBATCH --time=2:00:00
 
-#SBATCH --array=1-30%2
+#SBATCH --array=1-30%4
 
 echo "The reserved GPUs are: $CUDA_VISIBLE_DEVICES"
 
-source .venv/bin/activate
+source env/bin/activate
 
 python3 train.py -c "config/$1/job_${SLURM_ARRAY_TASK_ID}.yaml"
 
