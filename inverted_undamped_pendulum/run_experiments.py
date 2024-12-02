@@ -12,7 +12,7 @@ import re
 import os
 
 
-NUM_TRAINING_RUNS = 10
+NUM_TRAINING_RUNS = 20
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
@@ -42,16 +42,18 @@ param_grid = {
         25000,
     ],
     "regularization": [
-        "no_reg",
+        "unstable_fp",
+        "reg_derivative",
+        "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
-        1
+        0.25, 0.5, 0.75, 1.0
     ],
     "reg_coeff": [
-      0
+      0.1, 1, 10, 100, 1000
     ],
     "reg_decay": [
-        None, 
+        "linear"
     ]
 }
 
@@ -122,4 +124,4 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
         pd.concat(results_list).to_csv(results_path)
 
 
-run_experiments_on_params(param_grid=param_grid, results_path="results_no_reg.csv")
+run_experiments_on_params(param_grid=param_grid, results_path="results_linear_decay.csv")
