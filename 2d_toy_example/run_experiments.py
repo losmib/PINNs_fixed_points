@@ -92,28 +92,30 @@ for params in grid_parameters(param_grid):
         PINN = PhysicsInformedNN(config, verbose=True)
         try:
             training_log = PINN.train()
+       
+        
+            # get reference solution (analytical)
+            t_line, x_true, y_true = PINN.data.reference()
+
+            xy_true = np.concatenate([x_true.numpy(), y_true.numpy()], axis=1)
+            # get PINN prediction
+            xy_pred = PINN(t_line)
+            
+            loss = mean_squared_error(xy_true, xy_pred)
+            loss_success = np.linalg.norm(xy_true - xy_pred) / np.linalg.norm(xy_true) < 0.15
+            losses.append(loss)
+            loss_successes.append(loss_success)
+            
         except Exception as e:
             print(e)
             i -= 1
             continue
-        
-        # get reference solution (analytical)
-        t_line, x_true, y_true = PINN.data.reference()
 
-        xy_true = np.concatenate([x_true.numpy(), y_true.numpy()], axis=1)
-        # get PINN prediction
-        xy_pred = PINN(t_line)
-        
-        loss = mean_squared_error(xy_true, xy_pred)
-        loss_success = np.linalg.norm(xy_true - xy_pred) / np.linalg.norm(xy_true) < 0.15
-        losses.append(loss)
-        loss_successes.append(loss_success)
-        
         toy_example_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
         learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
         loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol")
         plot_regularization(PINN, path=f"logs/{dirname}/run_{i}/regularization_plot")
-               
+                
     table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
     
     table_entry["mean_loss"] = np.mean(losses)
