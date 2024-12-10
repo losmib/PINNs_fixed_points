@@ -237,7 +237,7 @@ def results_heatmap(results):
     results["reg_decay"].fillna("no decay", inplace=True)
     table = pd.pivot_table(results, values="loss_successes_percent", 
                            index=["regularization", "reg_epochs", "reg_coeff", "reg_decay"],
-                           columns=["theta0", "T"],
+                           columns=["x0", "T"],
                            aggfunc="mean")
     sns.heatmap(table)
     plt.show()

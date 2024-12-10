@@ -58,6 +58,7 @@ class Loss():
         loss = tf.reduce_mean(res_squared)
         if self.regularizer is not None:
             loss += reg_coeff * tf.reduce_mean(self.regularizer(t_col, theta, omega, omega_t))
+        
         return loss
 
     def physics_loss(self, t_col):
@@ -78,7 +79,7 @@ class Loss():
         return tf.square(res), theta, omega, omega_t
 
     def regularizer_unstable_fp(self, t_col, theta, omega, omega_t):
-        loss = tf.sqrt(tf.nn.relu((tf.cos(theta) - tf.cos(self.theta0)) * self.g / self.l))
+        loss = tf.sqrt(tf.nn.relu((tf.cos(theta)) * self.g / self.l))
         return loss
     
     def regularizer_derivative(self, t_col, theta, omega, omega_t):
