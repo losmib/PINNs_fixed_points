@@ -124,7 +124,35 @@ def plot_regularization(PINN, path=None):
     else:
         plt.show()
         
-    
+
+def regularization_over_domain(PINN, path=None):
+
+    # get (equally-spaced) data points
+    t_line = PINN.data.t_line()
+    # get reference solution (analytical)
+    y_true = PINN.data.reference(t_line)
+
+    y = np.linspace(-1.1, 1.1, t_line.shape[0]) 
+    reg_loss = PINN.loss.regularizer_unstable_fp(t_col=None, y=y, y_t=None).numpy()
+    reg_loss_grid = np.repeat(reg_loss.reshape(-1, 1), reg_loss.shape[0], axis=1)
+    # Plot regularization loss landscape
+    # plt.contourf(x, x_t, reg_loss)
+    plt.imshow(reg_loss_grid, vmin=0., vmax=np.max(reg_loss), cmap=plt.cm.coolwarm, origin='lower',
+               extent=[t_line.numpy().min(), t_line.numpy().max(), y.min(), y.max()])
+    plt.colorbar()
+
+    plt.plot(t_line, y_true, label="reference", color="black")
+
+    plt.xlabel("T")
+    plt.ylabel("y0")
+
+    if path is not None:
+        plt.savefig(path)
+        plt.close()
+    else:
+        plt.show()
+
+
 def results_heatmap(results):
     results["reg_decay"].fillna("no decay", inplace=True)
     table = pd.pivot_table(results, values="loss_successes_percent", 

@@ -66,17 +66,7 @@ class PhysicsInformedNN(Sequential):
                        activation=None))
         if verbose:
             self.summary()      
-
-
-    def call(self, t, training=False, mask=None):
-        '''
-        Overwrites default call function for
-        implementing hard constraints (initial condition)
-        '''   
-        # hyperbolic tangent distance function
-        t = t / self.T
-        return super().call(t, training=training, mask=mask)                   
-
+                
             
     def train(self):
         '''

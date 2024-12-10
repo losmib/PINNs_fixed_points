@@ -24,7 +24,7 @@ param_grid = {
     "T": [7.5, 10],
     "y0": [0.001, 0.01, 0.1],
     "network_architectures": [
-        (4, 50),
+        (2, 20),
     ],
     "activations": [
         "swish",
