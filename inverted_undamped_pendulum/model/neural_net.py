@@ -47,7 +47,15 @@ class PhysicsInformedNN(Sequential):
         self._path = self.log_path.joinpath(self.version)
         self._path.mkdir(parents=True, exist_ok=True)
         print('*** PINN build & initialized ***')  
-        
+    
+    def call(self, t, training=False, mask=None):
+        '''
+        Overwrites default call function for
+        implementing hard constraints (initial condition)
+        '''   
+        # hyperbolic tangent distance function
+        t = t / self.T
+        return super().call(t, training=training, mask=mask)
  
     def build_layers(self, verbose):
         '''
