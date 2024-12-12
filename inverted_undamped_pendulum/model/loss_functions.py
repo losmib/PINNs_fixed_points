@@ -76,10 +76,12 @@ class Loss():
         omega_t = t.gradient(omega, t_col)
         
         res = omega_t - self.g/self.l * tf.math.sin(theta)
+   
         return tf.square(res), theta, omega, omega_t
 
     def regularizer_unstable_fp(self, t_col, theta, omega, omega_t):
-        loss = tf.sqrt(tf.nn.relu((tf.cos(theta)) * self.g / self.l))
+        loss = tf.sqrt(tf.nn.relu((tf.cos(theta)) * self.g / self.l) + 10**-12)
+      
         return loss
     
     def regularizer_derivative(self, t_col, theta, omega, omega_t):

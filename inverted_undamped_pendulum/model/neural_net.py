@@ -91,13 +91,14 @@ class PhysicsInformedNN(Sequential):
             # perform one train step
             if epoch > self.reg_epochs:
                 reg_coeff = 0
+       
             train_logs = self.train_step(t_col, reg_coeff)
             # provide logs to callback 
             self.callback.write_logs(train_logs, epoch)
             
             if self.reg_decay == "linear":
                 reg_coeff = init_reg_coeff * (1 - epoch / self.reg_epochs)
-            
+
             if self.freq_save != 0:
                 if (epoch % self.freq_save) == 0:
                     self.save_weights(flag=epoch)
@@ -122,9 +123,10 @@ class PhysicsInformedNN(Sequential):
             loss_P = self.loss.pendulum(t_col, reg_coeff)
             # final training loss
             loss_train = loss_IC + loss_P
-            
+      
         # retrieve gradients
-        grads = tape.gradient(loss_train, self.weights)        
+        grads = tape.gradient(loss_train, self.weights)    
+          
         # perform single GD step 
         self.optimizer.apply_gradients(zip(grads, self.weights))              
         # save logs for recording
