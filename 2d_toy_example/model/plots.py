@@ -225,13 +225,24 @@ def results_heatmap(results):
     results["reg_decay"].fillna("no decay", inplace=True)
     table = pd.pivot_table(results, values="loss_successes_percent", 
                            index=["regularization", "reg_epochs", "reg_coeff", "reg_decay"],
-                           columns=["y0", "T"],
+                           columns=["x0", "y0", "T"],
                            aggfunc="mean")
     sns.heatmap(table)
     plt.show()
 
 
-def plot_comparissons(results):
-    results["T-y0"] = results["T"].astype(str) + "-" + results["y0"].astype(str)
-    sns.barplot(results, x="T-y0", y="loss_successes_percent", hue="regularization")
-    plt.show()
+
+def results_linear_decay(results):
+    results = results.loc[results["reg_decay"] == "linear"]
+    
+    results["split"] = results["T"].astype(str) + "-" + results["x0-y0"].astype(str) + "-" + results["regularization"].astype(str)
+
+    for split in results["split"].unique():
+        results_split = results.loc[results["split"] == split]
+        table = pd.pivot_table(results_split, values="loss_successes_percent", 
+                            index=["reg_epochs"],
+                            columns=["reg_coeff"],
+                            aggfunc="mean")
+        sns.heatmap(table)
+        plt.title(split)
+        plt.show()
