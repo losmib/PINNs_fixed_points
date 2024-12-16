@@ -81,9 +81,9 @@ for params in grid_parameters(param_grid):
     loss_successes = []
 
     fixed_points = {
-            (-1.0) : 0, 
-            (0.0): 0, 
-            (1.0): 0, 
+            -1.0 : 0, 
+            0.0: 0, 
+            1.0: 0, 
         }
     
     for i in range(NUM_TRAINING_RUNS):
