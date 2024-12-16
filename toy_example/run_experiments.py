@@ -120,11 +120,11 @@ for params in grid_parameters(param_grid):
         y_last_pred = tf.reduce_mean(y_pred[-10:])
 
         for fp, counter in fixed_points.items():
-                if np.linalg.norm(y_last_pred - fp[0]) < 0.1:
+                if np.linalg.norm(y_last_pred - fp) < 0.1:
                     fixed_points[fp] += 1
                
     table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
-    
+
     for fp, counter in fixed_points.items():
             table_entry[fp] = counter
     
