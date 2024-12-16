@@ -91,9 +91,9 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
                 continue
 
         fixed_points = {
-            (0.0) : 0, 
-            (np.pi): 0, 
-            (2 * np.pi): 0, 
+            0.0 : 0, 
+            np.pi: 0, 
+            2 * np.pi: 0, 
         }
 
         for i in range(NUM_TRAINING_RUNS):
