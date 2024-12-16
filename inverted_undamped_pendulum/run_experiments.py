@@ -127,7 +127,7 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
             theta_last_pred = tf.reduce_mean(theta_pred[-10:])
             
             for fp, counter in fixed_points.items():
-                if np.linalg.norm(theta_last_pred - fp[0]) < 0.1 and loss_success == 0:
+                if np.linalg.norm(theta_last_pred - fp) < 0.1 and loss_success == 0:
                     fixed_points[fp] += 1
         
         table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
