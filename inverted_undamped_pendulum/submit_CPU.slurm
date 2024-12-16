@@ -3,7 +3,7 @@
 
 #SBATCH --mem-per-cpu=2G
 
-#SBATCH --time=72:00:00
+#SBATCH --time=96:00:00
 
 echo "The reserved GPUs are: $CUDA_VISIBLE_DEVICES"
 
