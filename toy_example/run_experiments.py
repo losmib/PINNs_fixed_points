@@ -9,6 +9,7 @@ import pandas as pd
 import numpy as np
 import os
 import re
+import tensorflow as tf
 
 NUM_TRAINING_RUNS = 20
 
@@ -78,6 +79,12 @@ for params in grid_parameters(param_grid):
 
     losses = []
     loss_successes = []
+
+    fixed_points = {
+            (-1.0) : 0, 
+            (0.0): 0, 
+            (1.0): 0, 
+        }
     
     for i in range(NUM_TRAINING_RUNS):
         if config["regularization"] == "no_reg" or config["reg_epochs"] == 0:
@@ -109,8 +116,17 @@ for params in grid_parameters(param_grid):
         learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
         loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol")
         plot_regularization(PINN, path=f"logs/{dirname}/run_{i}/regularization_plot")
+
+        y_last_pred = tf.reduce_mean(y_pred[-10:])
+
+        for fp, counter in fixed_points.items():
+                if np.linalg.norm(y_last_pred - fp[0]) < 0.1:
+                    fixed_points[fp] += 1
                
     table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
+    
+    for fp, counter in fixed_points.items():
+            table_entry[fp] = counter
     
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)

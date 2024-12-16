@@ -10,6 +10,7 @@ import numpy as np
 
 import re
 import os
+import tensorflow as tf
 
 
 NUM_TRAINING_RUNS = 20
@@ -88,6 +89,13 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
         if config["regularization"] == "no_reg" or config["reg_epochs"] == 0:
             if config["reg_coeff"] > 1:
                 continue
+
+        fixed_points = {
+            (0.0) : 0, 
+            (np.pi): 0, 
+            (2 * np.pi): 0, 
+        }
+
         for i in range(NUM_TRAINING_RUNS):
             if not os.path.exists(f"logs/{dirname}/run_{i}"):
                 os.makedirs(f"logs/{dirname}/run_{i}")
@@ -115,8 +123,18 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
             learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
             loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol")
             plot_regularization(PINN, path=f"logs/{dirname}/run_{i}/regularization_plot")
+
+            theta_last_pred = tf.reduce_mean(theta_pred[-10:])
+            
+            for fp, counter in fixed_points.items():
+                if np.linalg.norm(theta_last_pred - fp[0]) < 0.1 and loss_success == 0:
+                    fixed_points[fp] += 1
         
         table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
+        
+        for fp, counter in fixed_points.items():
+            table_entry[fp] = counter
+
         
         table_entry["mean_loss"] = np.mean(losses)
         table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
