@@ -10,10 +10,10 @@ seed: 1               # data sampling and weights initialization
 #################################
 
 # Initial Condition
-x0: 0.1
-y0: 0.1
+x0: 0.3
+y0: 0.43
 # Simulation Length
-T: 5
+T: 10
 
 #################################
 # Data settings (sampled anewly at each epoch)
