@@ -215,3 +215,30 @@ def plot_comparissons(results):
     results["T-theta0"] = results["T"].astype(str) + "-" + results["theta0"].astype(str)
     sns.barplot(results, x="T-theta0", y="loss_successes_percent", hue="regularization")
     plt.show()
+
+
+def plot_EL_loss(PINN, path=None):
+    t_line, theta_true, omega_true = PINN.data.reference()
+    
+    with tf.GradientTape() as tape1:
+        with tf.GradientTape() as tape2:
+            tape1.watch(t_line)  
+            tape2.watch(t_line) 
+            physics_loss, theta, omega, omega_t = PINN.loss.physics_loss(t_line)
+
+            left_side = 2 * (omega_t - PINN.loss.g/PINN.loss.l * tf.math.sin(theta)) * (-PINN.loss.g/PINN.loss.l * tf.math.cos(theta))
+            right_side_derivative = tape1.gradient(2 * (omega_t - PINN.loss.g/PINN.loss.l * tf.math.sin(theta)), t_line)
+            right_side = tape2.gradient(right_side_derivative, t_line)
+            EL_loss = (left_side + right_side)**2
+
+    plt.figure()
+    plt.plot(t_line, physics_loss, label="physics loss")
+    plt.plot(t_line, EL_loss, label="Euler Lagrange loss")
+    plt.legend()
+    
+    plt.tight_layout()
+    if path is not None:
+        plt.savefig(path)
+        plt.close()
+    else:
+        plt.show()

@@ -139,10 +139,10 @@ def regularization_over_domain(PINN, path=None):
     # plt.contourf(x, x_t, reg_loss)
     plt.imshow(reg_loss_grid, vmin=0., vmax=np.max(reg_loss), cmap=plt.cm.coolwarm, origin='lower',
                extent=[t_line.numpy().min(), t_line.numpy().max(), y.min(), y.max()])
-    plt.colorbar()
+    plt.colorbar(orientation="horizontal")
 
     plt.plot(t_line, y_true, label="reference", color="black")
-
+    plt.legend()
     plt.xlabel("T")
     plt.ylabel("y0")
 

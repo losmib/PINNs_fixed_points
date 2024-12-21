@@ -55,7 +55,10 @@ if __name__ == "__main__":
             file=args.config,
             config_update={'seed': seed}
         )
-
+        config["regularization"] = "reg_derivative_unstable_fp"
+        config["reg_decay"] = "linear"
+        config["reg_coeff"] = 1.0
+        config["reg_epochs"] = 0.5
         # run code with config
         loss, loss_success = train_and_test(config)
         losses.append(loss)
@@ -69,7 +72,7 @@ if __name__ == "__main__":
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     
-    if not os.path.exists("vanilla_PINN"):
-        os.makedirs("vanilla_PINN")
+    if not os.path.exists("regularized_PINN"):
+        os.makedirs("regularized_PINN")
     
-    table_entry.to_csv(f"vanilla_PINN/results_vanilla_T{config['T']}-y0{config['y0']}.csv")
+    table_entry.to_csv(f"regularized_PINN/results_vanilla_T{config['T']}-y0{config['y0']}.csv")
