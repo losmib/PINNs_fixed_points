@@ -139,10 +139,10 @@ def regularization_over_domain(PINN, path=None):
     # plt.contourf(x, x_t, reg_loss)
     plt.imshow(reg_loss_grid, vmin=0., vmax=np.max(reg_loss), cmap=plt.cm.coolwarm, origin='lower',
                extent=[t_line.numpy().min(), t_line.numpy().max(), y.min(), y.max()])
-    plt.colorbar()
+    plt.colorbar(orientation="horizontal")
 
     plt.plot(t_line, y_true, label="reference", color="black")
-
+    plt.legend()
     plt.xlabel("T")
     plt.ylabel("y0")
 
@@ -167,3 +167,28 @@ def plot_comparissons(results):
     results["T-y0"] = results["T"].astype(str) + "-" + results["y0"].astype(str)
     sns.barplot(results, x="T-y0", y="loss_successes_percent", hue="regularization")
     plt.show()
+
+
+def plot_EL_loss(PINN, path=None):
+    t_col = PINN.data.t_line()
+    
+    with tf.GradientTape() as tape:
+        tape.watch(t_col)   
+        physics_loss , y, y_t = PINN.loss.physics_loss(t_col)
+
+        left_side = 2 * (y_t - y + y**3) * (-1 + 3*y**2)
+        right_side = 2 * tape.gradient(y_t - y + y**3, t_col)
+
+        EL_loss = (left_side - right_side)**2
+
+    plt.figure()
+    plt.plot(t_col, physics_loss, label="physics loss")
+    plt.plot(t_col, EL_loss, label="Euler Lagrange loss")
+    plt.legend()
+    
+    plt.tight_layout()
+    if path is not None:
+        plt.savefig(path)
+        plt.close()
+    else:
+        plt.show()

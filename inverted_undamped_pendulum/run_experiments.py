@@ -25,8 +25,8 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 config_base = load_config('configs/default.yaml')
 param_grid = {
     "l": [1],
-    "T": [5],
-    "theta0": [100],
+    "T": [2.5, 5, 7.5],
+    "theta0": [20, 90, 270, 340],
     "network_architectures": [
         (4, 50),
     ],
@@ -43,15 +43,13 @@ param_grid = {
         25000,
     ],
     "regularization": [
-        "unstable_fp",
-        "reg_derivative",
         "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
-        0.25, 0.5, 0.75, 1.0
+        0.5
     ],
     "reg_coeff": [
-      0.1, 1, 10, 100, 1000
+        100
     ],
     "reg_decay": [
         "linear"
@@ -142,4 +140,4 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
         pd.concat(results_list).to_csv(results_path)
 
 
-run_experiments_on_params(param_grid=param_grid, results_path="results_linear_decay.csv")
+run_experiments_on_params(param_grid=param_grid, results_path="results_full.csv")
