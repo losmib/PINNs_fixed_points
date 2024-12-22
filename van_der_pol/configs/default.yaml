@@ -10,7 +10,7 @@ seed: 1               # data sampling and weights initialization
 #################################
 
 # mu
-mu: 1
+mu: 1.0
 
 # Initial Angle (in degrees)
 x0: 0.1
@@ -34,7 +34,7 @@ N_hidden: 4
 N_neurons: 50
 activation: 'swish'
 
-N_epochs: 25000
+N_epochs: 10000
 learning_rate: 0.001
 decay_rate: 1.0
 
@@ -50,7 +50,7 @@ freq_save: 1000
 #################################
 # Regularization settings
 #################################
-regularizer: "reg_derivative_unstable_fp"
-reg_coeff: 0.1
+regularizer: "reg_derivative"
+reg_coeff: 1.0
 reg_decay: "linear"
 reg_epochs: 0.5
