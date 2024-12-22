@@ -76,8 +76,8 @@ class Loss():
         
     def regularizer_unstable_fp(self, t_col, x, x_t, y, y_t):
       
-        lam1 = 0.5 * (-1*(3*x + 4*y - 5) - tf.sqrt(tf.nn.relu((3*x + 4*y - 5)**2 - 4 * (2 * x**2 + 4*y**2 + 4*x*y - 7*x - 10*y + 6))))
-        lam2 = 0.5 * (-1*(3*x + 4*y - 5) + tf.sqrt(tf.nn.relu((3*x + 4*y - 5)**2 - 4 * (2 * x**2 + 4*y**2 + 4*x*y - 7*x - 10*y + 6))))
+        lam1 = 0.5 * (-1*(3*x + 4*y - 5) - tf.sqrt(tf.nn.relu((3*x + 4*y - 5)**2 - 4 * (2 * x**2 + 4*y**2 + 4*x*y - 7*x - 10*y + 6)) + 10**-12))
+        lam2 = 0.5 * (-1*(3*x + 4*y - 5) + tf.sqrt(tf.nn.relu((3*x + 4*y - 5)**2 - 4 * (2 * x**2 + 4*y**2 + 4*x*y - 7*x - 10*y + 6)) + 10**-12))
         reg_loss = tf.nn.relu(lam1) + tf.nn.relu(lam2)
         return reg_loss
     
