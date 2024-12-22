@@ -43,8 +43,8 @@ class PhysicsInformedNN(Sequential):
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs
-        self._path = self.log_path.joinpath(self.version)
-        self._path.mkdir(parents=True, exist_ok=True)
+        self.path_ = self.log_path.joinpath(self.version)
+        self.path_.mkdir(parents=True, exist_ok=True)
         print('*** PINN build & initialized ***')  
         
  
@@ -64,9 +64,9 @@ class PhysicsInformedNN(Sequential):
         self.add(Dense(units=1, 
                        activation=None))
         if verbose:
-            self.summary()                         
+            self.summary()       
 
-            
+    
     def train(self):
         '''
         Training loop with batch gradiend-descent optimization 
@@ -102,7 +102,7 @@ class PhysicsInformedNN(Sequential):
                     self.save_weights(flag=epoch)
 
         # save log
-        self.callback.save_logs(self._path)
+        self.callback.save_logs(self.path_)
         print("Training finished!")
         return self.callback.log
 

@@ -71,8 +71,8 @@ class Loss():
             with tf.GradientTape() as tt:
                 tt.watch(t_col)    
                 x = self.model(t_col)
-            x_t = tt.gradient(x, t_col) 
-        x_tt = t.gradient(x_t, t_col)
+                x_t = tt.gradient(x, t_col) 
+            x_tt = t.gradient(x_t, t_col)
         
         res = x_tt - self.mu * (1 - x**2) * x_t + x
         return tf.square(res), x, x_t, x_tt
@@ -83,11 +83,11 @@ class Loss():
         return tf.nn.relu(lam1) + tf.nn.relu(lam2)
 
     def regularizer_derivative(self, t_col, x, x_t, x_tt):
-        eps = 10**0
+        eps = 1
         loss = tf.exp(-(x_tt**2 + x_t**2) / eps)
         return loss
     
     def regularizer_derivative_unstable_fp(self, t_col, x, x_t, x_tt):
-        eps = 10**0
+        eps = 1
         return self.regularizer_derivative(t_col, x, x_t, x_tt) * \
             self.regularizer_derivative_unstable_fp(t_col, x, x_t, x_tt)
