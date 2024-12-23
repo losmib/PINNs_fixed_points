@@ -33,7 +33,7 @@ N_col: 1024
 #################################
 
 N_hidden: 5
-N_neurons: 100
+N_neurons: 90
 activation: 'swish'
 
 N_epochs: 25000
@@ -52,7 +52,7 @@ freq_save: 1000
 #################################
 # Regularization settings
 #################################
-regularizer: "no_reg"
-reg_coeff: 0
+regularizer: "reg_derivative_unstable_fp"
+reg_coeff: 100
 reg_decay: "linear"
 reg_epochs: 0.5

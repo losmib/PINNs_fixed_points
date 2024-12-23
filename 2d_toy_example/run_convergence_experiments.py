@@ -104,6 +104,9 @@ def repeat_with_reg(file):
     table_no_reg["y0"] = table_no_reg["(x0, y0)"].apply(lambda row: eval(row)[1])
     config["regularization"] = "reg_derivative_unstable_fp"
     table_reg = table_no_reg
+    table_reg["converged to with reg"] = ""
+    table_reg["closest fp with reg"] = ""
+    table_reg["stability with reg"] = ""
     for i in range(table_no_reg.shape[0]):
         config["xo"] = table_reg["x0"].iloc[i]
         config["y0"] = table_reg["y0"].iloc[i]
@@ -138,9 +141,9 @@ def repeat_with_reg(file):
                         closest_fp = fp
                         stability = fixed_points[fp]
                 
-                table_reg["converged to"].iloc[i] = str(tuple(x_last_pred, y_last_pred))
-                table_reg["closest fp"].iloc[i] = closest_fp
-                table_reg["stability"].iloc[i] = stability
+                table_reg["converged to with reg"].iloc[i] = str(tuple(x_last_pred, y_last_pred))
+                table_reg["closest fp with reg"].iloc[i] = closest_fp
+                table_reg["stability with reg"].iloc[i] = stability
                 
 
         except Exception as e:
