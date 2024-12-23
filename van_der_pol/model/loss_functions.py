@@ -90,4 +90,4 @@ class Loss():
     def regularizer_derivative_unstable_fp(self, t_col, x, x_t, x_tt):
         eps = 1
         return self.regularizer_derivative(t_col, x, x_t, x_tt) * \
-            self.regularizer_derivative_unstable_fp(t_col, x, x_t, x_tt)
+            self.regularizer_unstable_fp(t_col, x, x_t, x_tt)
