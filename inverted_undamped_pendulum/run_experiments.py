@@ -26,7 +26,7 @@ config_base = load_config('configs/default.yaml')
 param_grid = {
     "l": [1],
     "T": [2.5, 5, 7.5],
-    "theta0": [100],
+    "theta0": [20, 90, 100, 270, 340],
     "network_architectures": [
         (4, 50),
     ],
@@ -43,13 +43,13 @@ param_grid = {
         25000,
     ],
     "regularization": [
-        "no_reg"
+        "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
         0.5
     ],
     "reg_coeff": [
-        0
+        100
     ],
     "reg_decay": [
         "linear"
@@ -140,4 +140,4 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
         pd.concat(results_list).to_csv(results_path)
 
 
-run_experiments_on_params(param_grid=param_grid, results_path="results_no_reg_100.csv")
+run_experiments_on_params(param_grid=param_grid, results_path="results_reg_full.csv")
