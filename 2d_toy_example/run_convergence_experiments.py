@@ -151,7 +151,7 @@ def repeat_with_reg(file):
                 print(e)
 
             
-                table_reg.to_csv("convergence_points_reg.csv")
+        table_reg.to_csv("convergence_points_reg.csv")
 
 
 repeat_with_reg("convergence_points.csv")
