@@ -108,6 +108,7 @@ def repeat_with_reg(file):
     table_reg["converged to with reg"] = ""
     table_reg["closest fp with reg"] = ""
     table_reg["stability with reg"] = ""
+    table_reg["success reg"] = ""
     for i in range(table_no_reg.shape[0]):
         config["xo"] = table_reg["x0"].iloc[i]
         config["y0"] = table_reg["y0"].iloc[i]
@@ -145,13 +146,14 @@ def repeat_with_reg(file):
                 table_reg["converged to with reg"].iloc[i] = str(tuple((float(x_last_pred), float(y_last_pred))))
                 table_reg["closest fp with reg"].iloc[i] = str(closest_fp)
                 table_reg["stability with reg"].iloc[i] = str(stability)
+                table_reg["success reg"].iloc[i] = loss_success
                 
 
         except Exception as e:
                 print(e)
 
             
-                table_reg.to_csv("convergence_points_reg.csv")
+        table_reg.to_csv("convergence_points_reg.csv")
 
 
 repeat_with_reg("convergence_points.csv")
