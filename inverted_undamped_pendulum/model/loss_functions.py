@@ -85,7 +85,7 @@ class Loss():
         return loss
     
     def regularizer_derivative(self, t_col, theta, omega, omega_t):
-        eps = 10**0
+        eps = 10**-2
         loss = tf.exp(-(omega_t**2 + omega**2) / eps)
         return loss
     

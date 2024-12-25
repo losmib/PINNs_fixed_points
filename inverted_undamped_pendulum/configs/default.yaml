@@ -32,8 +32,8 @@ N_col: 1024
 # PhysicsInformedNN settings
 #################################
 
-N_hidden: 5
-N_neurons: 90
+N_hidden: 4
+N_neurons: 50
 activation: 'swish'
 
 N_epochs: 25000
