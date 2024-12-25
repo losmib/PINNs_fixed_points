@@ -81,11 +81,11 @@ class Loss():
 
     def regularizer_unstable_fp(self, t_col, theta, omega, omega_t):
         loss = tf.sqrt(tf.nn.relu((tf.cos(theta)) * self.g / self.l) + 10**-12)
-      
+        # loss = tf.nn.relu((tf.cos(theta)) * self.g / self.l)
         return loss
     
     def regularizer_derivative(self, t_col, theta, omega, omega_t):
-        eps = 10**0
+        eps = 10**-2
         loss = tf.exp(-(omega_t**2 + omega**2) / eps)
         return loss
     

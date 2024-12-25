@@ -43,13 +43,13 @@ param_grid = {
         25000,
     ],
     "regularization": [
-        "reg_derivative_unstable_fp"
+        "unstable_fp"
     ],
     "reg_epochs": [
-        0.5
+        0.25, 0.5, 0.75, 1.0
     ],
     "reg_coeff": [
-        100
+        0.1, 1, 10, 100, 1000
     ],
     "reg_decay": [
         "linear"
@@ -140,4 +140,4 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
         pd.concat(results_list).to_csv(results_path)
 
 
-run_experiments_on_params(param_grid=param_grid, results_path="results_reg_full_eps1.csv")
+run_experiments_on_params(param_grid=param_grid, results_path="results_reg_unstable_fp_linear_decay.csv")
