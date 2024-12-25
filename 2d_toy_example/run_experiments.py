@@ -51,7 +51,7 @@ param_grid = {
         #"unstable_fp"
     ],
     "reg_epochs": [
-        25, 0.5, 0.75, 1.0
+        0.25, 
     ],
     "reg_coeff": [
        0.1, 1, 10, 100, 1000
@@ -147,5 +147,5 @@ for params in grid_parameters(param_grid):
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     results_list.append(table_entry)
-    pd.concat(results_list).to_csv("results_reg.csv")
+    pd.concat(results_list).to_csv("results_reg_combo_0_25.csv")
 
