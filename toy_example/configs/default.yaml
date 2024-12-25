@@ -12,7 +12,7 @@ seed: 1               # data sampling and weights initialization
 # Initial Condition
 y0: 0.1
 # Simulation Length
-T: 10
+T: 6
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -24,8 +24,8 @@ N_col: 1024
 # PhysicsInformedNN settings
 #################################
 
-N_hidden: 4
-N_neurons: 50
+N_hidden: 2
+N_neurons: 20
 activation: 'swish'
 
 #################################
