@@ -20,7 +20,7 @@ theta0: 100
 omega0: 0
 
 # Simulation Length
-T: 10
+T: 5
 
 #################################
 # Data settings (sampled anewly at each epoch)

@@ -140,4 +140,4 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
         pd.concat(results_list).to_csv(results_path)
 
 
-run_experiments_on_params(param_grid=param_grid, results_path="results_reg_full.csv")
+run_experiments_on_params(param_grid=param_grid, results_path="results_reg_full_eps1.csv")
