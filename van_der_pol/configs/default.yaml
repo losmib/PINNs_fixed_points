@@ -15,10 +15,10 @@ mu: 1.0
 # Initial Angle (in degrees)
 x0: 0.1
 # Initial Velocity
-x_t0: 0
+x_t0: 0.1
 
 # Simulation Length
-T: 12.5
+T: 15.0
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -34,7 +34,7 @@ N_hidden: 4
 N_neurons: 50
 activation: 'swish'
 
-N_epochs: 10000
+N_epochs: 25000
 learning_rate: 0.001
 decay_rate: 1.0
 
@@ -50,7 +50,7 @@ freq_save: 1000
 #################################
 # Regularization settings
 #################################
-regularizer: "reg_derivative"
+regularizer: "no_reg"
 reg_coeff: 1.0
 reg_decay: "linear"
 reg_epochs: 0.5
