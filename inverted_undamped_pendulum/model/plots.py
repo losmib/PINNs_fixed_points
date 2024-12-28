@@ -98,6 +98,73 @@ def pendulum_dynamics(PINN, path=None):
         plt.close()
     else:
         plt.savefig(path)
+
+def plot_regularization_over_domain(PINN, path=None):
+    fig, axes = plt.subplots(1, 2, figsize=(6, 2))
+
+    t_line, theta_true, omega_true = PINN.data.reference()
+    N = 500
+    eps = 0.1
+    # x = np.linspace(min(0, np.min(x_true)) - eps, np.max(x_true) + eps, N)
+    # y = np.linspace(min(0, np.min(y_true)) - eps, np.max(y_true) + eps, N)
+
+    theta = np.linspace(-2*np.pi - 0.1, 2*np.pi + 0.1, t_line.shape[0]) 
+    reg_loss = PINN.loss.regularizer_unstable_fp(t_col=None, theta=theta, omega=None, omega_t=None).numpy()
+    reg_loss_grid = np.repeat(reg_loss.reshape(-1, 1), reg_loss.shape[0], axis=1)
+    
+    im1 = axes[0].imshow(reg_loss_grid, vmin=0., vmax=np.max(reg_loss), cmap=plt.cm.coolwarm, origin='lower',
+               extent=[t_line.numpy().min(), t_line.numpy().max(), theta.min(), theta.max()], aspect='auto')
+    fig.colorbar(im1, orientation="vertical", ax=axes[0])
+    axes[0].plot(t_line, theta_true, label="reference", color="black")
+    axes[0].legend(frameon=False, loc=1, ncol=2, fontsize=8)
+    axes[0].set_xlabel("T")
+    axes[0].set_ylabel("theta")
+    
+    
+    # Background arrows
+    xscale, yscale, n_arrows = 2.0, 2.0, 10
+    theta = np.linspace(-xscale*np.pi, xscale*np.pi, n_arrows)
+    omega = np.linspace(-yscale*np.pi, yscale*np.pi, n_arrows)
+    XX, YY = np.meshgrid(theta, omega)
+    Y = np.vstack([XX.flatten(), YY.flatten()])
+    t = np.zeros(len(Y))
+    [dtheta, domega] = PINN.data.diff_equations(t, Y)
+    theta, omega = XX.flatten(), YY.flatten()
+
+    loss_theta = np.linspace(-xscale*np.pi, xscale*np.pi, 500)
+    loss_omega = np.linspace(-yscale*np.pi, yscale*np.pi, 500)
+    loss_theta_grid, loss_omega_grid = np.meshgrid(loss_theta, loss_omega)
+
+    reg_loss_grid = PINN.loss.regularizer_unstable_fp(t_col=None, theta=loss_theta_grid.reshape(-1, 1), omega=None, omega_t=None).numpy().reshape(loss_theta_grid.shape)
+    im2 = axes[1].imshow(reg_loss_grid, vmin=0., vmax=np.max(reg_loss), cmap=plt.cm.coolwarm, origin='lower',
+               extent=[theta.min(), theta.max(), omega.min(), omega.max()], aspect='auto')
+    fig.colorbar(im2, orientation="vertical", ax=axes[1])
+
+    axes[1].quiver(theta, omega, dtheta, domega, color='0.5')
+    # Fixed Points
+    axes[1].scatter(np.pi, 0, edgecolors='r', facecolors='none')
+    axes[1].scatter(-np.pi, 0, edgecolors='r', facecolors='none')
+    axes[1].scatter(0, 0, edgecolors='g', facecolors='none')
+    # Axis lines
+    axes[1].axhline(0, lw=1, ls='--', c='black')
+    axes[1].axvline(0, lw=1, ls='--', c='black')
+
+    # Plot trajectories
+    axes[1].plot(theta_true, omega_true, c='black', lw=1, label='Reference')
+
+    # Axis appearance
+    axes[1].set_xlabel(r'$\theta$')
+    axes[1].set_ylabel(r'$\omega$')
+    axes[1].set_xticks([-np.pi, 0, np.pi])
+    axes[1].set_xticklabels([r'$\pi$', 0, r'$\pi$'])                
+
+    plt.tight_layout()
+    
+    if path == None:
+        plt.show()
+        plt.close()
+    else:
+        plt.savefig(path)
         
         
 def loss_over_tcoll(PINN, path=None):
