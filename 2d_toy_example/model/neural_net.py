@@ -22,7 +22,7 @@ class PhysicsInformedNN(Model):
     args = ['version', 'seed', 'y0', 'x0', 'T',
             'N_hidden', 'N_neurons', 'activation',
             'N_epochs', 'learning_rate', 'decay_rate', 
-            'reg_epochs', 'regularization', 'reg_coeff', 'reg_decay', 
+            'reg_epochs', 'regularizer', 'reg_coeff', 'reg_decay', 
             'freq_save']
     # default log Path
     log_path = Path('logs')
