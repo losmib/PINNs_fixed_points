@@ -30,7 +30,7 @@ config["activation"] = "swish"
 config["N_hidden"] = 4
 config["N_neurons"] = 50
 config["N_epochs"] = 25000
-config["T"] = 15
+config["T"] = 12.5
 config["freq_save"] = 0
 
 
@@ -48,8 +48,8 @@ def run_without_reg():
     table_list = []
 
     for fp in fixed_points:
-        x0s = np.random.normal(fp[0], 0.1, size=NUM_SAMPLES_PER_FP)
-        x_t0s = np.random.normal(fp[1], 0.1, size=NUM_SAMPLES_PER_FP)
+        x0s = np.random.normal(fp[0], 1.0, size=NUM_SAMPLES_PER_FP)
+        x_t0s = np.random.normal(fp[1], 1.0, size=NUM_SAMPLES_PER_FP)
         print(x0s)
         print(x_t0s)
         for i in range(NUM_SAMPLES_PER_FP):
