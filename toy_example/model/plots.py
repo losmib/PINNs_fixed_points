@@ -144,7 +144,7 @@ def regularization_over_domain(PINN, path=None):
     plt.plot(t_line, y_true, label="reference", color="black")
     plt.legend()
     plt.xlabel("T")
-    plt.ylabel("y0")
+    plt.ylabel("y")
 
     if path is not None:
         plt.savefig(path)
