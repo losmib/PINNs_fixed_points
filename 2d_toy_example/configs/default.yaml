@@ -50,7 +50,7 @@ freq_save: 100
 # Regularization settings
 #################################
 
-regularizer: "no_reg"
+regularization: "no_reg"
 reg_coeff: 0.1
 reg_decay: "linear"
 reg_epochs: 0.25

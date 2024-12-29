@@ -46,7 +46,7 @@ param_grid = {
     "epochs": [
         25000,
     ],
-    "regularizer": [
+    "regularization": [
         "reg_derivative_unstable_fp"
         #"unstable_fp"
     ],
