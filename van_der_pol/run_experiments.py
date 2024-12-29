@@ -109,10 +109,10 @@ for params in grid_parameters(param_grid):
         losses.append(loss)
         loss_successes.append(loss_success)
         
-        van_der_pol_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
-        learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
-        loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol")
-        plot_regularization(PINN, path=f"logs/{dirname}/run_{i}/regularization_plot")
+        van_der_pol_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics.png")
+        learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve.png")
+        loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol.png")
+        plot_regularization(PINN, path=f"logs/{dirname}/run_{i}/regularization_plot.png")
     
     table_entry = pd.DataFrame({k: [v] for k, v in params.items()})
     

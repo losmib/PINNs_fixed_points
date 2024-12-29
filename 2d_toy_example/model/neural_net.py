@@ -44,7 +44,7 @@ class PhysicsInformedNN(Model):
         # data loader for sampling data at each training epoch
         self.data = DataLoader(config) 
         # loss functions for IC and physics
-        self.loss = Loss(self, config, self.regularization)
+        self.loss = Loss(self, config, self.regularizer)
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs
