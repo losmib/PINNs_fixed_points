@@ -15,12 +15,12 @@ g: 9.81
 l: 1
 
 # Initial Angle (in degrees)
-theta0: 100
+theta0: 90
 # Initial Velocity
 omega0: 0
 
 # Simulation Length
-T: 5
+T: 10
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -52,7 +52,7 @@ freq_save: 1000
 #################################
 # Regularization settings
 #################################
-regularizer: "no_reg"
-reg_coeff: 100
+regularization: "reg_derivative_unstable_fp"
+reg_coeff: 0.02
 reg_decay: "linear"
 reg_epochs: 0.5
