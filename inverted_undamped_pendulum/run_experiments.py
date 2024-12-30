@@ -117,10 +117,10 @@ def run_experiments_on_params(param_grid, results_path="results.csv"):
             losses.append(loss)
             loss_successes.append(loss_success)
             
-            pendulum_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics")
-            learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve")
-            loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol")
-            plot_regularization(PINN, path=f"logs/{dirname}/run_{i}/regularization_plot")
+            pendulum_dynamics(PINN, path=f"logs/{dirname}/run_{i}/dynamics.png")
+            learning_curves(training_log, path=f"logs/{dirname}/run_{i}/learning_curve.png")
+            loss_over_tcoll(PINN, path=f"logs/{dirname}/run_{i}/loss_over_tcol.png")
+            plot_regularization(PINN, path=f"logs/{dirname}/run_{i}/regularization_plot.png")
 
             theta_last_pred = tf.reduce_mean(theta_pred[-10:])
             

@@ -91,5 +91,6 @@ class Loss():
     
     def regularizer_derivative_unstable_fp(self, t_col, theta, omega, omega_t):
         eps = 0.01
+       
         return self.regularizer_derivative(t_col, theta, omega, omega_t) * \
             self.regularizer_unstable_fp(t_col, theta, omega, omega_t)
