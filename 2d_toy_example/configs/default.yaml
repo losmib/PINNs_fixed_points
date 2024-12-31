@@ -10,8 +10,8 @@ seed: 1               # data sampling and weights initialization
 #################################
 
 # Initial Condition
-x0: 2.0
-y0: 1.75
+x0: 0.1
+y0: 0.1
 # Simulation Length
 T: 12.5
 
