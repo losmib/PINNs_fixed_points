@@ -20,7 +20,7 @@ theta0: 90
 omega0: 0
 
 # Simulation Length
-T: 10
+T: 7.5
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -36,7 +36,7 @@ N_hidden: 4
 N_neurons: 50
 activation: 'swish'
 
-N_epochs: 25000
+N_epochs: 50000
 learning_rate: 0.001
 decay_rate: 1.0
 
@@ -53,6 +53,6 @@ freq_save: 1000
 # Regularization settings
 #################################
 regularization: "reg_derivative_unstable_fp"
-reg_coeff: 0.02
+reg_coeff: 10
 reg_decay: "linear"
 reg_epochs: 0.5
