@@ -45,7 +45,7 @@ param_grid = {
     "regularization": [
         #"no_reg"
         #"reg_derivative",
-        "reg_derivative_unstable_fp"
+        "reg_derivative"
     ],
     "reg_epochs": [
         0.25, 0.5, 0.75, 1.0
@@ -119,5 +119,5 @@ for params in grid_parameters(param_grid):
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     results_list.append(table_entry)
-    pd.concat(results_list).to_csv("results_reg_derivative.csv")
+    pd.concat(results_list).to_csv("results_reg_dist.csv")
 
