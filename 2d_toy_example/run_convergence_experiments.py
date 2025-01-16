@@ -102,7 +102,7 @@ def repeat_with_reg(file):
     table_no_reg = pd.read_csv(file)
     table_no_reg["x0"] = table_no_reg["(x0, y0)"].apply(lambda row: eval(row)[0])
     table_no_reg["y0"] = table_no_reg["(x0, y0)"].apply(lambda row: eval(row)[1])
-    config["regularizer"] = "reg_derivative_unstable_fp"
+    config["regularization"] = "reg_derivative_unstable_fp"
 
     table_reg = table_no_reg
     table_reg["converged to with reg"] = ""
@@ -146,7 +146,7 @@ def repeat_with_reg(file):
                 table_reg["converged to with reg"].iloc[i] = str(tuple((float(x_last_pred), float(y_last_pred))))
                 table_reg["closest fp with reg"].iloc[i] = str(closest_fp)
                 table_reg["stability with reg"].iloc[i] = str(stability)
-                table_reg["success reg"].iloc[i] = loss_success
+                table_reg["success with reg"].iloc[i] = loss_success
                 
 
         except Exception as e:
@@ -155,5 +155,5 @@ def repeat_with_reg(file):
             
         table_reg.to_csv("convergence_points_reg.csv")
 
-
+run_without_reg()
 repeat_with_reg("convergence_points.csv")
