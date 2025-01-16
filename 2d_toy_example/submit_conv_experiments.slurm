@@ -8,4 +8,4 @@ echo "The reserved GPUs are: $CUDA_VISIBLE_DEVICES"
 
 source ~/home/mbabic/PINNs_fixed_points/env/bin/activate
 
-python3 run_experiments.py
+python3 run_convergence_experiments.py
