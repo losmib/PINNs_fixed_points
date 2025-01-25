@@ -113,7 +113,7 @@ def repeat_with_reg(file):
         config["xo"] = table_reg["x0"].iloc[i]
         config["y0"] = table_reg["y0"].iloc[i]
         config["reg_coeff"] = 1.0
-        config["reg_epochs"] = 0.5
+        config["reg_epochs"] = 0.25
         config["reg_decay"] = "linear"
 
 
@@ -155,5 +155,5 @@ def repeat_with_reg(file):
             
         table_reg.to_csv("convergence_points_reg.csv")
 
-run_without_reg()
+# run_without_reg()
 repeat_with_reg("convergence_points.csv")
