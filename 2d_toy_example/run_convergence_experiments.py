@@ -108,7 +108,7 @@ def repeat_with_reg(file):
     table_reg["converged to with reg"] = ""
     table_reg["closest fp with reg"] = ""
     table_reg["stability with reg"] = ""
-    table_reg["success reg"] = ""
+    table_reg["success with reg"] = ""
     for i in range(table_no_reg.shape[0]):
         config["xo"] = table_reg["x0"].iloc[i]
         config["y0"] = table_reg["y0"].iloc[i]
