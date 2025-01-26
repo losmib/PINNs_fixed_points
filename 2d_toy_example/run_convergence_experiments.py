@@ -155,5 +155,5 @@ def repeat_with_reg(file):
             
         table_reg.to_csv("convergence_points_sigma_0_5_T_12_5_reg.csv")
 
-# run_without_reg()
+run_without_reg()
 repeat_with_reg("convergence_points_sigma_0_5_T_12_5.csv")
