@@ -37,7 +37,7 @@ config["T"] = 10
 config["freq_save"] = 0
 
 
-def run_without_reg():
+def run_without_reg(filename=None):
     results_list = []
     config["regularizer"] = "no_reg"
 
@@ -95,11 +95,11 @@ def run_without_reg():
                 print(e)
 
             table = pd.concat(table_list)
-            table.to_csv("convergence_points_sigma_0_5_T_12_5.csv")
+            table.to_csv(filename)
             
                     
-def repeat_with_reg(file):
-    table_no_reg = pd.read_csv(file)
+def repeat_with_reg(file_from, file_to):
+    table_no_reg = pd.read_csv(file_from)
     table_no_reg["x0"] = table_no_reg["(x0, y0)"].apply(lambda row: eval(row)[0])
     table_no_reg["y0"] = table_no_reg["(x0, y0)"].apply(lambda row: eval(row)[1])
     config["regularization"] = "reg_derivative_unstable_fp"
@@ -155,5 +155,7 @@ def repeat_with_reg(file):
             
         table_reg.to_csv("convergence_points_sigma_0_3_T_10_reg.csv")
 
-run_without_reg()
-repeat_with_reg("convergence_points_sigma_0_3_T_10.csv")
+file_no_reg = "convergence_points_sigma_0_3_T_10.csv"
+file_reg = "convergence_points_sigma_0_3_T_10_reg.csv"
+run_without_reg(filename=file_no_reg)
+repeat_with_reg(file_from=file_no_reg, file_to=file_reg)
