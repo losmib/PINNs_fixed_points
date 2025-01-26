@@ -49,8 +49,8 @@ def run_without_reg():
     table_list = []
 
     for fp in fixed_points:
-        x0s = np.random.normal(fp[0], 0.5, size=NUM_SAMPLES_PER_FP)
-        y0s = np.random.normal(fp[1], 0.5, size=NUM_SAMPLES_PER_FP)
+        x0s = np.random.normal(fp[0], 0.3, size=NUM_SAMPLES_PER_FP)
+        y0s = np.random.normal(fp[1], 0.3, size=NUM_SAMPLES_PER_FP)
         print(x0s)
         print(y0s)
         for i in range(NUM_SAMPLES_PER_FP):
@@ -153,7 +153,7 @@ def repeat_with_reg(file):
                 print(e)
 
             
-        table_reg.to_csv("convergence_points_sigma_0_5_T_10_reg.csv")
+        table_reg.to_csv("convergence_points_sigma_0_3_T_10_reg.csv")
 
 run_without_reg()
-repeat_with_reg("convergence_points_sigma_0_5_T_10.csv")
+repeat_with_reg("convergence_points_sigma_0_3_T_10.csv")
