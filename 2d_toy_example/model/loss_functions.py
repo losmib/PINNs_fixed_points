@@ -81,9 +81,6 @@ class Loss():
         reg_loss = tf.nn.relu(lam1) + tf.nn.relu(lam2)
         return reg_loss
     
-    def regularizer_fp(self, t_col, x, x_t, y, y_t):
-        return tf.exp(-((y - 1)**2 + y**2 + (y + 1)**2))
-    
     def regularizer_derivative(self, t_col, x, x_t, y, y_t):
         eps = 0.01
         return tf.exp(-(x_t**2 + y_t**2) / eps)
