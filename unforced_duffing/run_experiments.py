@@ -25,7 +25,7 @@ config_base = load_config('configs/default.yaml')
 param_grid = {
     "mu": [1],
     "T": [5, 7.5, 10.0, 12.5, 15.0],
-    "x0": [-1, -0.01, -0.1, 0.01, 0.1, 1.0],
+    "x0": [-0.5, -0.1, -0.01, -0.1, 0.01, 0.1, 0.5],
     "x_t0": [0],
     "network_architectures": [
         (4, 50),

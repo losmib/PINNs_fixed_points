@@ -99,7 +99,8 @@ class PhysicsInformedNN(Sequential):
             
             if self.freq_save != 0:
                 if (epoch % self.freq_save) == 0:
-                    self.save_weights(flag=epoch)
+                    weights_file = self.log_path.joinpath(f'model_weights/weights_{epoch}.pkl')
+                    self.save_weights(path=weights_file)
 
         # save log
         self.callback.save_logs(self.path_)
@@ -138,12 +139,11 @@ class PhysicsInformedNN(Sequential):
         x_t = tape.gradient(x, t)
         return x_t
 
-    def save_weights(self, flag=''):        
-        weights_file = self.log_path.joinpath(f'model_weights/weights_{flag}.pkl')
-        with open(weights_file, 'wb') as pickle_file:
+    def save_weights(self, path):        
+        with open(path, 'wb') as pickle_file:
             pickle.dump(self.get_weights(), pickle_file)                    
 
-    def load_weights(self, weights_file):
-        with open(weights_file, 'rb') as pickle_file:
+    def load_weights(self, path):
+        with open(path, 'rb') as pickle_file:
             weights = pickle.load(pickle_file)
         self.set_weights(weights)

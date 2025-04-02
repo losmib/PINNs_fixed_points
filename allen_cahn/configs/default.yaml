@@ -49,7 +49,7 @@ freq_save: 1000
 # Regularization settings
 #################################
 
-regularization: "unstable_fp"
-reg_coeff: 10
+regularization: "reg_derivative"
+reg_coeff: 1
 reg_decay: "linear"
 reg_epochs: 0.5
