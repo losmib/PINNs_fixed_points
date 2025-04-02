@@ -13,12 +13,12 @@ seed: 1               # data sampling and weights initialization
 mu: 1.0
 
 # Initial Angle (in degrees)
-x0: 0.001
+x0: 0.1
 # Initial Velocity
 x_t0: 0.0
 
 # Simulation Length
-T: 7.5
+T: 10
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -34,7 +34,7 @@ N_hidden: 4
 N_neurons: 50
 activation: 'swish'
 
-N_epochs: 25000
+N_epochs: 2500
 learning_rate: 0.001
 decay_rate: 1.0
 

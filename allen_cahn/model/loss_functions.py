@@ -84,7 +84,8 @@ class Loss():
     
     
     def regularizer_derivative(self, X_col, u_t, u_xx, u):
-        eps = 10**0
+        eps = 1**0
+        tf.print(u_t.shape)
         return tf.exp(-(u_t**2) / eps)
 
     def regularizer_unstable_fp(self, X_col, u_t, u_xx, u):

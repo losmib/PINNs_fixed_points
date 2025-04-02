@@ -119,7 +119,7 @@ def repeat_with_reg(file):
         os.makedirs(dirname)
 
     for i in range(table_no_reg.shape[0]):
-        config["xo"] = table_reg["x0"].iloc[i]
+        config["x0"] = table_reg["x0"].iloc[i]
         config["x_t0"] = table_reg["x_t0"].iloc[i]
         config["reg_coeff"] = 1.0
         config["reg_epochs"] = 0.5

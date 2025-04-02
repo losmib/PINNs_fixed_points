@@ -246,3 +246,35 @@ def results_linear_decay(results):
         sns.heatmap(table)
         plt.title(split)
         plt.show()
+
+
+def plot_EL_loss(PINN, path=None):
+    t_col = PINN.data.t_line()
+    
+    with tf.GradientTape(persistent=True) as tape:
+        tape.watch(t_col)   
+        physics_loss , x, x_t, y, y_t = PINN.loss.physics_loss(t_col)
+
+        dLdx = 2*(x_t - x*(3 - x - 2*y))*(-3 + 2*x +2*y) + 2*(y_t - y*(2 - x - y))*y
+        dLdy = 2*(x_t - x*(3 - x - 2*y))*(2*x) + 2*(y_t - y*(2 - x - y))*(-2 + x + 2*y)
+
+        dLdxt = 2*(x_t - x*(3 - x - 2*y))
+        dLdyt = 2*(y_t - y*(2 - x - y))
+        print(dLdyt.shape)
+        dLxdt = tape.gradient(dLdxt, t_col)[:, 0]
+        dLydt = tape.gradient(dLdyt, t_col)[:, 0]
+        print((dLdx - dLxdt).shape)
+        EL_loss = (dLdx - dLxdt)**2 + (dLdy - dLydt)**2
+        print(EL_loss.shape)
+
+    plt.figure()
+    plt.plot(t_col, physics_loss, label="physics loss")
+    plt.plot(t_col, EL_loss, label="Euler Lagrange loss")
+    plt.legend()
+    
+    plt.tight_layout()
+    if path is not None:
+        plt.savefig(path)
+        plt.close()
+    else:
+        plt.show()
