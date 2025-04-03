@@ -25,7 +25,7 @@ config_base = load_config('configs/default.yaml')
 param_grid = {
     "mu": [1],
     "T": [5, 7.5, 10.0, 12.5, 15.0],
-    "x0": [-0.5, -0.1, -0.01, -0.1, 0.01, 0.1, 0.5],
+    "x0": [-0.5, -0.1, -0.01, 0.01, 0.1, 0.5],
     "x_t0": [0],
     "network_architectures": [
         (4, 50),
@@ -43,15 +43,15 @@ param_grid = {
         25000,
     ],
     "regularization": [
-        "no_reg"
+        #"no_reg"
         #"reg_derivative",
-        #"reg_derivative_unstable_fp"
+        "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
         0.5 # 0.25, 0.5, 0.75, 1.0
     ],
     "reg_coeff": [
-        0 # 0.1, 1, 10, 100, 1000
+        1.0 # 0.1, 1, 10, 100, 1000
     ],
     "reg_decay": [
         "linear"
