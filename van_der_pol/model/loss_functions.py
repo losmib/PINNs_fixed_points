@@ -83,11 +83,11 @@ class Loss():
         return tf.nn.relu(lam1) + tf.nn.relu(lam2)
 
     def regularizer_derivative(self, t_col, x, x_t, x_tt):
-        eps = 1.0
+        eps = 0.1
         loss = tf.exp(-(x_tt**2 + x_t**2) / eps)
         return loss
     
     def regularizer_derivative_unstable_fp(self, t_col, x, x_t, x_tt):
-        eps = 1
+        eps = 0.1
         return self.regularizer_derivative(t_col, x, x_t, x_tt) * \
             self.regularizer_unstable_fp(t_col, x, x_t, x_tt)
