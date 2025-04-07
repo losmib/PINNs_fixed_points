@@ -20,7 +20,7 @@ x0: 0.2
 x_t0: 0.2
 
 # Simulation Length
-T: 12.5
+T: 10
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -36,7 +36,7 @@ N_hidden: 4
 N_neurons: 50
 activation: 'swish'
 
-N_epochs: 250
+N_epochs: 25000
 learning_rate: 0.001
 decay_rate: 1.0
 
