@@ -12,7 +12,7 @@ import re
 import os
 
 
-NUM_TRAINING_RUNS = 20
+NUM_TRAINING_RUNS = 10
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
@@ -43,7 +43,7 @@ param_grid = {
         25000,
     ],
     "regularization": [
-        "no_reg"
+        "no_reg",
         #"reg_derivative",
         "reg_derivative_unstable_fp"
     ],
