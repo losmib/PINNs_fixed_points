@@ -15,12 +15,12 @@ beta: 1.0
 delta: 1.0
 
 # Initial Angle (in degrees)
-x0: 0.2
+x0: 0.01
 # Initial Velocity
-x_t0: 0.2
+x_t0: 0.0
 
 # Simulation Length
-T: 10
+T: 12.5
 
 #################################
 # Data settings (sampled anewly at each epoch)
@@ -52,7 +52,7 @@ freq_save: 1000
 #################################
 # Regularization settings
 #################################
-regularizer: "no_reg"
-reg_coeff: 0.0
+regularization: "reg_derivative_unstable_fp"
+reg_coeff: 1.0
 reg_decay: "linear"
 reg_epochs: 0.5
