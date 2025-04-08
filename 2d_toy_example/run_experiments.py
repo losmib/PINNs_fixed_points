@@ -11,7 +11,7 @@ import os
 import re
 import tensorflow as tf
 
-NUM_TRAINING_RUNS = 20
+NUM_TRAINING_RUNS = 10
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
@@ -22,7 +22,7 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [15], # 5, 7.5, 10, 12.5],
+    "T": [10, 12.5, 15], # 5, 7.5, 10, 12.5],
     "x0-y0": [(0.01, 0.01),
                 (0.1, 0.1),
                 (0.5, 0.5),
