@@ -23,8 +23,8 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [5, 7.5, 10.0, 12.5],
-    "x0": [0.001, 0.01, 0.1, 0.5],
+    "T": [12, 13, 14],
+    "x0": [0.1, 0.2, 0.3, 0.4, 0.5],
     "x_t0": [0],
     "network_architectures": [
         (4, 50),
@@ -42,9 +42,9 @@ param_grid = {
         25000,
     ],
     "regularization": [
-        "no_reg"
+        #"no_reg"
         #"reg_derivative",
-        #"reg_derivative_unstable_fp"
+        "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
         0.5 # 0.25, 0.5, 0.75, 1.0
@@ -76,9 +76,8 @@ for params in grid_parameters(param_grid):
     config["T"] = params["T"]
     config["freq_save"] = 0
     config["x0"] = params["x0"]    
-    config["mu"] = params["mu"]
 
-    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/mu_{config['mu']}/T_{config['T']}/x0_{config['x0']}/" + re.sub('\W+', '_', str(params))
+    dirname = f"plots/{config['regularization']}/reg_coeff_{config['reg_coeff']}/reg_epochs_{config['reg_epochs']}/T_{config['T']}/x0_{config['x0']}/" + re.sub('\W+', '_', str(params))
 
     losses = []
     loss_successes = []
@@ -103,7 +102,7 @@ for params in grid_parameters(param_grid):
         # get PINN prediction
         x_pred = PINN(t_line)
         
-        loss = mean_squared_error(x_true, x_pred)
+        loss = mean_squared_error(x_true.numpy(), x_pred.numpy())
         loss_success = (np.linalg.norm(x_true - x_pred) / np.linalg.norm(x_true)) < 0.15
         losses.append(loss)
         loss_successes.append(loss_success)
@@ -118,5 +117,5 @@ for params in grid_parameters(param_grid):
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     results_list.append(table_entry)
-    pd.concat(results_list).to_csv("results_no_reg.csv")
+    pd.concat(results_list).to_csv("results_reg_derivative_unstable_fp.csv")
 
