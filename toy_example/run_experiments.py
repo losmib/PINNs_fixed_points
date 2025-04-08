@@ -11,7 +11,7 @@ import os
 import re
 import tensorflow as tf
 
-NUM_TRAINING_RUNS = 20
+NUM_TRAINING_RUNS = 10
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
@@ -22,10 +22,10 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [7.5, 10],
-    "y0": [0.001, 0.01, 0.1],
+    "T": [10, 12.5, 15],
+    "y0": [0.01, 0.1, 0.5],
     "network_architectures": [
-        (2, 20),
+        (4, 50),
     ],
     "activations": [
         "swish",
@@ -40,15 +40,14 @@ param_grid = {
         50000,
     ],
     "regularization": [
-        "unstable_fp",
-        "reg_derivative",
+        "no_reg",
         "reg_derivative_unstable_fp"
     ],
     "reg_epochs": [
-        0.25, 0.5, 0.75, 1.0
+        0.5 # 0.25, 0.5, 0.75, 1.0
     ],
     "reg_coeff": [
-      0.1, 1, 10, 100, 1000
+      1.0 # 0.1, 1, 10, 100, 1000
     ],
     "reg_decay": [
         "linear"
@@ -131,5 +130,5 @@ for params in grid_parameters(param_grid):
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     results_list.append(table_entry)
-    pd.concat(results_list).to_csv("results_linear_decay.csv")
+    pd.concat(results_list).to_csv("results_new_full.csv")
 
