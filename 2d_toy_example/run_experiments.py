@@ -47,8 +47,9 @@ param_grid = {
         25000,
     ],
     "regularization": [
+        "no_reg",
         # "reg_derivative_unstable_fp",
-        "unstable_fp"
+        # "unstable_fp"
     ],
     "reg_epochs": [
         0.25, 0.5, 0.75, 1.0

@@ -36,7 +36,7 @@ config["freq_save"] = 0
 
 def run_without_reg():
     results_list = []
-    config["regularizer"] = "no_reg"
+    config["regularization"] = "no_reg"
     
     dirname = f"convergence_plots/no_reg"
     if not os.path.exists(dirname):
@@ -105,7 +105,7 @@ def repeat_with_reg(file):
     table_no_reg = pd.read_csv(file)
     table_no_reg["x0"] = table_no_reg["(x0, x_t0)"].apply(lambda row: eval(row)[0])
     table_no_reg["x_t0"] = table_no_reg["(x0, x_t0)"].apply(lambda row: eval(row)[1])
-    config["regularizer"] = "reg_derivative_unstable_fp"
+    config["regularization"] = "reg_derivative_unstable_fp"
 
     table_reg = table_no_reg
     table_reg["converged to with reg"] = ""

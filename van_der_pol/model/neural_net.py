@@ -20,7 +20,7 @@ class PhysicsInformedNN(Sequential):
     # settings read from config (set as class attributes)
     args = ['version', 'seed',
             'N_hidden', 'N_neurons', 'activation',
-            'N_epochs', 'learning_rate', 'decay_rate', 'regularizer', 'reg_coeff',
+            'N_epochs', 'learning_rate', 'decay_rate', 'regularization', 'reg_coeff',
             'reg_decay', 'reg_epochs', 'freq_save']
     # default log Path
     log_path = Path('logs')
@@ -39,7 +39,7 @@ class PhysicsInformedNN(Sequential):
         # data loader for sampling data at each training epoch
         self.data = DataLoader(config) 
         # loss functions for IC and physics
-        self.loss = Loss(self, config, self.regularizer)
+        self.loss = Loss(self, config, self.regularization)
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs
