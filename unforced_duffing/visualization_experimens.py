@@ -59,7 +59,7 @@ for i in range(NUM_SAMPLES):
     
     try:
         # Without regularization
-        config["regularizer"] = "no_reg"
+        config["regularization"] = "no_reg"
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
 
@@ -75,7 +75,7 @@ for i in range(NUM_SAMPLES):
 
 
         # With time derivative regularization
-        config["regularizer"] = "reg_derivative"
+        config["regularization"] = "reg_derivative"
         config["reg_coeff"] = 1.0
         config["reg_epochs"] = 0.5
         config["reg_decay"] = "linear"
@@ -91,7 +91,7 @@ for i in range(NUM_SAMPLES):
 
 
         # With unstable fp regularization
-        config["regularizer"] = "reg_derivative_unstable_fp"
+        config["regularization"] = "reg_derivative_unstable_fp"
         config["reg_coeff"] = 1.0
         config["reg_epochs"] = 0.5
         config["reg_decay"] = "linear"
