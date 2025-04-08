@@ -37,7 +37,7 @@ param_grid = {
         1024, 
     ],
     "epochs": [
-        50000,
+        25000,
     ],
     "regularization": [
         "no_reg",
