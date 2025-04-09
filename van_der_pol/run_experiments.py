@@ -25,7 +25,7 @@ config_base = load_config('configs/default.yaml')
 param_grid = {
     "mu": [1],
     "T": [10.0, 12.5, 15.0],
-    "x0": [0.01, 0.1, 1.0],
+    "x0": [0.01, 0.1, 0.5, 1.0],
     "x_t0": [0],
     "network_architectures": [
         (4, 50),
@@ -119,5 +119,5 @@ for params in grid_parameters(param_grid):
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     results_list.append(table_entry)
-    pd.concat(results_list).to_csv("results_reg_full_paper.csv")
+    pd.concat(results_list).to_csv("results_reg_full_paper_eps01.csv")
 
