@@ -1,0 +1,55 @@
+#################################
+# Version & seed settings
+#################################
+
+version: 'vanilla/T-10_y0-0.05'
+seed: 1
+
+#################################
+# System settings
+#################################
+
+# Initial Condition
+y0: 0.05
+# Simulation Length
+T: 10
+
+#################################
+# Data settings (sampled anewly at each epoch)
+#################################
+
+N_col: 1024
+
+#################################
+# PhysicsInformedNN settings
+#################################
+
+N_hidden: 2
+N_neurons: 20
+activation: 'swish'
+
+#################################
+# Training settings
+#################################
+
+N_epochs: 50000
+learning_rate: 0.001
+decay_rate: 1.0
+
+#################################
+# Callback and Log settings
+#################################
+
+freq_log: 100
+freq_print: 1000
+keys_print: ['loss']
+freq_save: 100
+
+#################################
+# Regularization settings
+#################################
+
+regularization: "no_reg"
+reg_coeff: 0
+reg_decay: None
+reg_epochs: 0.6
