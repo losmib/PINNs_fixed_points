@@ -22,8 +22,8 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [10, 12.5, 15],
-    "y0": [0.01, 0.1, 0.5],
+    "T": [10, 11, 12, 13, 14, 15],
+    "y0": [0.1, 0.2, 0.3, 0.4, 0.5],
     "network_architectures": [
         (4, 50),
     ],
@@ -130,5 +130,5 @@ for params in grid_parameters(param_grid):
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     results_list.append(table_entry)
-    pd.concat(results_list).to_csv("results_new_full_eps001.csv")
+    pd.concat(results_list).to_csv("results_paper_grid5.csv")
 

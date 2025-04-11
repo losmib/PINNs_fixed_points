@@ -82,7 +82,7 @@ class Loss():
         return reg_loss
     
     def regularizer_derivative(self, t_col, x, x_t, y, y_t):
-        eps = 0.1
+        eps = 0.01
         return tf.exp(-(x_t**2 + y_t**2) / eps)
     
     def regularizer_derivative_unstable_fp(self, t_col, x, x_t, y, y_t):
