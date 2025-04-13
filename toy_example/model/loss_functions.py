@@ -5,7 +5,13 @@ class Loss():
     '''
     This class provides the physics loss function to the network training
     '''   
-    def __init__(self, model, regularization):
+    args = ['eps']
+
+    def __init__(self, model, config, regularization):
+
+        # load and set class attributes from config
+        for arg in self.args:
+            setattr(self, arg, config[arg])
         
         # save neural network (weights are updated during training)
         self.model = model
@@ -48,8 +54,7 @@ class Loss():
         return tf.exp(-((y - 1)**2 + y**2 + (y + 1)**2))
     
     def regularizer_derivative(self, t_col, y, y_t):
-        eps = 0.01
-        return tf.exp(-(y_t**2) / eps)
+        return tf.exp(-(y_t**2) / self.eps)
     
     def regularizer_derivative_unstable_fp(self, t_col, y, y_t):
         return self.regularizer_derivative(t_col, y, y_t) * self.regularizer_unstable_fp(t_col, y, y_t)

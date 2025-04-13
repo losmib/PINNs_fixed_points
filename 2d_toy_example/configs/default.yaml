@@ -54,3 +54,4 @@ regularization: "no_reg"
 reg_coeff: 1.0
 reg_decay: "linear"
 reg_epochs: 0.5
+eps: 0.01

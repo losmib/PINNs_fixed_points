@@ -27,25 +27,22 @@ config = config_base
 config["activation"] = "swish"
 config["N_hidden"] = 4
 config["N_neurons"] = 50
-config["N_epochs"] = 250
-config["T"] = 12.5
+config["N_epochs"] = 25000
+config["T"] = 15.0
 config["freq_save"] = 0
 
 
-x0s = np.random.normal(0, 0.25, size=NUM_SAMPLES)
-x_t0s = np.random.normal(0, 0.25, size=NUM_SAMPLES)
+x0s = np.random.normal(0, 1.0, size=NUM_SAMPLES)
+x_t0s = np.random.normal(0, 1.0, size=NUM_SAMPLES)
 
-
-plt.scatter(x0s, x_t0s)
-plt.show()
 
 dirname_no_reg = f"logs/models/visualization_experiments/no_reg"
 if not os.path.exists(dirname_no_reg):
     os.makedirs(dirname_no_reg)
 
-dirname_reg_derivative = f"logs/models/visualization_experiments/reg_derivative"
-if not os.path.exists(dirname_reg_derivative):
-    os.makedirs(dirname_reg_derivative)
+# dirname_reg_derivative = f"logs/models/visualization_experiments/reg_derivative"
+# if not os.path.exists(dirname_reg_derivative):
+#     os.makedirs(dirname_reg_derivative)
 
 dirname_reg_derivative_unstable_fp = f"logs/models/visualization_experiments/reg_derivative_unstable_fp"
 if not os.path.exists(dirname_reg_derivative_unstable_fp):
@@ -59,7 +56,7 @@ for i in range(NUM_SAMPLES):
     
     try:
         # Without regularization
-        config["regularization"] = "no_reg"
+        config["regularizer"] = "no_reg"
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
 
@@ -69,13 +66,13 @@ for i in range(NUM_SAMPLES):
 
         # get PINN prediction
         x_pred = PINN(t_line)
-        loss = mean_squared_error(x_true, x_pred)
+        loss = mean_squared_error(x_true.numpy(), x_pred.numpy())
         loss_success_no_reg = (np.linalg.norm(x_true - x_pred) / np.linalg.norm(x_true)) < 0.15
 
 
-
+        """
         # With time derivative regularization
-        config["regularization"] = "reg_derivative"
+        config["regularizer"] = "reg_derivative"
         config["reg_coeff"] = 1.0
         config["reg_epochs"] = 0.5
         config["reg_decay"] = "linear"
@@ -86,12 +83,12 @@ for i in range(NUM_SAMPLES):
 
         # get PINN prediction
         x_pred = PINN(t_line)
-        loss = mean_squared_error(x_true, x_pred)
+        loss = mean_squared_error(x_true.numpy(), x_pred.numpy())
         loss_success_reg_derivative = (np.linalg.norm(x_true - x_pred) / np.linalg.norm(x_true)) < 0.15
-
+        """
 
         # With unstable fp regularization
-        config["regularization"] = "reg_derivative_unstable_fp"
+        config["regularizer"] = "reg_derivative_unstable_fp"
         config["reg_coeff"] = 1.0
         config["reg_epochs"] = 0.5
         config["reg_decay"] = "linear"
@@ -102,12 +99,11 @@ for i in range(NUM_SAMPLES):
         
         # get PINN prediction
         x_pred = PINN(t_line)
-        loss = mean_squared_error(x_true, x_pred)
+        loss = mean_squared_error(x_true.numpy(), x_pred.numpy())
         loss_success_reg_derivative_unstable_fp = (np.linalg.norm(x_true - x_pred) / np.linalg.norm(x_true)) < 0.15
 
         table_entry = pd.DataFrame({"(x0, x_t0)": [(float(x0s[i]), float(x_t0s[i]))], 
                                     "success_no_reg": [loss_success_no_reg],
-                                    "success_reg_derivative": [loss_success_reg_derivative],
                                     "success_reg_derivative_unstable_fp": [loss_success_reg_derivative_unstable_fp]})
         
         results_list.append(table_entry)

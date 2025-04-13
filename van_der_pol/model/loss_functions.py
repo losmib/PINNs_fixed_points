@@ -6,7 +6,7 @@ class Loss():
     This class provides the physics loss function 
     '''       
      # settings read from config (set as class attributes)
-    args = ['mu', 'x0', 'x_t0']
+    args = ['mu', 'x0', 'x_t0', 'eps']
     
     
     def __init__(self, model, config, regularization):
@@ -83,8 +83,7 @@ class Loss():
         return tf.nn.relu(lam1) + tf.nn.relu(lam2)
 
     def regularizer_derivative(self, t_col, x, x_t, x_tt):
-        eps = 0.01
-        loss = tf.exp(-(x_tt**2 + x_t**2) / eps)
+        loss = tf.exp(-(x_tt**2 + x_t**2) / self.eps)
         return loss
     
     def regularizer_derivative_unstable_fp(self, t_col, x, x_t, x_tt):

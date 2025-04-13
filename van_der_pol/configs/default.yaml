@@ -13,7 +13,7 @@ seed: 1               # data sampling and weights initialization
 mu: 1.0
 
 # Initial Angle (in degrees)
-x0: 0.5
+x0: 0.2
 # Initial Velocity
 x_t0: 0.0
 
@@ -50,7 +50,8 @@ freq_save: 1000
 #################################
 # Regularization settings
 #################################
-regularization: "no_reg"
+regularization: "reg_derivative_unstable_fp"
 reg_coeff: 1.0
 reg_decay: "linear"
 reg_epochs: 0.5
+eps: 0.01
