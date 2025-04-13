@@ -12,7 +12,7 @@ import re
 import os
 
 
-NUM_TRAINING_RUNS = 10
+NUM_TRAINING_RUNS = 5
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
@@ -23,8 +23,8 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [10, 11, 12, 13, 14, 15],
-    "x0": [0.1, 0.2, 0.3, 0.4, 0.5],
+    "T": [10, 12.5, 15], # [10, 11, 12, 13, 14, 15],
+    "x0": [0.01, 0.1, 1.0], #[0.1, 0.2, 0.3, 0.4, 0.5],
     "x_t0": [0],
     "network_architectures": [
         (4, 50),
@@ -42,15 +42,18 @@ param_grid = {
         25000,
     ],
     "regularization": [
-        "no_reg",
-        #"reg_derivative",
+        #"no_reg",
+        "reg_derivative",
         "reg_derivative_unstable_fp",
     ],
     "reg_epochs": [
-        0.5 # 0.25, 0.5, 0.75, 1.0
+        0.25, 0.5, 0.75 # 0.25, 0.5, 0.75, 1.0
     ],
     "reg_coeff": [
-        1.0 # 0.1, 1, 10, 100, 1000
+         0.1, 1, 10
+    ],
+    "eps": [
+        0.01, 0.1, 1.0
     ],
     "reg_decay": [
         "linear"
@@ -117,5 +120,5 @@ for params in grid_parameters(param_grid):
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     results_list.append(table_entry)
-    pd.concat(results_list).to_csv("results_paper_grid5.csv")
+    pd.concat(results_list).to_csv("results_paper_ablation_study.csv")
 
