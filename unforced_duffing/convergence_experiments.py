@@ -32,8 +32,8 @@ config["T"] = 15.0
 config["freq_save"] = 0
 
 
-x0s = np.random.normal(0, 0.25, size=NUM_SAMPLES)
-x_t0s = np.random.normal(0, 0.25, size=NUM_SAMPLES)
+x0s = np.random.normal(0, 0.5, size=NUM_SAMPLES)
+x_t0s = np.random.normal(0, 0.5, size=NUM_SAMPLES)
 
 
 dirname_no_reg = f"logs/models/visualization_experiments/no_reg"
@@ -56,7 +56,7 @@ for i in range(NUM_SAMPLES):
     
     try:
         # Without regularization
-        config["regularizer"] = "no_reg"
+        config["regularization"] = "no_reg"
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
 
@@ -88,7 +88,7 @@ for i in range(NUM_SAMPLES):
         """
 
         # With unstable fp regularization
-        config["regularizer"] = "reg_derivative_unstable_fp"
+        config["regularization"] = "reg_derivative_unstable_fp"
         config["reg_coeff"] = 1.0
         config["reg_epochs"] = 0.5
         config["reg_decay"] = "linear"
