@@ -32,8 +32,8 @@ config["T"] = 15.0
 config["freq_save"] = 0
 
 
-x0s = np.random.normal(0, 1.0, size=NUM_SAMPLES)
-x_t0s = np.random.normal(0, 1.0, size=NUM_SAMPLES)
+x0s = np.random.normal(0, 0.25, size=NUM_SAMPLES)
+x_t0s = np.random.normal(0, 0.25, size=NUM_SAMPLES)
 
 
 dirname_no_reg = f"logs/models/visualization_experiments/no_reg"

@@ -61,10 +61,13 @@ for i in range(NUM_SAMPLES):
 
         t_line, x_true, y_true = PINN.data.reference()
 
-        # get PINN prediction
-        x_pred = PINN(t_line)
-        loss = mean_squared_error(x_true.numpy(), x_pred.numpy())
-        loss_success_no_reg = (np.linalg.norm(x_true - x_pred) / np.linalg.norm(x_true)) < 0.15
+        xy_true = np.concatenate([x_true.numpy(), y_true.numpy()], axis=1)
+            # get PINN prediction
+        xy_pred = PINN(t_line)
+            
+        loss = mean_squared_error(xy_true, xy_pred)
+        loss_success_no_reg = np.linalg.norm(xy_true - xy_pred) / np.linalg.norm(xy_true) < 0.15
+        
 
 
         """
@@ -95,9 +98,12 @@ for i in range(NUM_SAMPLES):
         PINN.save_weights(f"{dirname_reg_derivative_unstable_fp}/run_{i}.pkl")
         
         # get PINN prediction
-        x_pred = PINN(t_line)
-        loss = mean_squared_error(x_true.numpy(), x_pred.numpy())
-        loss_success_reg_derivative_unstable_fp = (np.linalg.norm(x_true - x_pred) / np.linalg.norm(x_true)) < 0.15
+        xy_true = np.concatenate([x_true.numpy(), y_true.numpy()], axis=1)
+        # get PINN prediction
+        xy_pred = PINN(t_line)
+            
+        loss = mean_squared_error(xy_true, xy_pred)
+        loss_success_reg_derivative_unstable_fp = np.linalg.norm(xy_true - xy_pred) / np.linalg.norm(xy_true) < 0.15
 
         table_entry = pd.DataFrame({"(x0, y0)": [(float(x0s[i]), float(y0s[i]))], 
                                     "success_no_reg": [loss_success_no_reg],
