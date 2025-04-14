@@ -13,7 +13,7 @@ seed: 1               # data sampling and weights initialization
 mu: 1.0
 
 # Initial Angle (in degrees)
-x0: 0.2
+x0: 0.5
 # Initial Velocity
 x_t0: 0.0
 
