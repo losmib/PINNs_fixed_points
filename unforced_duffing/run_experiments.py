@@ -12,7 +12,7 @@ import re
 import os
 
 
-NUM_TRAINING_RUNS = 5
+NUM_TRAINING_RUNS = 20
 
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
@@ -23,8 +23,8 @@ def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, 
 
 config_base = load_config('configs/default.yaml')
 param_grid = {
-    "T": [10, 12.5, 15], # [10, 11, 12, 13, 14, 15],
-    "x0": [0.01, 0.1, 1.0], #[0.1, 0.2, 0.3, 0.4, 0.5],
+    "T": [15], # [10, 11, 12, 13, 14, 15],
+    "x0": [0.01], #[0.1, 0.2, 0.3, 0.4, 0.5],
     "x_t0": [0],
     "network_architectures": [
         (4, 50),
@@ -43,7 +43,7 @@ param_grid = {
     ],
     "regularization": [
         #"no_reg",
-        "reg_derivative",
+        #"reg_derivative",
         "reg_derivative_unstable_fp",
     ],
     "reg_epochs": [
@@ -120,5 +120,5 @@ for params in grid_parameters(param_grid):
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     results_list.append(table_entry)
-    pd.concat(results_list).to_csv("results_paper_ablation_study.csv")
+    pd.concat(results_list).to_csv("hyperparameter_search_reg_derivative_unstable_fp.csv")
 
