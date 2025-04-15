@@ -28,7 +28,7 @@ config["activation"] = "swish"
 config["N_hidden"] = 4
 config["N_neurons"] = 50
 config["N_epochs"] = 25000
-config["T"] = 15.0
+config["T"] = 12.5
 config["freq_save"] = 0
 
 
@@ -108,7 +108,7 @@ for i in range(NUM_SAMPLES):
         
         results_list.append(table_entry)
         results_table = pd.concat(results_list)
-        results_table.to_csv("visual_results.csv")
+        results_table.to_csv("visual_results_T_12_5.csv")
 
     except Exception as e:
         print(e)
