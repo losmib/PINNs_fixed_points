@@ -12,7 +12,7 @@ import os
 import re
 import tensorflow as tf
 
-NUM_SAMPLES_PER_FP = 300
+NUM_SAMPLES_PER_FP = 200
 
 def grid_parameters(parameters: Dict[str, Iterable[Any]]) -> Iterable[Dict[str, Any]]:
         for params in product(*parameters.values()):
@@ -30,7 +30,7 @@ config["activation"] = "swish"
 config["N_hidden"] = 4
 config["N_neurons"] = 50
 config["N_epochs"] = 25000
-config["T"] = 15
+config["T"] = 12.5
 config["freq_save"] = 0
 
 

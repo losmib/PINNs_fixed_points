@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 import os
 
 
-NUM_SAMPLES = 500
+NUM_SAMPLES = 200
 
 config_base = load_config('configs/default.yaml')
 
