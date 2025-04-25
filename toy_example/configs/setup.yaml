@@ -24,15 +24,15 @@ N_col: 1024
 # PhysicsInformedNN settings
 #################################
 
-N_hidden: 2
-N_neurons: 20
+N_hidden: 4
+N_neurons: 50
 activation: 'swish'
 
 #################################
 # Training settings
 #################################
 
-N_epochs: 50000
+N_epochs: 25000
 learning_rate: 0.001
 decay_rate: 1.0
 

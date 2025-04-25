@@ -55,7 +55,7 @@ if __name__ == "__main__":
             file=args.config,
             config_update={'seed': seed}
         )
-        config["regularization"] = "reg_derivative"
+        config["regularization"] = "no_reg"
         config["reg_decay"] = "linear"
         config["reg_coeff"] = 1.0
         config["reg_epochs"] = 0.5
@@ -72,7 +72,7 @@ if __name__ == "__main__":
     table_entry["mean_loss"] = np.mean(losses)
     table_entry["loss_successes_percent"] = np.sum(loss_successes) / float(NUM_TRAINING_RUNS)
     
-    dirname = "regularized_PINN/reg_derivative"
+    dirname = "umodified_PINN/"
 
     if not os.path.exists(dirname):
         os.makedirs(dirname)

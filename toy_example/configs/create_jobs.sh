@@ -7,7 +7,7 @@ input_file="setup.yaml"
 counter=0
 
 # Outer loop: simulation time
-for T in $(seq 1 1 10); do
+for T in $(seq 1 1 20); do
     
     # Inner loop: initial condition
     for y0 in $(LC_NUMERIC=C seq 0.05 0.1 1.3); do
