@@ -18,3 +18,5 @@ navier_stokes/data/fixed_cylinder_atRe100
 server_results/
 
 *.png
+
+toy_example/to_delete.py
