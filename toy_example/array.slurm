@@ -7,7 +7,7 @@
 
 #SBATCH --time=2:00:00
 
-#SBATCH --array=131-260%4
+#SBATCH --array=1-260%4
 
 echo "The reserved GPUs are: $CUDA_VISIBLE_DEVICES"
 
