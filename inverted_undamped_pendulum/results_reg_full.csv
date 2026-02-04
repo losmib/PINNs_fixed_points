@@ -1,0 +1,4 @@
+,l,T,theta0,omega0,network_architectures,activations,learning_rates,collocations,epochs,regularization,reg_epochs,reg_coeff,reg_decay,0.0,3.141592653589793,6.283185307179586,mean_loss,loss_successes_percent
+0,1,5,20,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,1.0,linear,12,0,0,12.633213233947753,0.0
+0,1,5,90,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,1.0,linear,17,0,0,10.564954042434692,0.0
+0,1,5,270,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,1.0,linear,19,0,0,10.887589383125306,0.0

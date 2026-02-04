@@ -1,0 +1,8 @@
+,T,x0,x_t0,network_architectures,activations,learning_rates,collocations,epochs,regularization,reg_epochs,reg_coeff,eps,reg_decay,mean_loss,loss_successes_percent
+0,15,0.01,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,0.001,0.01,linear,0.5190620511770249,0.0
+0,15,0.01,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,0.01,0.01,linear,0.37132873779200964,0.3
+0,15,0.01,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,0.1,0.01,linear,0.3118768531220919,0.4
+0,15,0.01,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,1.0,0.01,linear,0.4041329642199557,0.35
+0,15,0.01,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,10.0,0.01,linear,0.3052878172215799,0.6
+0,15,0.01,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,100.0,0.01,linear,0.3872583996013589,0.6
+0,15,0.01,0,"(4, 50)",swish,0.001,1024,25000,reg_derivative_unstable_fp,0.5,1000.0,0.01,linear,0.27279462329847776,0.6

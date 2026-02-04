@@ -11,7 +11,7 @@ class Loss():
         self.model = model
 
         
-    def toy_example(self, t_col):
+    def toy_example(self, t_col, loss_type):
         '''
         Determines physics loss residuals of the differential equation
         '''

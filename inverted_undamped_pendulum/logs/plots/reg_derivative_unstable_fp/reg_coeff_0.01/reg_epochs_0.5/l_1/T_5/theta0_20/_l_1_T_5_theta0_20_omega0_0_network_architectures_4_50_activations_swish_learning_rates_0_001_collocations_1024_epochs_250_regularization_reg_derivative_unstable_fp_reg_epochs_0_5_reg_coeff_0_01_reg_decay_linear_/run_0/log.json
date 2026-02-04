@@ -1,0 +1,43 @@
+{
+  "version": "plots/reg_derivative_unstable_fp/reg_coeff_0.01/reg_epochs_0.5/l_1/T_5/theta0_20/_l_1_T_5_theta0_20_omega0_0_network_architectures_4_50_activations_swish_learning_rates_0_001_collocations_1024_epochs_250_regularization_reg_derivative_unstable_fp_reg_epochs_0_5_reg_coeff_0_01_reg_decay_linear_/run_0",
+  "seed": 1,
+  "g": 9.81,
+  "l": 1,
+  "theta0": 20,
+  "omega0": 0,
+  "T": 5,
+  "N_col": 1024,
+  "N_hidden": 4,
+  "N_neurons": 50,
+  "activation": "swish",
+  "N_epochs": 250,
+  "learning_rate": 0.001,
+  "decay_rate": 1.0,
+  "freq_log": 100,
+  "freq_print": 100,
+  "keys_print": [
+    "loss_P",
+    "loss_IC"
+  ],
+  "freq_save": 0,
+  "regularizer": "no_reg",
+  "reg_coeff": 0.01,
+  "reg_decay": "linear",
+  "reg_epochs": 0.5,
+  "regularization": "reg_derivative_unstable_fp",
+  "loss_train": [
+    0.16433720290660858,
+    0.12116731703281403,
+    0.11128450185060501
+  ],
+  "loss_P": [
+    0.042471371591091156,
+    0.011444656178355217,
+    0.009360993281006813
+  ],
+  "loss_IC": [
+    0.12186583131551743,
+    0.10972265899181366,
+    0.10192351043224335
+  ]
+}

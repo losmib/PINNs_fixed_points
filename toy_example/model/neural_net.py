@@ -41,8 +41,8 @@ class PhysicsInformedNN(Model):
         # callback for log recording and saving
         self.callback = CustomCallback(config) 
         # create model path to save logs
-        self.path = self.log_path.joinpath(self.version)
-        self.path.mkdir(parents=True, exist_ok=True)
+        self.path_ = self.log_path.joinpath(self.version)
+        self.path_.mkdir(parents=True, exist_ok=True)
         print('*** PINN build & initialized ***')            
 
         
@@ -103,20 +103,22 @@ class PhysicsInformedNN(Model):
             self.callback.write_logs(train_logs, epoch)
         
         # save log
-        self.callback.save_logs(self.path)
+        self.callback.save_logs(self.path_)
         print("### Training finished ###")
         return self.callback.log
     
     
     @tf.function
-    def train_step(self, t_col):
+    def train_step(self, t_col, loss_type='pde'):
         '''
         Performs a single gradient-descent optimization step
         '''    
-        # open a GradientTape to record forward/loss pass                   
+        # open a GradientTape to record forward/loss pass   
+                        
         with tf.GradientTape() as tape:     
             # get physcics loss of toy example equation
-            loss = self.loss.toy_example(t_col)
+            
+            loss = self.loss.toy_example(t_col, loss_type)
             
         # retrieve gradients
         grads = tape.gradient(loss, self.weights)        

@@ -1,0 +1,30 @@
+{
+  "version": "plots/no_reg/reg_coeff_1.0/reg_epochs_0.5/T_11/x0_0.1_y0_0.0/_T_11_x0_y0_0_1_0_0_network_architectures_4_50_activations_swish_learning_rates_0_001_collocations_1024_epochs_250_regularization_no_reg_reg_epochs_0_5_reg_coeff_1_0_reg_decay_linear_/run_6",
+  "seed": 1,
+  "x0": 0.1,
+  "y0": 0.0,
+  "T": 11,
+  "N_col": 1024,
+  "N_hidden": 4,
+  "N_neurons": 50,
+  "activation": "swish",
+  "N_epochs": 250,
+  "learning_rate": 0.001,
+  "decay_rate": 1.0,
+  "freq_log": 100,
+  "freq_print": 1000,
+  "keys_print": [
+    "loss"
+  ],
+  "freq_save": 0,
+  "regularization": "no_reg",
+  "reg_coeff": 1.0,
+  "reg_decay": "linear",
+  "reg_epochs": 0.5,
+  "eps": 0.01,
+  "loss": [
+    0.08938993513584137,
+    0.013705290853977203,
+    0.011102413758635521
+  ]
+}
