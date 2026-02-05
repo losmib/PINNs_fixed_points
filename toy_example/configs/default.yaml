@@ -10,21 +10,21 @@ seed: 1               # data sampling and weights initialization
 #################################
 
 # Initial Condition
-y0: 0.2
+y0: 0.1
 # Simulation Length
-T: 20
+T: 15
 
 #################################
 # Data settings (sampled anewly at each epoch)
 #################################
 
-N_col: 4096
+N_col: 8192
 
 #################################
 # PhysicsInformedNN settings
 #################################
 
-N_hidden: 6
+N_hidden: 8
 N_neurons: 100
 activation: 'swish'
 
@@ -32,8 +32,8 @@ activation: 'swish'
 # Training settings
 #################################
 
-N_epochs: 20000
-learning_rate: 0.001
+N_epochs: 25000
+learning_rate: 0.0005
 decay_rate: 1.0
 
 #################################
