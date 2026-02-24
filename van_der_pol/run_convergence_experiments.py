@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 import os
 
 
-NUM_SAMPLES = 200
+NUM_SAMPLES = 50
 
 config_base = load_config('configs/default.yaml')
 
@@ -60,7 +60,12 @@ for i in range(NUM_SAMPLES):
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
 
-        PINN.save_weights(f"{dirname_no_reg}/run_{i}.pkl")
+        
+        # if not os.path.exists(dirname_no_reg):
+        #     os.makedirs(dirname_no_reg)
+
+        PINN.save_weights(path=f"{dirname_no_reg}/run_{i}.pkl")
+        
 
         t_line, x_true, x_t_true = PINN.data.reference()
 
@@ -91,11 +96,15 @@ for i in range(NUM_SAMPLES):
         config["regularization"] = "reg_derivative_unstable_fp"
         config["reg_coeff"] = 1.0
         config["reg_epochs"] = 0.5
+        config["eps"] = 0.01
         config["reg_decay"] = "linear"
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
         
-        PINN.save_weights(f"{dirname_reg_derivative_unstable_fp}/run_{i}.pkl")
+        # if not os.path.exists(dirname_reg_derivative_unstable_fp):
+        #     os.makedirs(dirname_reg_derivative_unstable_fp)
+
+        PINN.save_weights(path=f"{dirname_reg_derivative_unstable_fp}/run_{i}.pkl")
         
         # get PINN prediction
         x_pred = PINN(t_line)
@@ -111,6 +120,6 @@ for i in range(NUM_SAMPLES):
         results_table.to_csv("visual_results_T_12_5.csv")
 
     except Exception as e:
-        print(e)
-            
+        print(e.with_traceback(e.__traceback__))
+        exit(-1)
      

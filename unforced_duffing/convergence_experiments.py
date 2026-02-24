@@ -60,7 +60,7 @@ for i in range(NUM_SAMPLES):
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
 
-        PINN.save_weights(f"{dirname_no_reg}/run_{i}.pkl")
+        PINN.save_weights(path=f"{dirname_no_reg}/run_{i}.pkl")
 
         t_line, x_true, x_t_true = PINN.data.reference()
 
@@ -91,11 +91,12 @@ for i in range(NUM_SAMPLES):
         config["regularization"] = "reg_derivative_unstable_fp"
         config["reg_coeff"] = 1.0
         config["reg_epochs"] = 0.5
+        config["eps"] = 0.01
         config["reg_decay"] = "linear"
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
         
-        PINN.save_weights(f"{dirname_reg_derivative_unstable_fp}/run_{i}.pkl")
+        PINN.save_weights(path=f"{dirname_reg_derivative_unstable_fp}/run_{i}.pkl")
         
         # get PINN prediction
         x_pred = PINN(t_line)

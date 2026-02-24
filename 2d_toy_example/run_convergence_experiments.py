@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 import os
 
 
-NUM_SAMPLES = 200
+NUM_SAMPLES = 50
 
 config_base = load_config('configs/default.yaml')
 
@@ -57,7 +57,7 @@ for i in range(NUM_SAMPLES):
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
 
-        PINN.save_weights(f"{dirname_no_reg}/run_{i}.pkl")
+        # PINN.save_weights(f"{dirname_no_reg}/run_{i}.pkl")
 
         t_line, x_true, y_true = PINN.data.reference()
 
@@ -95,7 +95,7 @@ for i in range(NUM_SAMPLES):
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
         
-        PINN.save_weights(f"{dirname_reg_derivative_unstable_fp}/run_{i}.pkl")
+        # PINN.save_weights(f"{dirname_reg_derivative_unstable_fp}/run_{i}.pkl")
         
         # get PINN prediction
         xy_true = np.concatenate([x_true.numpy(), y_true.numpy()], axis=1)

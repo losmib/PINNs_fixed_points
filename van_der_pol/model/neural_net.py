@@ -138,8 +138,11 @@ class PhysicsInformedNN(Sequential):
         x_t = tape.gradient(x, t)
         return x_t
 
-    def save_weights(self, flag=''):        
-        weights_file = self.log_path.joinpath(f'model_weights/weights_{flag}.pkl')
+    def save_weights(self, flag='', path=None):        
+        if path is None:
+            weights_file = self.log_path.joinpath(f'model_weights/weights_{flag}.pkl')
+        else:
+            weights_file = path
         with open(weights_file, 'wb') as pickle_file:
             pickle.dump(self.get_weights(), pickle_file)                    
 
