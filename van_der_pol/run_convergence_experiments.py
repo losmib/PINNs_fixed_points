@@ -16,7 +16,7 @@ from matplotlib import pyplot as plt
 import os
 
 
-NUM_SAMPLES = 50
+NUM_SAMPLES = 30
 
 config_base = load_config('configs/default.yaml')
 
@@ -28,15 +28,16 @@ config["activation"] = "swish"
 config["N_hidden"] = 4
 config["N_neurons"] = 50
 config["N_epochs"] = 25000
-config["T"] = 12.5
+config["T"] = 15
 config["freq_save"] = 0
 
 
 x0s = np.random.normal(0, 0.5, size=NUM_SAMPLES)
 x_t0s = np.random.normal(0, 0.5, size=NUM_SAMPLES)
 
+base_dir = f"logs/models/visualization_experiments_{str(config["T"]).replace(".", "_")}"
 
-dirname_no_reg = f"logs/models/visualization_experiments/no_reg"
+dirname_no_reg = f"{base_dir}/no_reg"
 if not os.path.exists(dirname_no_reg):
     os.makedirs(dirname_no_reg)
 
@@ -44,7 +45,7 @@ if not os.path.exists(dirname_no_reg):
 # if not os.path.exists(dirname_reg_derivative):
 #     os.makedirs(dirname_reg_derivative)
 
-dirname_reg_derivative_unstable_fp = f"logs/models/visualization_experiments/reg_derivative_unstable_fp"
+dirname_reg_derivative_unstable_fp = f"{base_dir}/reg_derivative_unstable_fp"
 if not os.path.exists(dirname_reg_derivative_unstable_fp):
     os.makedirs(dirname_reg_derivative_unstable_fp)
 
@@ -57,6 +58,7 @@ for i in range(NUM_SAMPLES):
     try:
         # Without regularization
         config["regularization"] = "no_reg"
+        config["reg_coeff"] = 0.0
         PINN = PhysicsInformedNN(config, verbose=True)
         training_log = PINN.train()
 
@@ -117,7 +119,7 @@ for i in range(NUM_SAMPLES):
         
         results_list.append(table_entry)
         results_table = pd.concat(results_list)
-        results_table.to_csv("visual_results_T_12_5.csv")
+        results_table.to_csv(f"visual_results_T_{str(config["T"]).replace(".", "_")}.csv")
 
     except Exception as e:
         print(e.with_traceback(e.__traceback__))
