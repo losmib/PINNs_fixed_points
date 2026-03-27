@@ -1,2 +1,0 @@
-,T,y0,network_architectures,activations,learning_rates,collocations,epochs,reg_epochs,reg_coeff,reg_decay,mean_loss,loss_successes_percent
-0,10,25,"(4, 50)",tanh,0.001,1024,5,0,1,1,1.6408961,0.0
